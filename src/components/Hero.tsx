@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, MapPin, Building2, Sparkles, Compass, ChevronDown } from 'lucide-react';
@@ -22,7 +22,6 @@ export default function Hero({ onOpenContact }: HeroProps) {
   });
 
   const heroScale = useTransform(scrollYProgress, [0, 1], [1, 0.98]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.2]);
 
   return (
     <section
@@ -31,33 +30,33 @@ export default function Hero({ onOpenContact }: HeroProps) {
     >
       {/* Outer Rounded Luxury Hero Card */}
       <motion.div
-        style={{ scale: heroScale, opacity: heroOpacity }}
-        className="relative w-full max-w-[1440px] rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden border border-canvas-border shadow-soft-2xl min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] flex flex-col justify-between p-6 sm:p-10 lg:p-14"
+        style={{ scale: heroScale }}
+        className="relative w-full max-w-[1440px] rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden border border-canvas-border shadow-soft-2xl min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] flex flex-col justify-between p-6 sm:p-10 lg:p-14 bg-charcoal-950 isolate"
       >
-        {/* Full-bleed Architectural Villa Background */}
-        <div className="absolute inset-0 w-full h-full -z-10 bg-charcoal-950">
+        {/* Full-bleed Architectural Villa Background (z-0) */}
+        <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
           <Image
             src={HERO_CONTENT.image}
             alt="Zalia Properties Architectural Villa"
             fill
             priority
             quality={95}
-            className="object-cover object-center scale-105 transition-transform duration-1000 ease-editorial"
+            className="object-cover object-center scale-100"
             sizes="(max-width: 1440px) 100vw, 1440px"
           />
-          {/* Subtle Ambient Vignette & Gradient for Sharp Text Readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/85 via-charcoal-950/50 to-transparent pointer-events-none" />
-          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/90 via-transparent to-charcoal-950/30 pointer-events-none" />
+          {/* Gradients for High-Contrast Text Legibility */}
+          <div className="absolute inset-0 bg-gradient-to-r from-charcoal-950/90 via-charcoal-950/60 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/80 via-transparent to-charcoal-950/40" />
         </div>
 
-        {/* Top Row: Eyebrow + Top-Right Trust Badge */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 z-10">
+        {/* Top Row: Eyebrow + Top-Right Trust Badge (z-10) */}
+        <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           {/* Eyebrow Pill Tag */}
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/25 shadow-soft-sm text-white"
+            className="inline-flex items-center space-x-2.5 px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/20 shadow-soft-sm text-white"
           >
             <Compass className="w-3.5 h-3.5 text-gold-accent" />
             <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.18em]">
@@ -70,7 +69,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="hidden sm:inline-flex items-center space-x-3 px-4 py-2 rounded-full bg-white/15 backdrop-blur-md border border-white/25 shadow-soft-sm text-white font-sans"
+            className="hidden sm:inline-flex items-center space-x-3 px-4 py-2 rounded-full bg-black/40 backdrop-blur-md border border-white/20 shadow-soft-sm text-white font-sans"
           >
             {/* Monogram Avatars */}
             <div className="flex -space-x-1.5 overflow-hidden">
@@ -96,8 +95,8 @@ export default function Hero({ onOpenContact }: HeroProps) {
           </motion.div>
         </div>
 
-        {/* Middle: Dominant Headline & Narrative */}
-        <div className="max-w-2xl space-y-6 my-auto py-8 sm:py-12 z-10 text-left">
+        {/* Middle: Dominant Headline & Narrative (z-10) */}
+        <div className="relative z-10 max-w-2xl space-y-6 my-auto py-8 sm:py-12 text-left">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -113,13 +112,13 @@ export default function Hero({ onOpenContact }: HeroProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="text-base sm:text-lg text-white/85 font-sans leading-relaxed font-normal max-w-xl"
+            className="text-base sm:text-lg text-white/90 font-sans leading-relaxed font-normal max-w-xl"
           >
             We identify residential properties with potential and transform them into exceptional homes designed for modern British living.
           </motion.p>
         </div>
 
-        {/* Bottom Floating Glass Search / Exploration Filter Bar */}
+        {/* Bottom Floating Glass Search / Exploration Filter Bar (z-20) */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
