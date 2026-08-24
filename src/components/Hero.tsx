@@ -52,7 +52,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
   return (
     <section
       ref={containerRef}
-      className="relative min-h-[100svh] w-full flex items-center justify-center bg-canvas overflow-hidden pt-28 pb-16 lg:py-0"
+      className="relative min-h-[100svh] w-full flex items-center justify-center bg-canvas overflow-hidden pt-24 sm:pt-28 pb-16 lg:py-0"
     >
       {/* Background Architectural Atmosphere */}
       <div className="absolute inset-0 bg-architectural-grid opacity-50 pointer-events-none" />
@@ -61,10 +61,59 @@ export default function Hero({ onOpenContact }: HeroProps) {
 
       <motion.div
         style={{ opacity: heroOpacity, y: heroY }}
-        className="w-full max-w-7xl mx-auto px-6 sm:px-8 py-8 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center relative z-10"
+        className="w-full max-w-7xl mx-auto px-6 sm:px-8 py-4 sm:py-8 lg:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10"
       >
+        {/* MOBILE ONLY: Architectural Floating Villa Banner right below navbar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20, scale: 0.98 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="lg:hidden w-full relative rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-gradient-to-b from-[#b8d8cc]/30 via-white to-canvas-warm p-4 sm:p-5 flex flex-col justify-between"
+        >
+          {/* Top Specification Badge */}
+          <div className="flex items-center justify-between pb-3 border-b border-black/[0.06] mb-3">
+            <div className="flex items-center space-x-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-brand animate-pulse" />
+              <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand">
+                ZALIA PROPERTIES LTD
+              </span>
+            </div>
+            <span className="text-[9.5px] font-sans font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/90 text-charcoal-700 border border-canvas-border">
+              UK RESIDENTIAL
+            </span>
+          </div>
+
+          {/* Floating Island Villa Visual */}
+          <div className="relative w-full h-[260px] sm:h-[320px] rounded-2xl overflow-hidden bg-transparent">
+            <Image
+              src="/images/hero-floating-villa-clean.jpg"
+              alt="Zalia Properties Floating Architectural Villa"
+              fill
+              priority
+              quality={95}
+              className="object-contain object-center drop-shadow-lg"
+              sizes="100vw"
+            />
+          </div>
+
+          {/* Bottom Floating Card Strip */}
+          <div className="pt-3 border-t border-black/[0.06] flex items-center justify-between text-charcoal-900">
+            <div>
+              <h4 className="text-xs font-semibold uppercase tracking-wider font-sans">
+                The Floating Villa Concept
+              </h4>
+              <p className="text-[10.5px] text-charcoal-500 font-sans">
+                Curated Modern Living &amp; Spatial Architecture
+              </p>
+            </div>
+            <div className="w-7 h-7 rounded-lg bg-emerald-brand text-white flex items-center justify-center shadow-xs">
+              <Compass className="w-3.5 h-3.5" />
+            </div>
+          </div>
+        </motion.div>
+
         {/* Left Column: Hero Narrative & Action */}
-        <div className="lg:col-span-6 flex flex-col justify-center space-y-7 text-left z-20">
+        <div className="lg:col-span-6 flex flex-col justify-center space-y-6 sm:space-y-7 text-left z-20">
           {/* Eyebrow Label (Inter 600, 11px, 0.16em tracking) */}
           <motion.div
             initial={{ opacity: 0, y: 16 }}
@@ -164,8 +213,8 @@ export default function Hero({ onOpenContact }: HeroProps) {
           </motion.div>
         </div>
 
-        {/* Right Column: Unified Architectural Showcase */}
-        <div className="lg:col-span-6 relative w-full h-[460px] sm:h-[560px] lg:h-[620px] flex items-center justify-center">
+        {/* Desktop Only (>= lg): Unified Architectural Showcase (Render or 3D) */}
+        <div className="hidden lg:flex lg:col-span-6 relative w-full h-[460px] sm:h-[560px] lg:h-[620px] items-center justify-center">
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
