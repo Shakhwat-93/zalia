@@ -45,7 +45,7 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />
 
-              <div className="absolute top-6 right-6 p-4 rounded-2xl glass-card border border-white/60 shadow-soft-md backdrop-blur-md max-w-xs">
+              <div className="absolute top-6 right-6 p-4 rounded-2xl glass-card border border-white/60 shadow-soft-md backdrop-blur-md max-w-xs font-sans">
                 <div className="flex items-center space-x-3">
                   <div className="w-9 h-9 rounded-xl bg-emerald-brand text-white flex items-center justify-center shadow-sm">
                     <Award className="w-4 h-4 text-gold-accent" />
@@ -54,7 +54,7 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
                     <h4 className="text-xs font-semibold text-charcoal-900 uppercase tracking-wider">
                       UK Residential
                     </h4>
-                    <p className="text-[10px] text-charcoal-500">
+                    <p className="text-[10.5px] text-charcoal-500">
                       Curated Spatial Architecture
                     </p>
                   </div>
@@ -66,7 +66,7 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
           <div className="lg:col-span-6 space-y-8 order-1 lg:order-2">
             <div className="flex items-center space-x-3">
               <span className="h-px w-8 bg-emerald-brand" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-emerald-brand">
+              <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand">
                 {ABOUT_CONTENT.eyebrow}
               </span>
             </div>
@@ -84,7 +84,7 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-base sm:text-lg text-charcoal-800 leading-relaxed font-normal"
+              className="text-base sm:text-lg text-charcoal-800 font-sans leading-relaxed font-normal"
             >
               {ABOUT_CONTENT.body}
             </motion.p>
@@ -93,7 +93,7 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-              className="text-sm sm:text-base text-charcoal-600 leading-relaxed font-normal"
+              className="text-sm sm:text-base text-charcoal-600 font-sans leading-relaxed font-normal"
             >
               {ABOUT_CONTENT.extendedText}
             </motion.p>
@@ -102,14 +102,14 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="grid grid-cols-3 gap-4 pt-4 border-t border-canvas-border"
+              className="grid grid-cols-3 gap-4 pt-4 border-t border-canvas-border font-sans"
             >
               {ABOUT_CONTENT.stats.map((stat, i) => (
                 <div key={i}>
                   <span className="block text-xs sm:text-sm font-semibold text-charcoal-900 uppercase tracking-wider">
                     {stat.value}
                   </span>
-                  <span className="text-[11px] text-charcoal-400 uppercase tracking-widest">
+                  <span className="text-[11px] text-charcoal-400 uppercase tracking-wider">
                     {stat.label}
                   </span>
                 </div>
@@ -124,7 +124,7 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
             >
               <button
                 onClick={onOpenContact}
-                className="btn-magnetic inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-charcoal-950 text-white hover:bg-emerald-brand text-xs font-semibold uppercase tracking-widest transition-all duration-300 shadow-soft-sm hover:shadow-emerald-subtle group"
+                className="btn-magnetic inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-charcoal-950 text-white hover:bg-emerald-brand text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm hover:shadow-emerald-subtle group"
               >
                 <span>{ABOUT_CONTENT.ctaText}</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />

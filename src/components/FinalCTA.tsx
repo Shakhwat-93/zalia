@@ -27,7 +27,7 @@ export default function FinalCTA({ onOpenContact }: FinalCTAProps) {
           <div className="lg:col-span-7 space-y-8">
             <div className="flex items-center space-x-3">
               <span className="h-px w-8 bg-emerald-brand" />
-              <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-emerald-brand">
+              <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand">
                 {FINAL_CTA_CONTENT.eyebrow}
               </span>
             </div>
@@ -58,7 +58,7 @@ export default function FinalCTA({ onOpenContact }: FinalCTAProps) {
             >
               <button
                 onClick={onOpenContact}
-                className="btn-magnetic inline-flex items-center space-x-3 px-9 py-4 rounded-full bg-charcoal-950 text-white hover:bg-emerald-brand text-xs font-semibold uppercase tracking-widest transition-all duration-300 shadow-soft-lg hover:shadow-emerald-subtle group"
+                className="btn-magnetic inline-flex items-center space-x-3 px-9 py-4 rounded-full bg-charcoal-950 text-white hover:bg-emerald-brand text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-lg hover:shadow-emerald-subtle group"
               >
                 <span>{FINAL_CTA_CONTENT.ctaText}</span>
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -69,17 +69,17 @@ export default function FinalCTA({ onOpenContact }: FinalCTAProps) {
               initial={{ opacity: 0 }}
               animate={isInView ? { opacity: 1 } : {}}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="pt-8 border-t border-canvas-border grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-charcoal-600 max-w-lg"
+              className="pt-8 border-t border-canvas-border grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans text-charcoal-600 max-w-lg"
             >
               <div className="flex items-center space-x-3">
                 <Mail className="w-4 h-4 text-emerald-brand shrink-0" />
-                <a href={'mailto:' + SITE_METADATA.email} className="hover:text-emerald-brand font-mono">
+                <a href={'mailto:' + SITE_METADATA.email} className="hover:text-emerald-brand">
                   {SITE_METADATA.email}
                 </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="w-4 h-4 text-emerald-brand shrink-0" />
-                <a href={'tel:' + SITE_METADATA.phone} className="hover:text-emerald-brand font-mono">
+                <a href={'tel:' + SITE_METADATA.phone} className="hover:text-emerald-brand">
                   {SITE_METADATA.phone}
                 </a>
               </div>
@@ -104,11 +104,11 @@ export default function FinalCTA({ onOpenContact }: FinalCTAProps) {
 
               <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/40 via-transparent to-transparent pointer-events-none" />
 
-              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl glass-card border border-white/50 text-center backdrop-blur-md shadow-soft-sm">
-                <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-emerald-brand block">
+              <div className="absolute bottom-6 left-6 right-6 p-4 rounded-xl glass-card border border-white/50 text-center backdrop-blur-md shadow-soft-sm font-sans">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-emerald-brand block">
                   ZALIA PRIVATE CLIENT CONSULTATION
                 </span>
-                <span className="text-[10px] text-charcoal-500">
+                <span className="text-[10.5px] text-charcoal-500">
                   Confidential Property Appraisals &amp; Acquisitions
                 </span>
               </div>

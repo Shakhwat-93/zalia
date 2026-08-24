@@ -16,14 +16,9 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
 
-  // Handle scroll state for compact navbar
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 30) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 30);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -31,7 +26,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle active section observer for subtle indicator
   useEffect(() => {
     const sectionIds = ['about', 'services', 'transformation', 'projects', 'approach', 'team', 'contact'];
     const handleScrollSpy = () => {
@@ -57,7 +51,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
     return () => window.removeEventListener('scroll', handleScrollSpy);
   }, []);
 
-  // Keyboard accessibility (ESC to close mobile menu) and body scroll lock
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && mobileMenuOpen) {
@@ -88,7 +81,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
         role="banner"
         className={'fixed top-0 left-0 right-0 z-50 transition-all duration-400 ease-luxury ' + (
           isScrolled
-            ? 'bg-white/92 backdrop-blur-md border-b border-black/[0.06] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.04)] py-3 sm:py-3.5'
+            ? 'bg-white/94 backdrop-blur-md border-b border-black/[0.06] shadow-[0_4px_24px_-4px_rgba(0,0,0,0.04)] py-3 sm:py-3.5'
             : 'bg-white/80 backdrop-blur-[10px] border-b border-black/[0.03] py-4 sm:py-5 lg:py-6'
         )}
       >
@@ -110,16 +103,16 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-serif text-[17px] sm:text-[19px] font-semibold tracking-[0.14em] text-charcoal-950 uppercase leading-none">
+              <span className="font-serif text-[18px] sm:text-[20px] font-semibold tracking-[0.14em] text-charcoal-950 uppercase leading-none">
                 ZALIA
               </span>
-              <span className="text-[8.5px] sm:text-[9px] font-sans font-medium uppercase tracking-[0.28em] text-emerald-brand mt-1 leading-none">
+              <span className="text-[9px] font-sans font-semibold uppercase tracking-[0.24em] text-emerald-brand mt-1 leading-none">
                 PROPERTIES LTD
               </span>
             </div>
           </Link>
 
-          {/* Desktop Navigation Links (>= 1140px) */}
+          {/* Desktop Navigation Links (Inter 500, 12.5px, 0.14em tracking) */}
           <nav
             aria-label="Primary Navigation"
             className="hidden xl:flex items-center gap-6 2xl:gap-8 mx-6"
@@ -132,15 +125,13 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                 <Link
                   key={link.label}
                   href={link.href}
-                  className={'whitespace-nowrap text-[12px] 2xl:text-[12.5px] font-sans font-medium uppercase tracking-[0.18em] transition-colors duration-250 relative py-1.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-brand rounded group ' + (
+                  className={'whitespace-nowrap text-[12.5px] font-sans font-medium uppercase tracking-[0.14em] transition-colors duration-200 relative py-1.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-brand rounded group ' + (
                     isActive
                       ? 'text-emerald-brand'
                       : 'text-charcoal-700 hover:text-charcoal-950'
                   )}
                 >
                   <span className="relative z-10">{link.label}</span>
-                  
-                  {/* Subtle hover & active line indicator */}
                   <span
                     className={'absolute bottom-0 left-0 h-[1.5px] bg-emerald-brand transition-all duration-300 ease-luxury ' + (
                       isActive
@@ -155,23 +146,23 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
 
           {/* Right Action Block */}
           <div className="flex items-center space-x-3 sm:space-x-4 shrink-0">
-            {/* Desktop CTA Pill Button */}
+            {/* Desktop CTA Pill Button (Inter 600, 13px, 0.14em tracking) */}
             <button
               onClick={onOpenContact}
-              className="btn-magnetic hidden sm:inline-flex items-center space-x-2.5 h-[44px] sm:h-[48px] px-6 sm:px-7 rounded-full bg-charcoal-950 hover:bg-emerald-brand text-white text-[11.5px] font-sans font-medium uppercase tracking-[0.18em] transition-all duration-300 shadow-soft-sm hover:shadow-emerald-subtle group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand focus-visible:ring-offset-2"
+              className="btn-magnetic hidden sm:inline-flex items-center space-x-2.5 h-[46px] px-6 sm:px-7 rounded-full bg-charcoal-950 hover:bg-emerald-brand text-white text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm hover:shadow-emerald-subtle group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand focus-visible:ring-offset-2"
             >
               <span>Let&apos;s Talk</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
             </button>
 
-            {/* Mobile / Tablet Menu Button (< 1280px) */}
+            {/* Mobile / Tablet Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="xl:hidden inline-flex items-center justify-center space-x-2 h-[42px] px-3.5 sm:px-4 rounded-full bg-canvas-warm border border-canvas-border text-charcoal-900 hover:border-emerald-brand/50 hover:bg-white transition-all text-xs font-mono font-medium uppercase tracking-wider focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand"
+              className="xl:hidden inline-flex items-center justify-center space-x-2 h-[42px] px-3.5 sm:px-4 rounded-full bg-canvas-warm border border-canvas-border text-charcoal-900 hover:border-emerald-brand/50 hover:bg-white transition-all text-xs font-sans font-medium uppercase tracking-wider focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand"
               aria-label={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
               aria-expanded={mobileMenuOpen}
             >
-              <span className="text-[11px] font-sans font-medium uppercase tracking-widest hidden xs:inline">
+              <span className="text-[11px] font-sans font-semibold uppercase tracking-widest hidden xs:inline">
                 {mobileMenuOpen ? 'CLOSE' : 'MENU'}
               </span>
               {mobileMenuOpen ? (
@@ -188,7 +179,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
         </div>
       </header>
 
-      {/* Full-Screen Mobile & Tablet Menu Overlay */}
+      {/* Full-Screen Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -201,11 +192,10 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
             aria-modal="true"
             aria-label="Mobile Navigation Menu"
           >
-            {/* Navigation Links List */}
             <div className="max-w-xl w-full mx-auto space-y-6">
               <div className="flex items-center space-x-2 pb-2 border-b border-canvas-border">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-brand" />
-                <span className="text-[10px] font-mono font-semibold uppercase tracking-[0.25em] text-emerald-brand">
+                <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
                   NAVIGATION DIRECTORY
                 </span>
               </div>
@@ -233,7 +223,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
               </nav>
             </div>
 
-            {/* Bottom Contact & Action Block */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -245,13 +234,13 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                   closeMobileMenu();
                   onOpenContact();
                 }}
-                className="w-full py-4 rounded-full bg-charcoal-950 hover:bg-emerald-brand text-white text-xs font-sans font-medium uppercase tracking-[0.2em] flex items-center justify-center space-x-2.5 shadow-md transition-colors"
+                className="w-full py-4 rounded-full bg-charcoal-950 hover:bg-emerald-brand text-white text-[13px] font-sans font-semibold uppercase tracking-[0.16em] flex items-center justify-center space-x-2.5 shadow-md transition-colors"
               >
                 <span>Let&apos;s Talk</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-charcoal-600 font-mono">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-charcoal-600 font-sans">
                 <div className="flex items-center space-x-2.5">
                   <Mail className="w-3.5 h-3.5 text-emerald-brand shrink-0" />
                   <a href={'mailto:' + SITE_METADATA.email} className="hover:text-emerald-brand truncate">
@@ -264,7 +253,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                     {SITE_METADATA.phone}
                   </a>
                 </div>
-                <div className="flex items-center space-x-2.5 sm:col-span-2 text-[11px] text-charcoal-400">
+                <div className="flex items-center space-x-2.5 sm:col-span-2 text-[11px] text-charcoal-500">
                   <MapPin className="w-3.5 h-3.5 text-emerald-brand shrink-0" />
                   <span>{SITE_METADATA.address}</span>
                 </div>

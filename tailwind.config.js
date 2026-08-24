@@ -1,4 +1,4 @@
-﻿/** @type {import('tailwindcss').Config} */
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -43,14 +43,19 @@ module.exports = {
         }
       },
       fontFamily: {
-        serif: ['var(--font-cormorant)', 'Cinzel', 'Georgia', 'serif'],
-        sans: ['var(--font-jakarta)', 'Inter', '-apple-system', 'sans-serif'],
+        sans: ['var(--font-inter)', 'Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Cormorant Garamond', 'Georgia', 'serif'],
       },
       letterSpacing: {
-        tightest: '-0.04em',
+        tightest: '-0.035em',
         tighter: '-0.02em',
-        widest: '0.25em',
-        mega: '0.35em',
+        tight: '-0.01em',
+        normal: '0em',
+        wide: '0.04em',
+        wider: '0.08em',
+        widest: '0.14em',
+        label: '0.16em',
+        caps: '0.18em',
       },
       boxShadow: {
         'soft-sm': '0 2px 8px -2px rgba(18, 19, 22, 0.04)',

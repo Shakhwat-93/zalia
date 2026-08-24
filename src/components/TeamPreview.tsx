@@ -19,7 +19,7 @@ export default function TeamPreview() {
         <div className="max-w-3xl mb-16 sm:mb-20 space-y-4">
           <div className="flex items-center space-x-3">
             <span className="h-px w-8 bg-emerald-brand" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-emerald-brand">
+            <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand">
               {TEAM_CONTENT.eyebrow}
             </span>
           </div>
@@ -37,7 +37,7 @@ export default function TeamPreview() {
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-            className="text-sm sm:text-base text-charcoal-600 leading-relaxed font-normal"
+            className="text-base sm:text-lg text-charcoal-600 font-sans leading-relaxed font-normal"
           >
             {TEAM_CONTENT.subheading}
           </motion.p>
@@ -62,13 +62,13 @@ export default function TeamPreview() {
                     {member.initials}
                   </div>
 
-                  <span className="relative z-10 text-[10px] font-mono uppercase tracking-widest text-charcoal-500 group-hover:text-white/80 transition-colors duration-500 mt-3">
+                  <span className="relative z-10 text-[10.5px] font-sans font-semibold uppercase tracking-widest text-charcoal-500 group-hover:text-white/80 transition-colors duration-500 mt-3">
                     {member.department}
                   </span>
                 </div>
 
-                <div className="space-y-1">
-                  <span className="text-[10px] font-mono text-emerald-brand font-semibold uppercase tracking-wider block">
+                <div className="space-y-1 font-sans">
+                  <span className="text-[10px] font-semibold text-emerald-brand uppercase tracking-wider block">
                     Executive Partner
                   </span>
                   <h3 className="font-serif text-xl sm:text-2xl font-medium text-charcoal-950 group-hover:text-emerald-brand transition-colors">
@@ -79,13 +79,13 @@ export default function TeamPreview() {
                   </p>
                 </div>
 
-                <p className="text-xs text-charcoal-500 leading-relaxed mt-4 font-normal">
+                <p className="text-xs text-charcoal-500 font-sans leading-relaxed mt-4 font-normal">
                   {member.bio}
                 </p>
               </div>
 
-              <div className="pt-6 mt-6 border-t border-canvas-border flex items-center justify-between text-xs font-semibold text-charcoal-400 group-hover:text-emerald-brand transition-colors">
-                <span className="text-[10px] uppercase font-mono tracking-wider">
+              <div className="pt-6 mt-6 border-t border-canvas-border flex items-center justify-between text-xs font-sans font-semibold text-charcoal-400 group-hover:text-emerald-brand transition-colors">
+                <span className="text-[10px] uppercase tracking-wider">
                   Zalia Leadership
                 </span>
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

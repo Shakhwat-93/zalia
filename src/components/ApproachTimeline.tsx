@@ -20,7 +20,7 @@ export default function ApproachTimeline() {
         <div className="max-w-3xl mb-16 sm:mb-20 space-y-4">
           <div className="flex items-center space-x-3">
             <span className="h-px w-8 bg-emerald-brand" />
-            <span className="text-[11px] font-semibold uppercase tracking-[0.25em] text-emerald-brand">
+            <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand">
               {APPROACH_CONTENT.eyebrow}
             </span>
           </div>
@@ -61,15 +61,15 @@ export default function ApproachTimeline() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-start">
                   <div className="lg:col-span-4 space-y-2">
-                    <div className="flex items-center space-x-3">
+                    <div className="flex items-center space-x-3 font-sans">
                       <span
-                        className={'font-mono text-xs font-semibold uppercase tracking-widest transition-colors ' + (
+                        className={'text-xs font-semibold uppercase tracking-[0.14em] transition-colors ' + (
                           isActive ? 'text-emerald-brand' : 'text-charcoal-400'
                         )}
                       >
                         STEP {step.number}
                       </span>
-                      <span className="text-[11px] font-sans font-medium text-gold-deep">
+                      <span className="text-[11px] font-medium text-gold-deep">
                         {step.subtitle}
                       </span>
                     </div>
@@ -84,7 +84,7 @@ export default function ApproachTimeline() {
                   </div>
 
                   <div className="lg:col-span-8 space-y-4">
-                    <p className="text-sm sm:text-base text-charcoal-600 leading-relaxed font-normal">
+                    <p className="text-sm sm:text-base text-charcoal-600 font-sans leading-relaxed font-normal">
                       {step.description}
                     </p>
 
@@ -92,7 +92,7 @@ export default function ApproachTimeline() {
                       {step.deliverables.map((item, i) => (
                         <div
                           key={i}
-                          className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-canvas-warm border border-canvas-border text-xs text-charcoal-700 font-mono"
+                          className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-canvas-warm border border-canvas-border text-xs text-charcoal-700 font-sans font-medium"
                         >
                           <CheckCircle2 className="w-3 h-3 text-emerald-brand" />
                           <span>{item}</span>

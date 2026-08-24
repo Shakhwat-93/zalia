@@ -1,12 +1,13 @@
-﻿@tailwind base;
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-cormorant: 'Cormorant Garamond', 'Cinzel', Georgia, serif;
-  --font-jakarta: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-inter: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
   --color-canvas: #ffffff;
   --color-canvas-warm: #faf9f5;
+  --color-charcoal-950: #0c0d0e;
   --color-charcoal-900: #121316;
   --color-emerald-brand: #0b3b2c;
   --color-gold-brand: #c5a880;
@@ -33,16 +34,15 @@ html.lenis, html.lenis body {
   pointer-events: none;
 }
 
-/* Base Body Styling */
+/* Base Body & Inter Font Settings */
 body {
   background-color: #ffffff;
   color: #121316;
-  font-family: var(--font-jakarta);
+  font-family: var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'tnum';
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  selection-background-color: #0b3b2c;
-  selection-color: #ffffff;
 }
 
 ::selection {
@@ -50,7 +50,7 @@ body {
   color: #ffffff;
 }
 
-/* Custom Scrollbar */
+/* Custom Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -70,8 +70,27 @@ body {
 
 /* Architectural typography highlights */
 .font-editorial {
-  font-family: var(--font-cormorant);
+  font-family: var(--font-serif), Georgia, serif;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+}
+
+/* Fluid display headlines */
+.headline-hero {
+  font-size: clamp(2.75rem, 5.5vw, 5.25rem);
+  line-height: 1.04;
+  letter-spacing: -0.025em;
+}
+
+.headline-section {
+  font-size: clamp(2.25rem, 4.2vw, 3.75rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+
+.headline-display {
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.06;
+  letter-spacing: -0.02em;
 }
 
 /* Architectural Grid lines */
@@ -84,20 +103,20 @@ body {
 
 /* Subtle Glassmorphism */
 .glass-nav {
-  background-color: rgba(255, 255, 255, 0.85);
+  background-color: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
 
 .glass-card {
-  background-color: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background-color: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
 }
 
 /* Luxury button glow & hover animations */
 .btn-magnetic {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .btn-magnetic:hover {
@@ -106,15 +125,6 @@ body {
 
 .btn-magnetic:active {
   transform: translateY(0px) scale(0.98);
-}
-
-/* Clip Path Reveal classes */
-.clip-inset-full {
-  clip-path: inset(100% 0 0 0);
-}
-
-.clip-inset-none {
-  clip-path: inset(0 0 0 0);
 }
 
 /* Hide default cursor on desktop when custom cursor is active */

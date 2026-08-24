@@ -1,20 +1,20 @@
 import type { Metadata, Viewport } from 'next';
-import { Cormorant_Garamond, Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import SmoothScroll from '@/components/SmoothScroll';
 import CustomCursor from '@/components/CustomCursor';
 
-const cormorant = Cormorant_Garamond({
+const inter = Inter({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-cormorant',
+  variable: '--font-inter',
   display: 'swap',
 });
 
-const jakarta = Plus_Jakarta_Sans({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-jakarta',
+  variable: '--font-serif',
   display: 'swap',
 });
 
@@ -76,8 +76,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${cormorant.variable} ${jakarta.variable} scroll-smooth`}>
-      <body className="bg-canvas text-charcoal-900 antialiased selection:bg-emerald-brand selection:text-white min-h-screen relative">
+    <html lang="en" className={`${inter.variable} ${cormorant.variable} scroll-smooth font-sans`}>
+      <body className="bg-canvas text-charcoal-900 font-sans antialiased selection:bg-emerald-brand selection:text-white min-h-screen relative">
         <SmoothScroll>
           <CustomCursor />
           {children}
