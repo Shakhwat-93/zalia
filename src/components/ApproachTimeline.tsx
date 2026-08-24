@@ -2,14 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-
-const WORDS = [
-  'IDENTIFY',
-  'ACQUIRE',
-  'TRANSFORM',
-  'REFINE',
-  'CREATE',
-];
+import { APPROACH_CONTENT } from '@/data/content';
 
 export default function ApproachTimeline() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -19,30 +12,39 @@ export default function ApproachTimeline() {
     <section
       id="approach"
       ref={containerRef}
-      className="relative w-full bg-canvas-warm py-24 sm:py-32 lg:py-44 border-t border-canvas-border overflow-hidden"
+      className="relative w-full bg-canvas-warm py-24 sm:py-32 lg:py-44 border-b border-canvas-border overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-12">
-        <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
-          OUR APPROACH
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-16">
+        <div className="space-y-3">
+          <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
+            {APPROACH_CONTENT.eyebrow}
+          </div>
+          <motion.h2
+            initial={{ opacity: 0, y: 24 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
+          >
+            {APPROACH_CONTENT.heading}
+          </motion.h2>
         </div>
 
-        <div className="flex flex-wrap gap-x-8 sm:gap-x-12 lg:gap-x-16 gap-y-6 items-baseline">
-          {WORDS.map((word, idx) => (
+        {/* Desktop Horizontal Process / Mobile Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 lg:gap-8">
+          {APPROACH_CONTENT.steps.map((step, idx) => (
             <motion.div
-              key={word}
-              initial={{ opacity: 0, y: 30 }}
+              key={step.number}
+              initial={{ opacity: 0, y: 24 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              className="flex items-center space-x-6 sm:space-x-8"
+              transition={{ duration: 0.7, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="p-6 rounded-2xl bg-white border border-canvas-border space-y-4 group hover:border-emerald-brand/40 transition-all duration-300 shadow-soft-sm"
             >
-              <span className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium tracking-tight hover:text-emerald-brand transition-colors cursor-default">
-                {word}
+              <span className="font-mono text-xs font-semibold text-emerald-brand tracking-widest block">
+                {step.number}
               </span>
-              {idx < WORDS.length - 1 && (
-                <span className="text-charcoal-300 font-serif text-3xl sm:text-4xl font-light hidden sm:inline">
-                  /
-                </span>
-              )}
+              <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal-950 group-hover:text-emerald-brand transition-colors">
+                {step.title}
+              </h3>
             </motion.div>
           ))}
         </div>

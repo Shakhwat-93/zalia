@@ -19,24 +19,9 @@ const Transformation3DCanvas = dynamic(
   }
 );
 
-const STAGES = [
-  {
-    number: '01',
-    title: 'SEE THE POTENTIAL',
-  },
-  {
-    number: '02',
-    title: 'TRANSFORM',
-  },
-  {
-    number: '03',
-    title: 'CREATE',
-  },
-];
-
 export default function Property3DSection() {
   const [activeStage, setActiveStage] = useState(0);
-  const [viewMode, setViewMode] = useState<'exploded' | '3d'>('exploded');
+  const [viewMode, setViewMode] = useState<'exploded' | '3d'>('3d');
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
 
@@ -44,31 +29,30 @@ export default function Property3DSection() {
     <section
       id="transformation"
       ref={containerRef}
-      className="relative w-full bg-white py-24 sm:py-32 lg:py-40 border-t border-canvas-border overflow-hidden"
+      className="relative w-full bg-canvas-warm py-24 sm:py-32 lg:py-40 border-b border-canvas-border overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-6 sm:px-8">
-        <div className="flex items-center justify-between mb-12 sm:mb-16">
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
-          >
-            THE ARCHITECTURAL METAMORPHOSIS
-          </motion.h2>
-
-          <div className="flex items-center space-x-2 p-1 rounded-full bg-canvas-warm border border-canvas-border shadow-soft-sm">
-            <button
-              onClick={() => setViewMode('exploded')}
-              className={'flex items-center space-x-1.5 px-4 py-2 rounded-full text-xs font-sans font-medium uppercase tracking-wider transition-all duration-300 ' + (
-                viewMode === 'exploded'
-                  ? 'bg-charcoal-950 text-white shadow-xs'
-                  : 'text-charcoal-600 hover:text-charcoal-950'
-              )}
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-14">
+        
+        {/* Header with Switcher */}
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div className="space-y-2">
+            <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
+              {TRANSFORMATION_3D_CONTENT.eyebrow}
+            </div>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
             >
-              <Layers className="w-3.5 h-3.5" />
-              <span>Exploded</span>
-            </button>
+              {TRANSFORMATION_3D_CONTENT.heading}
+            </motion.h2>
+            <p className="text-base text-charcoal-600 font-sans leading-relaxed font-normal">
+              {TRANSFORMATION_3D_CONTENT.subheading}
+            </p>
+          </div>
+
+          <div className="flex items-center space-x-2 p-1 rounded-full bg-white border border-canvas-border shadow-soft-sm self-start sm:self-auto">
             <button
               onClick={() => setViewMode('3d')}
               className={'flex items-center space-x-1.5 px-4 py-2 rounded-full text-xs font-sans font-medium uppercase tracking-wider transition-all duration-300 ' + (
@@ -78,13 +62,26 @@ export default function Property3DSection() {
               )}
             >
               <Box className="w-3.5 h-3.5" />
-              <span>3D</span>
+              <span>Interactive 3D</span>
+            </button>
+            <button
+              onClick={() => setViewMode('exploded')}
+              className={'flex items-center space-x-1.5 px-4 py-2 rounded-full text-xs font-sans font-medium uppercase tracking-wider transition-all duration-300 ' + (
+                viewMode === 'exploded'
+                  ? 'bg-charcoal-950 text-white shadow-xs'
+                  : 'text-charcoal-600 hover:text-charcoal-950'
+              )}
+            >
+              <Layers className="w-3.5 h-3.5" />
+              <span>Exploded View</span>
             </button>
           </div>
         </div>
 
+        {/* 3D Canvas + 4 Stages List */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-          <div className="lg:col-span-8 relative w-full h-[480px] sm:h-[580px] lg:h-[640px] rounded-3xl bg-canvas-warm border border-canvas-border overflow-hidden shadow-soft-xl">
+          
+          <div className="lg:col-span-8 relative w-full h-[480px] sm:h-[580px] lg:h-[640px] rounded-3xl bg-white border border-canvas-border overflow-hidden shadow-soft-xl">
             {viewMode === '3d' ? (
               <div className="w-full h-full relative">
                 <Transformation3DCanvas activeStage={activeStage} />
@@ -104,32 +101,37 @@ export default function Property3DSection() {
             )}
           </div>
 
-          <div className="lg:col-span-4 flex flex-col space-y-4">
-            {STAGES.map((stage, idx) => {
+          <div className="lg:col-span-4 flex flex-col space-y-3.5">
+            {TRANSFORMATION_3D_CONTENT.stages.map((stage, idx) => {
               const isActive = activeStage === idx;
               return (
                 <button
-                  key={stage.number}
+                  key={stage.stage}
                   onClick={() => setActiveStage(idx)}
-                  className={'text-left p-6 rounded-2xl border transition-all duration-300 ' + (
+                  className={'text-left p-5 sm:p-6 rounded-2xl border transition-all duration-300 ' + (
                     isActive
-                      ? 'bg-canvas-warm border-emerald-brand shadow-soft-md'
-                      : 'bg-white border-canvas-border hover:border-charcoal-300'
+                      ? 'bg-white border-emerald-brand shadow-soft-md'
+                      : 'bg-white/60 border-canvas-border hover:border-charcoal-300'
                   )}
                 >
-                  <span className={'text-xs font-sans font-semibold uppercase tracking-[0.2em] block mb-1 ' + (
+                  <span className={'font-mono text-xs font-semibold uppercase tracking-widest block mb-1 ' + (
                     isActive ? 'text-emerald-brand' : 'text-charcoal-400'
                   )}>
-                    {stage.number}
+                    STAGE {stage.stage}
                   </span>
-                  <h3 className="font-serif text-xl sm:text-2xl font-medium text-charcoal-950">
+                  <h3 className="font-serif text-lg sm:text-xl font-medium text-charcoal-950 mb-1">
                     {stage.title}
                   </h3>
+                  <p className="text-xs sm:text-[13px] text-charcoal-500 font-sans leading-relaxed">
+                    {stage.description}
+                  </p>
                 </button>
               );
             })}
           </div>
+
         </div>
+
       </div>
     </section>
   );

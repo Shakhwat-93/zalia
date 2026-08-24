@@ -3,10 +3,11 @@
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
-import BrandStatement from '@/components/BrandStatement';
+import BrandTrustStrip from '@/components/BrandTrustStrip';
+import WhyZalia from '@/components/WhyZalia';
 import WhatWeDo from '@/components/WhatWeDo';
+import FeaturedProjects from '@/components/FeaturedProjects';
 import Property3DSection from '@/components/Property3DSection';
-import FeaturedProject from '@/components/FeaturedProject';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import ApproachTimeline from '@/components/ApproachTimeline';
 import AboutZalia from '@/components/AboutZalia';
@@ -15,52 +16,55 @@ import FinalCTA from '@/components/FinalCTA';
 import Footer from '@/components/Footer';
 import ContactModal from '@/components/ContactModal';
 
-export default function HomePage() {
-  const [contactOpen, setContactOpen] = useState(false);
+export default function Home() {
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
-  const handleOpenContact = () => setContactOpen(true);
-  const handleCloseContact = () => setContactOpen(false);
+  const handleOpenContact = () => setIsContactOpen(true);
+  const handleCloseContact = () => setIsContactOpen(false);
 
   return (
-    <main className="relative min-h-screen bg-white text-charcoal-900 overflow-hidden">
-      {/* 01 Navigation */}
+    <main className="min-h-screen bg-canvas text-charcoal-950 selection:bg-emerald-brand selection:text-white relative">
+      {/* 01 — Compact Premium Navbar */}
       <Navbar onOpenContact={handleOpenContact} />
 
-      {/* 02 Hero Section with 3D Architectural Pavilion */}
+      {/* 02 — Cinematic Hero */}
       <Hero onOpenContact={handleOpenContact} />
 
-      {/* 03 Brand Statement with Editorial Line-by-Line Reveal */}
-      <BrandStatement />
+      {/* 03 — Brand / Trust Strip */}
+      <BrandTrustStrip />
 
-      {/* 04 What We Do (Acquire, Transform, Create) */}
+      {/* 04 — Why Zalia / Who We Are */}
+      <WhyZalia onOpenContact={handleOpenContact} />
+
+      {/* 05 — What We Do */}
       <WhatWeDo />
 
-      {/* 05 3D Property Transformation Metamorphosis */}
+      {/* 06 — Featured Projects (1 large + 2 supporting) */}
+      <FeaturedProjects onOpenContact={handleOpenContact} />
+
+      {/* 07 — 3D Transformation Experience */}
       <Property3DSection />
 
-      {/* 06 Featured Project (London UK Mews & Glass Pavilion) */}
-      <FeaturedProject onOpenContact={handleOpenContact} />
-
-      {/* 07 Before -> After Interactive Elevation Slider */}
+      {/* 08 — Before → After Interactive Slider */}
       <BeforeAfterSlider />
 
-      {/* 08 Our Approach (5-Step Disciplined Value Timeline) */}
+      {/* 09 — Our Approach (5 Steps) */}
       <ApproachTimeline />
 
-      {/* 09 About Zalia */}
+      {/* 10 — About / Philosophy */}
       <AboutZalia onOpenContact={handleOpenContact} />
 
-      {/* 10 Team Preview (Zaki, Selina, Issac, Amelia) */}
+      {/* 11 — Leadership Team Preview */}
       <TeamPreview />
 
-      {/* 11 Final CTA */}
+      {/* 12 — Final Direct CTA */}
       <FinalCTA onOpenContact={handleOpenContact} />
 
-      {/* 12 Footer */}
+      {/* 13 — Minimal White Footer */}
       <Footer />
 
-      {/* Private Consultation Modal */}
-      <ContactModal isOpen={contactOpen} onClose={handleCloseContact} />
+      {/* Global Interactive Contact Drawer */}
+      <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
     </main>
   );
 }
