@@ -33,7 +33,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
         style={{ scale: heroScale }}
         className="relative w-full max-w-[1440px] rounded-[2rem] sm:rounded-[2.5rem] lg:rounded-[3rem] overflow-hidden border border-canvas-border shadow-soft-2xl min-h-[580px] sm:min-h-[640px] lg:min-h-[720px] flex flex-col justify-between p-6 sm:p-10 lg:p-14 bg-charcoal-950 isolate"
       >
-        {/* Full-bleed Architectural Villa Background (z-0) */}
+        {/* Full-bleed Architectural Villa Background */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
           <Image
             src={HERO_CONTENT.image}
@@ -49,7 +49,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
           <div className="absolute inset-0 bg-gradient-to-t from-charcoal-950/80 via-transparent to-charcoal-950/40" />
         </div>
 
-        {/* Top Row: Eyebrow + Top-Right Trust Badge (z-10) */}
+        {/* Top Row: Eyebrow + Top-Right Trust Badge */}
         <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           {/* Eyebrow Pill Tag */}
           <motion.div
@@ -95,7 +95,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
           </motion.div>
         </div>
 
-        {/* Middle: Dominant Headline & Narrative (z-10) */}
+        {/* Middle: Dominant Headline & Narrative */}
         <div className="relative z-10 max-w-2xl space-y-6 my-auto py-8 sm:py-12 text-left">
           <motion.h1
             initial={{ opacity: 0, y: 24 }}
@@ -118,80 +118,78 @@ export default function Hero({ onOpenContact }: HeroProps) {
           </motion.p>
         </div>
 
-        {/* Bottom Floating Glass Search / Exploration Filter Bar (z-20) */}
+        {/* Bottom Floating Glass Filter Bar - Pixel-Perfect & Minimal */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.85, delay: 0.35, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-20 w-full p-2.5 sm:p-3 rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-xl border border-white/80 shadow-soft-2xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-2 sm:gap-3 items-center text-charcoal-900 font-sans"
+          className="relative z-20 w-full max-w-5xl mx-auto rounded-2xl sm:rounded-full bg-white/95 backdrop-blur-xl border border-white/90 shadow-2xl p-2 sm:p-2.5 font-sans"
         >
-          {/* Field 1: Location */}
-          <div className="lg:col-span-3 px-4 py-2.5 rounded-xl sm:rounded-full hover:bg-canvas-warm/70 transition-colors flex items-center space-x-3 cursor-pointer group">
-            <div className="w-9 h-9 rounded-full bg-emerald-light flex items-center justify-center text-emerald-brand shrink-0">
-              <MapPin className="w-4 h-4" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="block text-[10px] font-semibold uppercase tracking-wider text-charcoal-400">
-                Location
-              </span>
-              <div className="flex items-center justify-between">
-                <span className="text-xs sm:text-[13px] font-medium text-charcoal-950 truncate">
+          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2 lg:gap-3">
+            
+            {/* Field 1: Location */}
+            <div className="flex-1 flex items-center space-x-3 px-3.5 py-2 rounded-xl sm:rounded-full hover:bg-canvas-warm/70 transition-colors cursor-pointer group">
+              <div className="w-8 h-8 rounded-full bg-emerald-light flex items-center justify-center text-emerald-brand shrink-0">
+                <MapPin className="w-3.5 h-3.5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="block text-[9.5px] font-semibold uppercase tracking-wider text-charcoal-400 leading-none mb-1">
+                  Location
+                </span>
+                <span className="text-xs font-semibold text-charcoal-900 block truncate">
                   {selectedLocation}
                 </span>
-                <ChevronDown className="w-3.5 h-3.5 text-charcoal-400 group-hover:text-charcoal-950 transition-colors ml-1 shrink-0" />
               </div>
+              <ChevronDown className="w-3.5 h-3.5 text-charcoal-400 group-hover:text-charcoal-950 transition-colors shrink-0" />
             </div>
-          </div>
 
-          <span className="hidden lg:block h-8 w-px bg-canvas-border" />
+            <div className="hidden lg:block w-px h-8 bg-charcoal-200/50" />
 
-          {/* Field 2: Development Scope */}
-          <div className="lg:col-span-3 px-4 py-2.5 rounded-xl sm:rounded-full hover:bg-canvas-warm/70 transition-colors flex items-center space-x-3 cursor-pointer group">
-            <div className="w-9 h-9 rounded-full bg-gold-light flex items-center justify-center text-gold-accent shrink-0">
-              <Building2 className="w-4 h-4" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="block text-[10px] font-semibold uppercase tracking-wider text-charcoal-400">
-                Development Scope
-              </span>
-              <div className="flex items-center justify-between">
-                <span className="text-xs sm:text-[13px] font-medium text-charcoal-950 truncate">
+            {/* Field 2: Development Scope */}
+            <div className="flex-1 flex items-center space-x-3 px-3.5 py-2 rounded-xl sm:rounded-full hover:bg-canvas-warm/70 transition-colors cursor-pointer group">
+              <div className="w-8 h-8 rounded-full bg-gold-light flex items-center justify-center text-gold-accent shrink-0">
+                <Building2 className="w-3.5 h-3.5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="block text-[9.5px] font-semibold uppercase tracking-wider text-charcoal-400 leading-none mb-1">
+                  Development Scope
+                </span>
+                <span className="text-xs font-semibold text-charcoal-900 block truncate">
                   {selectedType}
                 </span>
-                <ChevronDown className="w-3.5 h-3.5 text-charcoal-400 group-hover:text-charcoal-950 transition-colors ml-1 shrink-0" />
               </div>
+              <ChevronDown className="w-3.5 h-3.5 text-charcoal-400 group-hover:text-charcoal-950 transition-colors shrink-0" />
             </div>
-          </div>
 
-          <span className="hidden lg:block h-8 w-px bg-canvas-border" />
+            <div className="hidden lg:block w-px h-8 bg-charcoal-200/50" />
 
-          {/* Field 3: Standard */}
-          <div className="lg:col-span-3 px-4 py-2.5 rounded-xl sm:rounded-full hover:bg-canvas-warm/70 transition-colors flex items-center space-x-3 cursor-pointer group">
-            <div className="w-9 h-9 rounded-full bg-emerald-light flex items-center justify-center text-emerald-brand shrink-0">
-              <Sparkles className="w-4 h-4" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <span className="block text-[10px] font-semibold uppercase tracking-wider text-charcoal-400">
-                Standard
-              </span>
-              <div className="flex items-center justify-between">
-                <span className="text-xs sm:text-[13px] font-medium text-charcoal-950 truncate">
+            {/* Field 3: Standard */}
+            <div className="flex-1 flex items-center space-x-3 px-3.5 py-2 rounded-xl sm:rounded-full hover:bg-canvas-warm/70 transition-colors cursor-pointer group">
+              <div className="w-8 h-8 rounded-full bg-emerald-light flex items-center justify-center text-emerald-brand shrink-0">
+                <Sparkles className="w-3.5 h-3.5" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="block text-[9.5px] font-semibold uppercase tracking-wider text-charcoal-400 leading-none mb-1">
+                  Standard
+                </span>
+                <span className="text-xs font-semibold text-charcoal-900 block truncate">
                   {selectedStandard}
                 </span>
-                <ChevronDown className="w-3.5 h-3.5 text-charcoal-400 group-hover:text-charcoal-950 transition-colors ml-1 shrink-0" />
               </div>
+              <ChevronDown className="w-3.5 h-3.5 text-charcoal-400 group-hover:text-charcoal-950 transition-colors shrink-0" />
             </div>
-          </div>
 
-          {/* Action CTA Button */}
-          <div className="lg:col-span-3 flex justify-end">
-            <button
-              onClick={onOpenContact}
-              className="w-full btn-magnetic inline-flex items-center justify-center space-x-2.5 px-7 py-3.5 rounded-full bg-emerald-brand text-white hover:bg-charcoal-950 text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-md group"
-            >
-              <span>Explore Projects</span>
-              <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
+            {/* Action CTA Button - Perfectly aligned on right */}
+            <div className="lg:pl-2 shrink-0">
+              <button
+                onClick={onOpenContact}
+                className="w-full lg:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl sm:rounded-full bg-emerald-brand hover:bg-charcoal-950 text-white text-xs font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-md group shrink-0"
+              >
+                <span>Explore Projects</span>
+                <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+              </button>
+            </div>
+
           </div>
         </motion.div>
 
