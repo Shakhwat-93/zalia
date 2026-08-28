@@ -2,9 +2,10 @@
 
 import { useState, useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { FEATURED_PROJECTS_CONTENT, ProjectItem } from '@/data/content';
+import { FEATURED_PROJECTS_CONTENT } from '@/data/content';
 
 interface ProjectsGridProps {
   onOpenContact: () => void;
@@ -76,7 +77,10 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                   transition={{ duration: 0.9, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
                   className="rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-canvas-border bg-white p-6 sm:p-10 lg:p-12 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center shadow-soft-xl group"
                 >
-                  <div className="lg:col-span-7 relative h-[360px] sm:h-[480px] lg:h-[560px] rounded-2xl sm:rounded-3xl overflow-hidden bg-canvas-warm">
+                  <Link
+                    href={'/projects/' + project.slug}
+                    className="lg:col-span-7 relative h-[360px] sm:h-[480px] lg:h-[560px] rounded-2xl sm:rounded-3xl overflow-hidden bg-canvas-warm block"
+                  >
                     <Image
                       src={project.image}
                       alt={project.title}
@@ -88,28 +92,37 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                     <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10.5px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
                       {project.status}
                     </div>
-                  </div>
+                  </Link>
 
                   <div className="lg:col-span-5 space-y-6 lg:pl-4 text-left">
                     <div className="space-y-3">
                       <span className="text-xs font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand block">
                         {project.location} · {project.category}
                       </span>
-                      <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-charcoal-950 leading-[1.08]">
-                        {project.title}
-                      </h3>
+                      <Link href={'/projects/' + project.slug} className="block group-hover:text-emerald-brand transition-colors">
+                        <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-charcoal-950 leading-[1.08]">
+                          {project.title}
+                        </h3>
+                      </Link>
                       <p className="text-base text-charcoal-600 font-sans leading-relaxed font-normal pt-2">
                         {project.description}
                       </p>
                     </div>
 
-                    <div className="pt-4 border-t border-canvas-border flex items-center justify-between">
-                      <button
-                        onClick={onOpenContact}
+                    <div className="pt-4 border-t border-canvas-border flex flex-wrap items-center gap-4">
+                      <Link
+                        href={'/projects/' + project.slug}
                         className="btn-magnetic inline-flex items-center space-x-2.5 px-7 py-3.5 rounded-full bg-charcoal-950 text-white hover:bg-emerald-brand text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
                       >
-                        <span>Inquire About Project</span>
+                        <span>View Case Study</span>
                         <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </Link>
+
+                      <button
+                        onClick={onOpenContact}
+                        className="inline-flex items-center space-x-2 text-[12.5px] font-sans font-semibold uppercase tracking-[0.14em] text-charcoal-600 hover:text-charcoal-950 transition-colors"
+                      >
+                        <span>Inquire</span>
                       </button>
                     </div>
                   </div>
@@ -125,7 +138,10 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                 transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="rounded-3xl sm:rounded-[2rem] overflow-hidden border border-canvas-border bg-white p-6 sm:p-8 space-y-6 shadow-soft-md hover:shadow-soft-xl hover:border-emerald-brand/30 transition-all duration-350 group"
               >
-                <div className="relative h-[320px] sm:h-[420px] w-full rounded-2xl overflow-hidden bg-canvas-warm">
+                <Link
+                  href={'/projects/' + project.slug}
+                  className="relative h-[320px] sm:h-[420px] w-full rounded-2xl overflow-hidden bg-canvas-warm block"
+                >
                   <Image
                     src={project.image}
                     alt={project.title}
@@ -137,27 +153,36 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                   <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10.5px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
                     {project.status}
                   </div>
-                </div>
+                </Link>
 
                 <div className="space-y-3 text-left">
                   <span className="text-xs font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand block">
                     {project.location} · {project.category}
                   </span>
-                  <h4 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal-950 group-hover:text-emerald-brand transition-colors">
-                    {project.title}
-                  </h4>
+                  <Link href={'/projects/' + project.slug} className="block group-hover:text-emerald-brand transition-colors">
+                    <h4 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal-950">
+                      {project.title}
+                    </h4>
+                  </Link>
                   <p className="text-sm sm:text-base text-charcoal-600 font-sans leading-relaxed font-normal">
                     {project.description}
                   </p>
                 </div>
 
                 <div className="pt-4 border-t border-canvas-border flex items-center justify-between">
-                  <button
-                    onClick={onOpenContact}
+                  <Link
+                    href={'/projects/' + project.slug}
                     className="inline-flex items-center space-x-2 text-[12.5px] font-sans font-semibold uppercase tracking-[0.14em] text-charcoal-950 group-hover:text-emerald-brand transition-colors"
                   >
-                    <span>View Project Inquiries</span>
+                    <span>View Case Study</span>
                     <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+
+                  <button
+                    onClick={onOpenContact}
+                    className="text-xs font-sans font-medium uppercase tracking-wider text-charcoal-400 hover:text-charcoal-700 transition-colors"
+                  >
+                    Inquire
                   </button>
                 </div>
               </motion.div>

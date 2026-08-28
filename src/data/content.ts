@@ -25,6 +25,8 @@ export interface ProjectItem {
   title: string;
   description: string;
   image: string;
+  beforeImage?: string;
+  afterImage?: string;
   featured?: boolean;
 }
 
