@@ -33,8 +33,12 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
       setActiveSection('about');
       return;
     }
+    if (pathname === '/what-we-do') {
+      setActiveSection('what-we-do');
+      return;
+    }
 
-    const sectionIds = ['about', 'services', 'transformation', 'projects', 'approach', 'team', 'contact'];
+    const sectionIds = ['services', 'transformation', 'projects', 'approach', 'team', 'contact'];
     const handleScrollSpy = () => {
       const scrollPosition = window.scrollY + 200;
       for (const id of sectionIds) {
@@ -126,16 +130,19 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
           >
             {NAVIGATION_LINKS.map((link) => {
               const isAboutLink = link.label.toLowerCase() === 'about';
-              const isCurrentAbout = pathname === '/about' && isAboutLink;
-              const linkId = link.href.replace('#', '').replace('/', '').replace('#', '');
-              const isActive = isCurrentAbout || (pathname === '/' && activeSection === linkId);
+              const isWhatWeDoLink = link.label.toLowerCase() === 'what we do';
+              
+              const isCurrentPage =
+                (pathname === '/about' && isAboutLink) ||
+                (pathname === '/what-we-do' && isWhatWeDoLink);
 
-              // Formulate proper target link if on /about
+              const linkId = link.href.replace('#', '').replace('/', '').replace('#', '');
+              const isActive = isCurrentPage || (pathname === '/' && activeSection === linkId);
+
+              // Formulate proper target link if on subpage
               const targetHref =
-                pathname === '/about'
-                  ? isAboutLink
-                    ? '/about'
-                    : '/' + link.href.replace(/^\//, '')
+                pathname !== '/' && link.href.startsWith('/#')
+                  ? link.href
                   : link.href;
 
               return (
@@ -219,14 +226,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
 
               <nav className="flex flex-col space-y-3 sm:space-y-4">
                 {NAVIGATION_LINKS.map((link, idx) => {
-                  const isAboutLink = link.label.toLowerCase() === 'about';
-                  const targetHref =
-                    pathname === '/about'
-                      ? isAboutLink
-                        ? '/about'
-                        : '/' + link.href.replace(/^\//, '')
-                      : link.href;
-
                   return (
                     <motion.div
                       key={link.label}
@@ -235,7 +234,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                       transition={{ delay: idx * 0.05 + 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     >
                       <Link
-                        href={targetHref}
+                        href={link.href}
                         onClick={closeMobileMenu}
                         className="group flex items-center justify-between py-2 text-charcoal-900 hover:text-emerald-brand transition-colors"
                       >
