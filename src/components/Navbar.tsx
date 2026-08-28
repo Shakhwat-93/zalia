@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, X, Phone, Mail, MapPin } from 'lucide-react';
 import { NAVIGATION_LINKS, SITE_METADATA } from '@/data/content';
@@ -12,6 +13,7 @@ interface NavbarProps {
 }
 
 export default function Navbar({ onOpenContact }: NavbarProps) {
+  const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState<string>('');
@@ -27,6 +29,11 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   }, []);
 
   useEffect(() => {
+    if (pathname === '/about') {
+      setActiveSection('about');
+      return;
+    }
+
     const sectionIds = ['about', 'services', 'transformation', 'projects', 'approach', 'team', 'contact'];
     const handleScrollSpy = () => {
       const scrollPosition = window.scrollY + 200;
@@ -49,7 +56,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
     window.addEventListener('scroll', handleScrollSpy, { passive: true });
     handleScrollSpy();
     return () => window.removeEventListener('scroll', handleScrollSpy);
-  }, []);
+  }, [pathname]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -88,7 +95,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
         <div className="max-w-[1440px] w-[calc(100%-32px)] sm:w-[calc(100%-48px)] lg:w-[calc(100%-64px)] mx-auto flex items-center justify-between">
           {/* Brand Logo & Logotype */}
           <Link
-            href="#"
+            href="/"
             className="group flex items-center space-x-3 sm:space-x-3.5 shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand rounded-lg p-1 -m-1"
             aria-label="Zalia Properties Ltd Homepage"
           >
@@ -112,22 +119,32 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links (Inter 500, 12.5px, 0.14em tracking) */}
+          {/* Desktop Navigation Links */}
           <nav
             aria-label="Primary Navigation"
             className="hidden xl:flex items-center gap-6 2xl:gap-8 mx-6"
           >
             {NAVIGATION_LINKS.map((link) => {
-              const linkId = link.href.replace('#', '');
-              const isActive = activeSection === linkId;
+              const isAboutLink = link.label.toLowerCase() === 'about';
+              const isCurrentAbout = pathname === '/about' && isAboutLink;
+              const linkId = link.href.replace('#', '').replace('/', '').replace('#', '');
+              const isActive = isCurrentAbout || (pathname === '/' && activeSection === linkId);
+
+              // Formulate proper target link if on /about
+              const targetHref =
+                pathname === '/about'
+                  ? isAboutLink
+                    ? '/about'
+                    : '/' + link.href.replace(/^\//, '')
+                  : link.href;
 
               return (
                 <Link
                   key={link.label}
-                  href={link.href}
+                  href={targetHref}
                   className={'whitespace-nowrap text-[12.5px] font-sans font-medium uppercase tracking-[0.14em] transition-colors duration-200 relative py-1.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-brand rounded group ' + (
                     isActive
-                      ? 'text-emerald-brand'
+                      ? 'text-emerald-brand font-semibold'
                       : 'text-charcoal-700 hover:text-charcoal-950'
                   )}
                 >
@@ -146,7 +163,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
 
           {/* Right Action Block */}
           <div className="flex items-center space-x-3 sm:space-x-4 shrink-0">
-            {/* Desktop CTA Pill Button (Inter 600, 13px, 0.14em tracking) */}
+            {/* Desktop CTA Pill Button */}
             <button
               onClick={onOpenContact}
               className="btn-magnetic hidden sm:inline-flex items-center space-x-2.5 h-[46px] px-6 sm:px-7 rounded-full bg-charcoal-950 hover:bg-emerald-brand text-white text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm hover:shadow-emerald-subtle group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand focus-visible:ring-offset-2"
@@ -201,25 +218,35 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
               </div>
 
               <nav className="flex flex-col space-y-3 sm:space-y-4">
-                {NAVIGATION_LINKS.map((link, idx) => (
-                  <motion.div
-                    key={link.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: idx * 0.05 + 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  >
-                    <Link
-                      href={link.href}
-                      onClick={closeMobileMenu}
-                      className="group flex items-center justify-between py-2 text-charcoal-900 hover:text-emerald-brand transition-colors"
+                {NAVIGATION_LINKS.map((link, idx) => {
+                  const isAboutLink = link.label.toLowerCase() === 'about';
+                  const targetHref =
+                    pathname === '/about'
+                      ? isAboutLink
+                        ? '/about'
+                        : '/' + link.href.replace(/^\//, '')
+                      : link.href;
+
+                  return (
+                    <motion.div
+                      key={link.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.05 + 0.1, duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <span className="font-serif text-2xl sm:text-3xl font-medium tracking-tight">
-                        {link.label}
-                      </span>
-                      <ArrowUpRight className="w-5 h-5 text-charcoal-300 group-hover:text-emerald-brand group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
-                    </Link>
-                  </motion.div>
-                ))}
+                      <Link
+                        href={targetHref}
+                        onClick={closeMobileMenu}
+                        className="group flex items-center justify-between py-2 text-charcoal-900 hover:text-emerald-brand transition-colors"
+                      >
+                        <span className="font-serif text-2xl sm:text-3xl font-medium tracking-tight">
+                          {link.label}
+                        </span>
+                        <ArrowUpRight className="w-5 h-5 text-charcoal-300 group-hover:text-emerald-brand group-hover:translate-x-1 group-hover:-translate-y-1 transition-all duration-300" />
+                      </Link>
+                    </motion.div>
+                  );
+                })}
               </nav>
             </div>
 

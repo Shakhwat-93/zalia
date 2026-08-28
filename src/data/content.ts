@@ -36,13 +36,13 @@ export const SITE_METADATA = {
 };
 
 export const NAVIGATION_LINKS = [
-  { label: "About", href: "#who-we-are" },
-  { label: "What We Do", href: "#services" },
-  { label: "Projects", href: "#projects" },
-  { label: "3D Transformation", href: "#transformation" },
-  { label: "Our Approach", href: "#approach" },
-  { label: "Our Team", href: "#team" },
-  { label: "Contact", href: "#contact" },
+  { label: "About", href: "/about" },
+  { label: "What We Do", href: "/#services" },
+  { label: "Projects", href: "/#projects" },
+  { label: "3D Transformation", href: "/#transformation" },
+  { label: "Our Approach", href: "/#approach" },
+  { label: "Our Team", href: "/#team" },
+  { label: "Contact", href: "/#contact" },
 ];
 
 export const HERO_CONTENT = {

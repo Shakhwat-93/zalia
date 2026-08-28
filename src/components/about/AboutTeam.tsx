@@ -1,0 +1,80 @@
+'use client';
+
+import { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
+import { TEAM_CONTENT } from '@/data/content';
+
+interface AboutTeamProps {
+  onOpenContact: () => void;
+}
+
+export default function AboutTeam({ onOpenContact }: AboutTeamProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(containerRef, { once: true, margin: '-80px' });
+
+  return (
+    <section
+      id="team"
+      ref={containerRef}
+      className="relative w-full bg-canvas-warm py-24 sm:py-32 lg:py-44 border-b border-canvas-border overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-16">
+        
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
+          <div className="space-y-3">
+            <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
+              OUR LEADERSHIP
+            </div>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
+            >
+              THE PEOPLE
+              <span className="block text-emerald-brand italic font-normal mt-1">
+                BEHIND ZALIA.
+              </span>
+            </motion.h2>
+          </div>
+
+          <button
+            onClick={onOpenContact}
+            className="btn-magnetic inline-flex items-center space-x-3 px-7 py-3.5 rounded-full bg-charcoal-950 text-white hover:bg-emerald-brand text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group self-start sm:self-auto shrink-0"
+          >
+            <span>Meet The Team</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+        </div>
+
+        {/* 4-column leadership roster */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+          {TEAM_CONTENT.members.map((member, idx) => (
+            <motion.div
+              key={member.name}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-4 group"
+            >
+              <div className="relative w-full aspect-square rounded-3xl bg-white border border-canvas-border flex items-center justify-center text-charcoal-900 font-serif text-3xl font-medium tracking-wider group-hover:text-emerald-brand group-hover:border-emerald-brand/40 transition-all duration-400 shadow-soft-sm">
+                {member.initials}
+              </div>
+
+              <div className="space-y-1">
+                <h3 className="font-serif text-2xl font-medium text-charcoal-950 group-hover:text-emerald-brand transition-colors">
+                  {member.name}
+                </h3>
+                <p className="text-sm font-sans text-charcoal-500 font-normal">
+                  {member.role}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
+}
