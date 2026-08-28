@@ -37,8 +37,12 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
       setActiveSection('what-we-do');
       return;
     }
+    if (pathname === '/projects') {
+      setActiveSection('projects');
+      return;
+    }
 
-    const sectionIds = ['services', 'transformation', 'projects', 'approach', 'team', 'contact'];
+    const sectionIds = ['transformation', 'approach', 'team', 'contact'];
     const handleScrollSpy = () => {
       const scrollPosition = window.scrollY + 200;
       for (const id of sectionIds) {
@@ -131,10 +135,12 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
             {NAVIGATION_LINKS.map((link) => {
               const isAboutLink = link.label.toLowerCase() === 'about';
               const isWhatWeDoLink = link.label.toLowerCase() === 'what we do';
+              const isProjectsLink = link.label.toLowerCase() === 'projects';
               
               const isCurrentPage =
                 (pathname === '/about' && isAboutLink) ||
-                (pathname === '/what-we-do' && isWhatWeDoLink);
+                (pathname === '/what-we-do' && isWhatWeDoLink) ||
+                (pathname === '/projects' && isProjectsLink);
 
               const linkId = link.href.replace('#', '').replace('/', '').replace('#', '');
               const isActive = isCurrentPage || (pathname === '/' && activeSection === linkId);

@@ -17,12 +17,15 @@ export interface TeamMember {
 
 export interface ProjectItem {
   id: string;
+  slug: string;
   tag: string;
   location: string;
   category: string;
+  status: 'COMPLETED' | 'CURRENT' | 'IN DEVELOPMENT';
   title: string;
   description: string;
   image: string;
+  featured?: boolean;
 }
 
 export const SITE_METADATA = {
@@ -38,7 +41,7 @@ export const SITE_METADATA = {
 export const NAVIGATION_LINKS = [
   { label: "About", href: "/about" },
   { label: "What We Do", href: "/what-we-do" },
-  { label: "Projects", href: "/#projects" },
+  { label: "Projects", href: "/projects" },
   { label: "3D Transformation", href: "/#transformation" },
   { label: "Our Approach", href: "/#approach" },
   { label: "Our Team", href: "/#team" },
@@ -98,19 +101,24 @@ export const SERVICES_CONTENT = {
 export const FEATURED_PROJECTS_CONTENT: ProjectItem[] = [
   {
     id: "project-01",
+    slug: "kensington-mews-glass-pavilion",
     tag: "PROJECT 01",
     location: "LONDON, UK",
     category: "Residential Transformation",
+    status: "COMPLETED",
     title: "The Kensington Mews & Glass Pavilion",
     description:
       "A comprehensive heritage transformation marrying traditional brickwork with clean-line floor-to-ceiling glass architecture.",
     image: "/images/featured-project.jpg",
+    featured: true,
   },
   {
     id: "project-02",
+    slug: "mayfair-glazed-residence",
     tag: "PROJECT 02",
     location: "MAYFAIR, LONDON",
     category: "Heritage Modernisation",
+    status: "CURRENT",
     title: "The Mayfair Glazed Residence",
     description:
       "Restoration of Victorian brick proportions seamlessly integrated with contemporary glazed living wings.",
@@ -118,13 +126,40 @@ export const FEATURED_PROJECTS_CONTENT: ProjectItem[] = [
   },
   {
     id: "project-03",
+    slug: "surrey-garden-villa",
     tag: "PROJECT 03",
     location: "SURREY, UK",
     category: "Bespoke Architecture",
+    status: "COMPLETED",
     title: "The Surrey Garden Villa",
     description:
       "Double-height limestone residence with expansive courtyard daylighting and turnkey bespoke joinery.",
     image: "/images/about-zalia.png",
+  },
+  {
+    id: "project-04",
+    slug: "belgravia-courtyard-suite",
+    tag: "PROJECT 04",
+    location: "BELGRAVIA, LONDON",
+    category: "Spatial Reconfiguration",
+    status: "CURRENT",
+    title: "The Belgravia Courtyard Residence",
+    description:
+      "Precision structural reconfiguration unlocking seamless indoor-outdoor living and acoustic tranquility.",
+    image: "/images/what-we-do.jpg",
+    featured: true,
+  },
+  {
+    id: "project-05",
+    slug: "chelsea-townhouse-refinement",
+    tag: "PROJECT 05",
+    location: "CHELSEA, LONDON",
+    category: "Turnkey Development",
+    status: "COMPLETED",
+    title: "The Chelsea Townhouse Refinement",
+    description:
+      "Complete four-storey townhouse renovation with integrated smart climate envelope and tactile natural stone.",
+    image: "/images/hero-model.png",
   },
 ];
 
