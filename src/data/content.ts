@@ -13,6 +13,7 @@ export interface TeamMember {
   name: string;
   role: string;
   initials: string;
+  image?: string;
 }
 
 export interface ProjectItem {
@@ -231,11 +232,13 @@ export const TEAM_CONTENT = {
       name: "Zaki Shamseer",
       role: "Founder & Managing Director",
       initials: "ZS",
+      image: "/images/Zaki shamseer.jpg",
     },
     {
       name: "Selina Shamseer",
       role: "Design & Interiors Director",
       initials: "SS",
+      image: "/images/Selina Shamseer.jpg",
     },
     {
       name: "Issac Shamseer",

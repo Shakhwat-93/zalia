@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { TEAM_CONTENT } from '@/data/content';
@@ -58,11 +59,24 @@ export default function AboutTeam({ onOpenContact }: AboutTeamProps) {
               transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
               className="space-y-4 group"
             >
-              <div className="relative w-full aspect-square rounded-3xl bg-white border border-canvas-border flex items-center justify-center text-charcoal-900 font-serif text-3xl font-medium tracking-wider group-hover:text-emerald-brand group-hover:border-emerald-brand/40 transition-all duration-400 shadow-soft-sm">
-                {member.initials}
+              <div className="relative w-full aspect-square rounded-3xl bg-white border border-canvas-border overflow-hidden flex items-center justify-center text-charcoal-900 font-serif text-3xl font-medium tracking-wider group-hover:border-emerald-brand/40 transition-all duration-400 shadow-soft-sm">
+                {member.image ? (
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    quality={95}
+                    className="object-cover object-top transition-transform duration-700 ease-editorial group-hover:scale-105"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
+                ) : (
+                  <span className="group-hover:text-emerald-brand transition-colors">
+                    {member.initials}
+                  </span>
+                )}
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1 text-left">
                 <h3 className="font-serif text-2xl font-medium text-charcoal-950 group-hover:text-emerald-brand transition-colors">
                   {member.name}
                 </h3>
