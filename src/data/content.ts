@@ -241,14 +241,10 @@ export const TEAM_CONTENT = {
       image: "/images/Selina Shamseer.jpg",
     },
     {
-      name: "Issac Shamseer",
+      name: "Sayek Ahmed",
       role: "Development & Structural Director",
-      initials: "IS",
-    },
-    {
-      name: "Amelia Shamseer",
-      role: "Client Relations & Brand Director",
-      initials: "AS",
+      initials: "SA",
+      image: "/images/Sayek AHMED.jpg",
     },
   ],
 };

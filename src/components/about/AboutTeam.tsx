@@ -49,8 +49,8 @@ export default function AboutTeam({ onOpenContact }: AboutTeamProps) {
           </button>
         </div>
 
-        {/* 4-column leadership roster */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+        {/* Leadership Roster Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-10">
           {TEAM_CONTENT.members.map((member, idx) => (
             <motion.div
               key={member.name}
@@ -67,7 +67,7 @@ export default function AboutTeam({ onOpenContact }: AboutTeamProps) {
                     fill
                     quality={95}
                     className="object-cover object-top transition-transform duration-700 ease-editorial group-hover:scale-105"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                 ) : (
                   <span className="group-hover:text-emerald-brand transition-colors">
