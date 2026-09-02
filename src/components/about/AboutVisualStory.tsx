@@ -54,7 +54,7 @@ export default function AboutVisualStory() {
           className="relative h-[420px] sm:h-[560px] lg:h-[660px] w-full rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-canvas-border shadow-soft-xl bg-white group"
         >
           <Image
-            src="/images/3d-transformation.png"
+            src="/images/3d-transformation.webp"
             alt="Zalia Properties Architectural Transformation"
             fill
             quality={95}

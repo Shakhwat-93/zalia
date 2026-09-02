@@ -63,7 +63,7 @@ export default function AboutHero() {
         >
           <motion.div style={{ scale: imageScale }} className="relative w-full h-full">
             <Image
-              src="/images/about-zalia.png"
+              src="/images/about-zalia.webp"
               alt="Zalia Properties Architectural Living"
               fill
               priority

@@ -41,7 +41,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
             alt="Zalia Properties Architectural Villa"
             fill
             priority
-            quality={95}
+            quality={85}
             className="object-cover object-center scale-100"
             sizes="(max-width: 1440px) 100vw, 1440px"
           />

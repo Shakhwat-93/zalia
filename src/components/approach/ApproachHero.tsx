@@ -49,7 +49,7 @@ export default function ApproachHero() {
         >
           <motion.div style={{ scale: imageScale }} className="relative w-full h-full">
             <Image
-              src="/images/hero-floating-villa.jpg"
+              src="/images/hero-floating-villa.webp"
               alt="Zalia Properties Architectural Method"
               fill
               priority

@@ -60,7 +60,7 @@ export const HERO_CONTENT = {
     "We identify residential properties with potential and transform them into exceptional homes.",
   primaryCTA: "Explore Our Projects",
   secondaryCTA: "Let's Talk",
-  image: "/images/hero-model.png",
+  image: "/images/hero-model.webp",
 };
 
 export const BRAND_STRIP_POINTS = [
@@ -76,7 +76,7 @@ export const WHY_ZALIA_CONTENT = {
   tagline: "We see what a property can become.",
   body: "Zalia Properties identifies residential properties with unrealized spatial volume and elevates them through architectural rigor, enduring materials, and modern British design.",
   ctaText: "Discover Zalia",
-  image: "/images/brand-statement.png",
+  image: "/images/brand-statement.webp",
 };
 
 export const SERVICES_CONTENT = {
@@ -106,13 +106,13 @@ export const FEATURED_PROJECTS_CONTENT: ProjectItem[] = [
     id: "project-01",
     slug: "kensington-mews-glass-pavilion",
     tag: "PROJECT 01",
-    location: "LONDON, UK",
+    location: "KENSINGTON, LONDON",
     category: "Residential Transformation",
     status: "COMPLETED",
     title: "The Kensington Mews & Glass Pavilion",
     description:
       "A comprehensive heritage transformation marrying traditional brickwork with clean-line floor-to-ceiling glass architecture.",
-    image: "/images/featured-project.jpg",
+    image: "/images/featured-project.webp",
     featured: true,
   },
   {
@@ -125,7 +125,7 @@ export const FEATURED_PROJECTS_CONTENT: ProjectItem[] = [
     title: "The Mayfair Glazed Residence",
     description:
       "Restoration of Victorian brick proportions seamlessly integrated with contemporary glazed living wings.",
-    image: "/images/brand-statement.png",
+    image: "/images/brand-statement.webp",
   },
   {
     id: "project-03",
@@ -137,7 +137,7 @@ export const FEATURED_PROJECTS_CONTENT: ProjectItem[] = [
     title: "The Surrey Garden Villa",
     description:
       "Double-height limestone residence with expansive courtyard daylighting and turnkey bespoke joinery.",
-    image: "/images/about-zalia.png",
+    image: "/images/about-zalia.webp",
   },
   {
     id: "project-04",
@@ -149,7 +149,7 @@ export const FEATURED_PROJECTS_CONTENT: ProjectItem[] = [
     title: "The Belgravia Courtyard Residence",
     description:
       "Precision structural reconfiguration unlocking seamless indoor-outdoor living and acoustic tranquility.",
-    image: "/images/what-we-do.jpg",
+    image: "/images/what-we-do.webp",
     featured: true,
   },
   {
@@ -162,29 +162,29 @@ export const FEATURED_PROJECTS_CONTENT: ProjectItem[] = [
     title: "The Chelsea Townhouse Refinement",
     description:
       "Complete four-storey townhouse renovation with integrated smart climate envelope and tactile natural stone.",
-    image: "/images/hero-model.png",
+    image: "/images/hero-model.webp",
   },
 ];
 
 export const TRANSFORMATION_3D_CONTENT = {
   eyebrow: "3D PROPERTY TRANSFORMATION",
-  heading: "SEE THE TRANSFORMATION.",
+  heading: "EXPLORE THE ARCHITECTURAL METAMORPHOSIS.",
   subheading: "From existing property to exceptional home.",
   stages: [
     {
       stage: "01",
-      title: "SEE THE POTENTIAL",
-      description: "Original property form and baseline structural analysis.",
+      title: "ORIGINAL",
+      description: "Existing structure assessed for daylight, spatial volume, and expansion potential.",
     },
     {
       stage: "02",
-      title: "TRANSFORM",
-      description: "Architectural extension appears with steel cantilevers and glazing.",
+      title: "EXTENSION",
+      description: "Structural rear and side-return expansion introducing full-height architectural glazing.",
     },
     {
       stage: "03",
-      title: "REFINE",
-      description: "Materials and details evolve with warm interior illumination.",
+      title: "RECONFIGURATION",
+      description: "Interior walls removed; seamless open-plan living and light wells integrated.",
     },
     {
       stage: "04",
@@ -192,7 +192,7 @@ export const TRANSFORMATION_3D_CONTENT = {
       description: "Complete premium residence — a property, reimagined.",
     },
   ],
-  image: "/images/3d-transformation.png",
+  image: "/images/3d-transformation.webp",
 };
 
 export const BEFORE_AFTER_CONTENT = {
@@ -200,8 +200,8 @@ export const BEFORE_AFTER_CONTENT = {
   heading: "FROM BEFORE\nTO BEYOND.",
   beforeLabel: "ORIGINAL PROPERTY",
   afterLabel: "TRANSFORMED RESIDENCE",
-  beforeImage: "/images/before-split.jpg",
-  afterImage: "/images/after-split.jpg",
+  beforeImage: "/images/before-split.webp",
+  afterImage: "/images/after-split.webp",
 };
 
 export const APPROACH_CONTENT = {
@@ -221,7 +221,7 @@ export const ABOUT_CONTENT = {
   heading: "WE SEE MORE\nIN EVERY PROPERTY.",
   body: "We look beyond what a property is today to understand what it could become tomorrow. Combining thoughtful acquisition, intelligent development and careful transformation to create quality homes.",
   ctaText: "About Zalia",
-  image: "/images/about-zalia.png",
+  image: "/images/about-zalia.webp",
 };
 
 export const TEAM_CONTENT = {
@@ -232,37 +232,37 @@ export const TEAM_CONTENT = {
       name: "Zaki Shamseer",
       role: "Founder & Managing Director",
       initials: "ZS",
-      image: "/images/Zaki shamseer.jpg",
+      image: "/images/Zaki shamseer.webp",
     },
     {
       name: "Selina Shamseer",
       role: "Design & Interiors Director",
       initials: "SS",
-      image: "/images/Selina Shamseer.jpg",
+      image: "/images/Selina Shamseer.webp",
     },
     {
       name: "Sayek Ahmed",
       role: "Development & Structural Director",
       initials: "SA",
-      image: "/images/Sayek AHMED.jpg",
+      image: "/images/Sayek AHMED.webp",
     },
     {
       name: "Abdullah Al Faruq",
       role: "Acquisition & Strategy Director",
       initials: "AF",
-      image: "/images/Abdullah Al Faruq.jpg",
+      image: "/images/Abdullah Al Faruq.webp",
     },
     {
       name: "Md. Shahinur Rahman Utsha",
       role: "Architectural Planning & Project Lead",
       initials: "SR",
-      image: "/images/Md. Shahinur Rahman Utsha.jpg",
+      image: "/images/Md. Shahinur Rahman Utsha.webp",
     },
     {
       name: "Mithu Huda",
       role: "Client Relations & Operations Director",
       initials: "MH",
-      image: "/images/Mithu Huda.jpg",
+      image: "/images/Mithu Huda.webp",
     },
   ],
 };
@@ -272,5 +272,5 @@ export const FINAL_CTA_CONTENT = {
   heading: "HAVE A PROPERTY\nWITH POTENTIAL?",
   supportingText: "Let's start a conversation.",
   ctaText: "Get in Touch",
-  image: "/images/cta-model.jpg",
+  image: "/images/cta-model.webp",
 };

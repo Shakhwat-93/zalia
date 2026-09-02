@@ -78,7 +78,7 @@ export default function ProjectIntroStory({ project }: ProjectIntroStoryProps) {
               className="relative h-[380px] sm:h-[460px] lg:h-[520px] w-full rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-canvas-warm group"
             >
               <Image
-                src={project.beforeImage || '/images/before-split.jpg'}
+                src={project.beforeImage || '/images/before-split.webp'}
                 alt={project.title + ' Starting Point'}
                 fill
                 quality={95}

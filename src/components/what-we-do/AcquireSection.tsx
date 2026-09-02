@@ -62,7 +62,7 @@ export default function AcquireSection() {
               className="relative h-[420px] sm:h-[500px] lg:h-[580px] w-full rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-white group"
             >
               <Image
-                src="/images/before-split.jpg"
+                src="/images/before-split.webp"
                 alt="Zalia Acquisition Property Potential"
                 fill
                 quality={95}

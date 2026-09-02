@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     siteName: 'Zalia Properties Ltd',
     images: [
       {
-        url: '/images/hero-model.png',
+        url: '/images/hero-model.webp',
         width: 1536,
         height: 1024,
         alt: 'Zalia Properties Architectural Residence',

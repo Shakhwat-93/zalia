@@ -66,7 +66,8 @@ export default function FeaturedProjects({ onOpenContact }: FeaturedProjectsProp
                 src={leadProject.image}
                 alt={leadProject.title}
                 fill
-                quality={95}
+                loading="lazy"
+                quality={85}
                 className="object-cover object-center transition-transform duration-1000 ease-editorial group-hover:scale-104"
                 sizes="(max-width: 1024px) 100vw, 60vw"
               />
@@ -121,9 +122,10 @@ export default function FeaturedProjects({ onOpenContact }: FeaturedProjectsProp
                   src={project.image}
                   alt={project.title}
                   fill
-                  quality={95}
+                  loading="lazy"
+                  quality={85}
                   className="object-cover object-center transition-transform duration-1000 ease-editorial group-hover:scale-104"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10.5px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
                   {project.status}

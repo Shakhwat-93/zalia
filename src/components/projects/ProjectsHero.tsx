@@ -63,7 +63,7 @@ export default function ProjectsHero() {
         >
           <motion.div style={{ scale: imageScale }} className="relative w-full h-full">
             <Image
-              src="/images/featured-project.jpg"
+              src="/images/featured-project.webp"
               alt="Zalia Properties Architectural Portfolio"
               fill
               priority

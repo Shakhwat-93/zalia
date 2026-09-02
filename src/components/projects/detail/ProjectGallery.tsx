@@ -17,9 +17,9 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
 
   const galleryImages = [
     project.image,
-    '/images/about-zalia.png',
-    '/images/brand-statement.png',
-    '/images/what-we-do.jpg',
+    '/images/about-zalia.webp',
+    '/images/brand-statement.webp',
+    '/images/what-we-do.webp',
   ];
 
   const handleNext = useCallback(() => {

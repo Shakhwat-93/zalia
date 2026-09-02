@@ -34,7 +34,7 @@ export default function TransformSection() {
               className="relative h-[420px] sm:h-[520px] lg:h-[600px] w-full rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-canvas-warm group"
             >
               <Image
-                src="/images/after-split.jpg"
+                src="/images/after-split.webp"
                 alt="Zalia Transform Architecture"
                 fill
                 quality={95}

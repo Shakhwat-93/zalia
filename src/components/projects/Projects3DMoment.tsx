@@ -5,11 +5,19 @@ import dynamic from 'next/dynamic';
 import { motion, useInView } from 'framer-motion';
 import { Box } from 'lucide-react';
 
+import Image from 'next/image';
+
 const Hero3DModel = dynamic(() => import('@/components/3d/Hero3DModel'), {
   ssr: false,
   loading: () => (
-    <div className="w-full h-full flex items-center justify-center">
-      <div className="w-6 h-6 rounded-full border-2 border-emerald-brand border-t-transparent animate-spin" />
+    <div className="w-full h-full relative bg-canvas-warm flex items-center justify-center">
+      <Image
+        src="/images/hero-model.webp"
+        alt="Architectural Residence"
+        fill
+        className="object-cover object-center"
+        sizes="(max-width: 1024px) 100vw, 65vw"
+      />
     </div>
   ),
 });

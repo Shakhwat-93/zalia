@@ -65,9 +65,10 @@ export default function HomeProjects() {
                     src={project.image}
                     alt={project.title}
                     fill
-                    quality={95}
+                    loading="lazy"
+                    quality={85}
                     className="object-cover object-center transition-transform duration-700 ease-editorial group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
                   <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
                     {project.status}

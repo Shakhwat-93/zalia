@@ -70,10 +70,11 @@ export default function HomeIntro() {
               className="relative h-[360px] sm:h-[440px] lg:h-[500px] w-full rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-canvas-warm group"
             >
               <Image
-                src="/images/about-zalia.png"
+                src="/images/about-zalia.webp"
                 alt="Zalia Properties Architectural Transformation"
                 fill
-                quality={95}
+                loading="lazy"
+                quality={85}
                 className="object-cover object-center transition-transform duration-1000 ease-editorial group-hover:scale-104"
                 sizes="(max-width: 1024px) 100vw, 50vw"
               />

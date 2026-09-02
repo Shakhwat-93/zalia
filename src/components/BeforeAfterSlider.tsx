@@ -62,9 +62,10 @@ export default function BeforeAfterSlider() {
               src={BEFORE_AFTER_CONTENT.afterImage}
               alt="Transformed Residential Home"
               fill
-              quality={95}
+              loading="lazy"
+              quality={85}
               className="object-cover object-center"
-              sizes="100vw"
+              sizes="(max-width: 1440px) 100vw, 1440px"
             />
             <div className="absolute top-6 right-6 px-4 py-1.5 rounded-full bg-emerald-brand text-white text-xs font-sans font-semibold uppercase tracking-[0.14em] shadow-md z-10">
               {BEFORE_AFTER_CONTENT.afterLabel}
@@ -79,9 +80,10 @@ export default function BeforeAfterSlider() {
               src={BEFORE_AFTER_CONTENT.beforeImage}
               alt="Original Unmodernised Property"
               fill
-              quality={95}
+              loading="lazy"
+              quality={85}
               className="object-cover object-center"
-              sizes="100vw"
+              sizes="(max-width: 1440px) 100vw, 1440px"
             />
             <div className="absolute top-6 left-6 px-4 py-1.5 rounded-full bg-charcoal-950 text-white text-xs font-sans font-semibold uppercase tracking-[0.14em] shadow-md z-10">
               {BEFORE_AFTER_CONTENT.beforeLabel}

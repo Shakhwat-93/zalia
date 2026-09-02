@@ -12,8 +12,14 @@ const Transformation3DCanvas = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="w-full h-full flex items-center justify-center">
-        <div className="w-6 h-6 rounded-full border-2 border-emerald-brand border-t-transparent animate-spin" />
+      <div className="w-full h-full relative bg-canvas-warm flex items-center justify-center">
+        <Image
+          src="/images/3d-transformation.webp"
+          alt="Architectural Metamorphosis"
+          fill
+          className="object-cover object-center"
+          sizes="(max-width: 1024px) 100vw, 65vw"
+        />
       </div>
     ),
   }
@@ -92,8 +98,7 @@ export default function Property3DSection() {
                   src={TRANSFORMATION_3D_CONTENT.image}
                   alt="Zalia Exploded 3D Architectural Model"
                   fill
-                  quality={95}
-                  priority
+                  quality={85}
                   className="object-cover object-center"
                   sizes="(max-width: 1024px) 100vw, 65vw"
                 />

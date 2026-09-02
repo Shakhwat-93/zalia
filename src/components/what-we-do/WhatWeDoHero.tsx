@@ -64,7 +64,7 @@ export default function WhatWeDoHero() {
         >
           <motion.div style={{ scale: imageScale }} className="relative w-full h-full">
             <Image
-              src="/images/what-we-do.jpg"
+              src="/images/what-we-do.webp"
               alt="Zalia Properties Architectural Scope"
               fill
               priority

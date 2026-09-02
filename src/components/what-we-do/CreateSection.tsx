@@ -74,7 +74,7 @@ export default function CreateSection() {
               className="relative h-[420px] sm:h-[520px] lg:h-[600px] w-full rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-white group"
             >
               <Image
-                src="/images/featured-project.jpg"
+                src="/images/featured-project.webp"
                 alt="Zalia Completed Finished Residential Home"
                 fill
                 quality={95}

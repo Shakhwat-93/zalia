@@ -47,7 +47,8 @@ export default function TeamGrid() {
                     src={member.image}
                     alt={member.name}
                     fill
-                    quality={95}
+                    loading="lazy"
+                    quality={82}
                     className="object-cover object-top transition-transform duration-700 ease-editorial group-hover:scale-104"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />

@@ -51,7 +51,7 @@ export default function ProjectTransition() {
           className="relative h-[420px] sm:h-[560px] lg:h-[660px] w-full rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-canvas-border shadow-soft-xl bg-canvas-warm group"
         >
           <Image
-            src="/images/about-zalia.png"
+            src="/images/about-zalia.webp"
             alt="Zalia Finished Residential Living"
             fill
             quality={95}

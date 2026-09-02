@@ -85,7 +85,8 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                       src={project.image}
                       alt={project.title}
                       fill
-                      quality={95}
+                      loading="lazy"
+                      quality={85}
                       className="object-cover object-center transition-transform duration-1000 ease-editorial group-hover:scale-104"
                       sizes="(max-width: 1024px) 100vw, 60vw"
                     />
@@ -146,7 +147,8 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                     src={project.image}
                     alt={project.title}
                     fill
-                    quality={95}
+                    loading="lazy"
+                    quality={85}
                     className="object-cover object-center transition-transform duration-1000 ease-editorial group-hover:scale-104"
                     sizes="(max-width: 1024px) 100vw, 50vw"
                   />
