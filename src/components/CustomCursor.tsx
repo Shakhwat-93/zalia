@@ -72,9 +72,9 @@ export default function CustomCursor() {
         animate={{
           width: isHovered ? (hoverText ? 72 : 38) : 24,
           height: isHovered ? (hoverText ? 72 : 38) : 24,
-          borderColor: isHovered ? 'rgba(11, 59, 44, 0.4)' : 'rgba(18, 19, 22, 0.2)',
+          borderColor: isHovered ? 'rgba(7, 56, 30, 0.4)' : 'rgba(7, 56, 30, 0.2)',
           backgroundColor: isHovered
-            ? (hoverText ? 'rgba(11, 59, 44, 0.95)' : 'rgba(11, 59, 44, 0.08)')
+            ? (hoverText ? 'rgba(7, 56, 30, 0.95)' : 'rgba(7, 56, 30, 0.08)')
             : 'rgba(255, 255, 255, 0)',
         }}
         transition={{ duration: 0.18, ease: 'easeOut' }}

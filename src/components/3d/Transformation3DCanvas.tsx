@@ -148,9 +148,9 @@ function ArchitecturalTransformationModel({ activeStage }: { activeStage: number
           <meshStandardMaterial color="#d4af37" metalness={0.9} roughness={0.2} />
         </mesh>
 
-        {/* Interior Lounge & Emerald Velvet Furniture Accent */}
+        {/* Interior Lounge & Forest Green Velvet Furniture Accent */}
         <RoundedBox args={[1.2, 0.35, 0.8]} radius={0.02} smoothness={4} position={[0.1, -0.4, 0]}>
-          <meshStandardMaterial color="#0b3b2c" roughness={0.6} />
+          <meshStandardMaterial color="#07381E" roughness={0.6} />
         </RoundedBox>
 
         {/* Natural Timber Feature Slats on Side */}

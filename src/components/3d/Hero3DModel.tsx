@@ -94,18 +94,18 @@ function ArchitecturalModel() {
         ))}
       </group>
 
-      {/* Interior Living Suite & Emerald Accent Block */}
+      {/* Interior Living Suite & Forest Green Accent Block */}
       <RoundedBox args={[1.2, 0.5, 1.2]} radius={0.02} smoothness={4} position={[0.8, 0.5, 0.2]}>
-        <meshStandardMaterial color="#0b3b2c" roughness={0.4} />
+        <meshStandardMaterial color="#07381E" roughness={0.4} />
       </RoundedBox>
 
       {/* Warm Ambient Interior Illumination */}
       <pointLight position={[0.8, 0.9, 0.2]} intensity={2.2} color="#fcecd2" distance={6} />
       <pointLight position={[-0.6, 2.2, 0.2]} intensity={1.8} color="#fcecd2" distance={5} />
 
-      {/* Landscape Planter Box with Emerald Greenery */}
+      {/* Landscape Planter Box with Forest Green Accent */}
       <RoundedBox args={[1.6, 0.3, 0.5]} radius={0.02} smoothness={4} position={[1.4, 0.15, 1.8]}>
-        <meshStandardMaterial color="#0b3b2c" roughness={0.9} />
+        <meshStandardMaterial color="#07381E" roughness={0.9} />
       </RoundedBox>
     </group>
   );

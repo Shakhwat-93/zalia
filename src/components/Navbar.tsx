@@ -179,7 +179,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
             {/* Desktop CTA Pill Button */}
             <button
               onClick={onOpenContact}
-              className="btn-magnetic hidden sm:inline-flex items-center space-x-2.5 h-[46px] px-6 sm:px-7 rounded-full bg-charcoal-950 hover:bg-emerald-brand text-white text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm hover:shadow-emerald-subtle group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand focus-visible:ring-offset-2"
+              className="btn-magnetic hidden sm:inline-flex items-center space-x-2.5 h-[46px] px-6 sm:px-7 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm hover:shadow-emerald-subtle group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand focus-visible:ring-offset-2"
             >
               <span>Let&apos;s Talk</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
@@ -266,7 +266,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                   closeMobileMenu();
                   onOpenContact();
                 }}
-                className="w-full py-4 rounded-full bg-charcoal-950 hover:bg-emerald-brand text-white text-[13px] font-sans font-semibold uppercase tracking-[0.16em] flex items-center justify-center space-x-2.5 shadow-md transition-colors"
+                className="w-full py-4 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-[13px] font-sans font-semibold uppercase tracking-[0.16em] flex items-center justify-center space-x-2.5 shadow-md transition-colors"
               >
                 <span>Let&apos;s Talk</span>
                 <ArrowRight className="w-4 h-4" />

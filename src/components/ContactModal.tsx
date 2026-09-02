@@ -36,7 +36,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
             onClick={onClose}
-            className="fixed inset-0 bg-charcoal-950/60 backdrop-blur-sm"
+            className="fixed inset-0 bg-[#07381E]/40 backdrop-blur-sm"
           />
 
           <motion.div
@@ -48,7 +48,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
           >
             <div className="flex items-center justify-between pb-6 border-b border-canvas-border">
               <div>
-                <span className="text-[11px] font-semibold uppercase tracking-widest text-emerald-brand">
+                <span className="text-[11px] font-semibold uppercase tracking-widest text-[#07381E]">
                   DIRECT ENQUIRY
                 </span>
                 <h3 className="text-2xl sm:text-3xl font-serif text-charcoal-900 mt-1">
@@ -71,7 +71,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   className="flex flex-col items-center justify-center py-16 text-center space-y-4"
                 >
-                  <div className="w-16 h-16 rounded-full bg-emerald-light flex items-center justify-center text-emerald-brand">
+                  <div className="w-16 h-16 rounded-full bg-[#EBF2EE] flex items-center justify-center text-[#07381E]">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h4 className="text-2xl font-serif text-charcoal-900">Enquiry Received</h4>
@@ -83,7 +83,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       setIsSubmitted(false);
                       onClose();
                     }}
-                    className="mt-6 px-6 py-2.5 rounded-full bg-charcoal-900 text-white text-xs font-medium uppercase tracking-widest hover:bg-emerald-brand transition-colors"
+                    className="mt-6 px-6 py-2.5 rounded-full bg-[#07381E] text-white text-xs font-medium uppercase tracking-widest hover:bg-[#052B17] transition-colors"
                   >
                     Close Window
                   </button>
@@ -100,7 +100,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       placeholder="e.g. Alexander Sterling"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-emerald-brand focus:bg-white transition-all"
+                      className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
                     />
                   </div>
 
@@ -115,7 +115,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         placeholder="alexander@domain.co.uk"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                        className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-emerald-brand focus:bg-white transition-all"
+                        className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
                       />
                     </div>
                     <div>
@@ -127,7 +127,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         placeholder="+44 (0) 7900 000000"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-emerald-brand focus:bg-white transition-all"
+                        className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
                       />
                     </div>
                   </div>
@@ -140,7 +140,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       <select
                         value={formData.propertyType}
                         onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
-                        className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-emerald-brand focus:bg-white transition-all"
+                        className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
                       >
                         <option value="residential-transformation">Residential Transformation</option>
                         <option value="property-acquisition">Direct Property Sale / Acquisition</option>
@@ -157,7 +157,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         placeholder="e.g. Kensington, SW7"
                         value={formData.location}
                         onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                        className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-emerald-brand focus:bg-white transition-all"
+                        className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
                       />
                     </div>
                   </div>
@@ -171,13 +171,13 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                       placeholder="Tell us about the property, current condition, or any architectural goals..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                      className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-emerald-brand focus:bg-white transition-all resize-none"
+                      className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all resize-none"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="group w-full py-4 px-6 bg-charcoal-950 hover:bg-emerald-brand text-white rounded-lg text-xs font-semibold uppercase tracking-widest flex items-center justify-center space-x-3 transition-all duration-300 shadow-md"
+                    className="group w-full py-4 px-6 bg-[#07381E] hover:bg-[#052B17] text-white rounded-lg text-xs font-semibold uppercase tracking-widest flex items-center justify-center space-x-3 transition-all duration-300 shadow-md"
                   >
                     <span>Submit Confidential Inquiry</span>
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -188,19 +188,19 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
             <div className="pt-6 border-t border-canvas-border space-y-2 text-xs text-charcoal-600">
               <div className="flex items-center space-x-3">
-                <Mail className="w-3.5 h-3.5 text-emerald-brand" />
-                <a href={'mailto:' + SITE_METADATA.email} className="hover:text-emerald-brand">
+                <Mail className="w-3.5 h-3.5 text-[#07381E]" />
+                <a href={'mailto:' + SITE_METADATA.email} className="hover:text-[#07381E]">
                   {SITE_METADATA.email}
                 </a>
               </div>
               <div className="flex items-center space-x-3">
-                <Phone className="w-3.5 h-3.5 text-emerald-brand" />
-                <a href={'tel:' + SITE_METADATA.phone} className="hover:text-emerald-brand">
+                <Phone className="w-3.5 h-3.5 text-[#07381E]" />
+                <a href={'tel:' + SITE_METADATA.phone} className="hover:text-[#07381E]">
                   {SITE_METADATA.phone}
                 </a>
               </div>
               <div className="flex items-center space-x-3">
-                <MapPin className="w-3.5 h-3.5 text-emerald-brand" />
+                <MapPin className="w-3.5 h-3.5 text-[#07381E]" />
                 <span>{SITE_METADATA.address}</span>
               </div>
             </div>

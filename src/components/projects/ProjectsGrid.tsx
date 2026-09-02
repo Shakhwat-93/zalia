@@ -53,7 +53,7 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                 onClick={() => setFilter(tab)}
                 className={'px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider transition-all duration-300 ' + (
                   filter === tab
-                    ? 'bg-charcoal-950 text-white shadow-xs'
+                    ? 'bg-[#07381E] text-white shadow-xs'
                     : 'text-charcoal-500 hover:text-charcoal-950'
                 )}
               >
@@ -112,7 +112,7 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                     <div className="pt-4 border-t border-canvas-border flex flex-wrap items-center gap-4">
                       <Link
                         href={'/projects/' + project.slug}
-                        className="btn-magnetic inline-flex items-center space-x-2.5 px-7 py-3.5 rounded-full bg-charcoal-950 text-white hover:bg-emerald-brand text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
+                        className="btn-magnetic inline-flex items-center space-x-2.5 px-7 py-3.5 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
                       >
                         <span>View Case Study</span>
                         <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
