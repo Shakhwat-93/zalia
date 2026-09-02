@@ -9,14 +9,13 @@ import { ArrowRight, ArrowUpRight, X, Phone, Mail, MapPin } from 'lucide-react';
 import { NAVIGATION_LINKS, SITE_METADATA } from '@/data/content';
 
 interface NavbarProps {
-  onOpenContact: () => void;
+  onOpenContact?: () => void;
 }
 
 export default function Navbar({ onOpenContact }: NavbarProps) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState<string>('');
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,44 +26,6 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
     handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  useEffect(() => {
-    if (pathname === '/about') {
-      setActiveSection('about');
-      return;
-    }
-    if (pathname === '/what-we-do') {
-      setActiveSection('what-we-do');
-      return;
-    }
-    if (pathname === '/projects') {
-      setActiveSection('projects');
-      return;
-    }
-
-    const sectionIds = ['transformation', 'approach', 'team', 'contact'];
-    const handleScrollSpy = () => {
-      const scrollPosition = window.scrollY + 200;
-      for (const id of sectionIds) {
-        const el = document.getElementById(id);
-        if (el) {
-          const top = el.offsetTop;
-          const height = el.offsetHeight;
-          if (scrollPosition >= top && scrollPosition < top + height) {
-            setActiveSection(id);
-            return;
-          }
-        }
-      }
-      if (window.scrollY < 300) {
-        setActiveSection('');
-      }
-    };
-
-    window.addEventListener('scroll', handleScrollSpy, { passive: true });
-    handleScrollSpy();
-    return () => window.removeEventListener('scroll', handleScrollSpy);
-  }, [pathname]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -127,34 +88,21 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links */}
+          {/* Desktop Route-Based Navigation Links */}
           <nav
             aria-label="Primary Navigation"
             className="hidden xl:flex items-center gap-6 2xl:gap-8 mx-6"
           >
             {NAVIGATION_LINKS.map((link) => {
-              const isAboutLink = link.label.toLowerCase() === 'about';
-              const isWhatWeDoLink = link.label.toLowerCase() === 'what we do';
-              const isProjectsLink = link.label.toLowerCase() === 'projects';
-              
-              const isCurrentPage =
-                (pathname === '/about' && isAboutLink) ||
-                (pathname === '/what-we-do' && isWhatWeDoLink) ||
-                (pathname === '/projects' && isProjectsLink);
-
-              const linkId = link.href.replace('#', '').replace('/', '').replace('#', '');
-              const isActive = isCurrentPage || (pathname === '/' && activeSection === linkId);
-
-              // Formulate proper target link if on subpage
-              const targetHref =
-                pathname !== '/' && link.href.startsWith('/#')
-                  ? link.href
-                  : link.href;
+              const isActive =
+                link.href === '/'
+                  ? pathname === '/'
+                  : pathname === link.href || pathname.startsWith(link.href + '/');
 
               return (
                 <Link
                   key={link.label}
-                  href={targetHref}
+                  href={link.href}
                   className={'whitespace-nowrap text-[12.5px] font-sans font-medium uppercase tracking-[0.14em] transition-colors duration-200 relative py-1.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-emerald-brand rounded group ' + (
                     isActive
                       ? 'text-emerald-brand font-semibold'
@@ -176,14 +124,15 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
 
           {/* Right Action Block */}
           <div className="flex items-center space-x-3 sm:space-x-4 shrink-0">
-            {/* Desktop CTA Pill Button */}
-            <button
+            {/* Desktop CTA Pill Button linking to /contact */}
+            <Link
+              href="/contact"
               onClick={onOpenContact}
               className="btn-magnetic hidden sm:inline-flex items-center space-x-2.5 h-[46px] px-6 sm:px-7 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm hover:shadow-emerald-subtle group focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-brand focus-visible:ring-offset-2"
             >
               <span>Let&apos;s Talk</span>
               <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-            </button>
+            </Link>
 
             {/* Mobile / Tablet Menu Button */}
             <button
@@ -232,6 +181,11 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
 
               <nav className="flex flex-col space-y-3 sm:space-y-4">
                 {NAVIGATION_LINKS.map((link, idx) => {
+                  const isActive =
+                    link.href === '/'
+                      ? pathname === '/'
+                      : pathname === link.href || pathname.startsWith(link.href + '/');
+
                   return (
                     <motion.div
                       key={link.label}
@@ -242,7 +196,9 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
                       <Link
                         href={link.href}
                         onClick={closeMobileMenu}
-                        className="group flex items-center justify-between py-2 text-charcoal-900 hover:text-emerald-brand transition-colors"
+                        className={'group flex items-center justify-between py-2 transition-colors ' + (
+                          isActive ? 'text-emerald-brand' : 'text-charcoal-900 hover:text-emerald-brand'
+                        )}
                       >
                         <span className="font-serif text-2xl sm:text-3xl font-medium tracking-tight">
                           {link.label}
@@ -261,16 +217,17 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
               transition={{ delay: 0.35, duration: 0.4 }}
               className="max-w-xl w-full mx-auto pt-8 border-t border-canvas-border space-y-6"
             >
-              <button
+              <Link
+                href="/contact"
                 onClick={() => {
                   closeMobileMenu();
-                  onOpenContact();
+                  if (onOpenContact) onOpenContact();
                 }}
                 className="w-full py-4 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-[13px] font-sans font-semibold uppercase tracking-[0.16em] flex items-center justify-center space-x-2.5 shadow-md transition-colors"
               >
                 <span>Let&apos;s Talk</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </Link>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-charcoal-600 font-sans">
                 <div className="flex items-center space-x-2.5">

@@ -1,7 +1,9 @@
 'use client';
 
 import { useRef } from 'react';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
+import { ArrowRight } from 'lucide-react';
 import { APPROACH_CONTENT } from '@/data/content';
 
 export default function ApproachTimeline() {
@@ -47,6 +49,17 @@ export default function ApproachTimeline() {
               </h3>
             </motion.div>
           ))}
+        </div>
+
+        {/* Gateway CTA to /approach */}
+        <div className="pt-2 flex justify-start">
+          <Link
+            href="/approach"
+            className="btn-magnetic inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
+          >
+            <span>See Our Approach</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>

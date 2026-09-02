@@ -2,12 +2,13 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { FEATURED_PROJECTS_CONTENT } from '@/data/content';
 
 interface FeaturedProjectsProps {
-  onOpenContact: () => void;
+  onOpenContact?: () => void;
 }
 
 export default function FeaturedProjects({ onOpenContact }: FeaturedProjectsProps) {
@@ -40,13 +41,13 @@ export default function FeaturedProjects({ onOpenContact }: FeaturedProjectsProp
             </motion.h2>
           </div>
 
-          <button
-            onClick={onOpenContact}
+          <Link
+            href="/projects"
             className="btn-magnetic inline-flex items-center space-x-3 px-7 py-3.5 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-medium uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group self-start sm:self-auto"
           >
-            <span>Inquire About Projects</span>
+            <span>Explore All Projects</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
+          </Link>
         </div>
 
         {/* 1 Large Main Project Card */}
@@ -57,7 +58,10 @@ export default function FeaturedProjects({ onOpenContact }: FeaturedProjectsProp
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
             className="relative rounded-3xl overflow-hidden border border-canvas-border bg-canvas-warm shadow-soft-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center p-6 sm:p-8 lg:p-10 group"
           >
-            <div className="lg:col-span-7 relative h-[360px] sm:h-[460px] lg:h-[540px] rounded-2xl overflow-hidden bg-canvas-warm">
+            <Link
+              href={'/projects/' + leadProject.slug}
+              className="lg:col-span-7 relative h-[360px] sm:h-[460px] lg:h-[540px] rounded-2xl overflow-hidden bg-canvas-warm block"
+            >
               <Image
                 src={leadProject.image}
                 alt={leadProject.title}
@@ -66,29 +70,34 @@ export default function FeaturedProjects({ onOpenContact }: FeaturedProjectsProp
                 className="object-cover object-center transition-transform duration-1000 ease-editorial group-hover:scale-104"
                 sizes="(max-width: 1024px) 100vw, 60vw"
               />
-            </div>
+              <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10.5px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
+                {leadProject.status}
+              </div>
+            </Link>
 
-            <div className="lg:col-span-5 space-y-6 lg:pl-4">
-              <div className="space-y-2">
+            <div className="lg:col-span-5 space-y-6 text-left">
+              <div className="space-y-3">
                 <div className="text-xs font-sans font-semibold uppercase tracking-[0.16em] text-emerald-brand">
                   {leadProject.location} · {leadProject.category}
                 </div>
-                <h3 className="font-serif text-3xl sm:text-4xl font-medium text-charcoal-950">
-                  {leadProject.title}
-                </h3>
-                <p className="text-sm sm:text-base text-charcoal-600 font-sans leading-relaxed font-normal pt-1">
+                <Link href={'/projects/' + leadProject.slug} className="block group-hover:text-emerald-brand transition-colors">
+                  <h3 className="font-serif text-3xl sm:text-4xl lg:text-5xl font-medium text-charcoal-950 leading-[1.08]">
+                    {leadProject.title}
+                  </h3>
+                </Link>
+                <p className="text-base text-charcoal-600 font-sans leading-relaxed font-normal pt-2">
                   {leadProject.description}
                 </p>
               </div>
 
               <div className="pt-4 border-t border-canvas-border">
-                <button
-                  onClick={onOpenContact}
+                <Link
+                  href={'/projects/' + leadProject.slug}
                   className="inline-flex items-center space-x-2 text-[13px] font-sans font-medium uppercase tracking-[0.14em] text-charcoal-950 group-hover:text-emerald-brand transition-colors"
                 >
-                  <span>Explore Project</span>
+                  <span>Explore Case Study</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>
@@ -104,37 +113,45 @@ export default function FeaturedProjects({ onOpenContact }: FeaturedProjectsProp
               transition={{ duration: 0.8, delay: 0.2 + idx * 0.15, ease: [0.16, 1, 0.3, 1] }}
               className="rounded-3xl overflow-hidden border border-canvas-border bg-white p-6 sm:p-8 space-y-6 shadow-soft-md group hover:shadow-soft-xl hover:border-emerald-brand/30 transition-all duration-350"
             >
-              <div className="relative h-[280px] sm:h-[340px] w-full rounded-2xl overflow-hidden bg-canvas-warm">
+              <Link
+                href={'/projects/' + project.slug}
+                className="relative h-[280px] sm:h-[340px] w-full rounded-2xl overflow-hidden bg-canvas-warm block"
+              >
                 <Image
                   src={project.image}
                   alt={project.title}
                   fill
                   quality={95}
                   className="object-cover object-center transition-transform duration-1000 ease-editorial group-hover:scale-104"
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                 />
-              </div>
+                <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10.5px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
+                  {project.status}
+                </div>
+              </Link>
 
-              <div className="space-y-3">
+              <div className="space-y-3 text-left">
                 <div className="text-xs font-sans font-semibold uppercase tracking-[0.16em] text-emerald-brand">
                   {project.location} · {project.category}
                 </div>
-                <h4 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal-950 group-hover:text-emerald-brand transition-colors">
-                  {project.title}
-                </h4>
+                <Link href={'/projects/' + project.slug} className="block group-hover:text-emerald-brand transition-colors">
+                  <h4 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal-950">
+                    {project.title}
+                  </h4>
+                </Link>
                 <p className="text-sm text-charcoal-600 font-sans leading-relaxed font-normal">
                   {project.description}
                 </p>
               </div>
 
               <div className="pt-4 border-t border-canvas-border">
-                <button
-                  onClick={onOpenContact}
+                <Link
+                  href={'/projects/' + project.slug}
                   className="inline-flex items-center space-x-2 text-[12.5px] font-sans font-medium uppercase tracking-[0.14em] text-charcoal-950 group-hover:text-emerald-brand transition-colors"
                 >
-                  <span>Explore</span>
+                  <span>Explore Case Study</span>
                   <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
+                </Link>
               </div>
             </motion.div>
           ))}

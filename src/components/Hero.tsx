@@ -2,12 +2,13 @@
 
 import { useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, MapPin, Building2, Sparkles, Compass, ChevronDown } from 'lucide-react';
 import { HERO_CONTENT } from '@/data/content';
 
 interface HeroProps {
-  onOpenContact: () => void;
+  onOpenContact?: () => void;
 }
 
 export default function Hero({ onOpenContact }: HeroProps) {
@@ -181,13 +182,13 @@ export default function Hero({ onOpenContact }: HeroProps) {
 
             {/* Action CTA Button - Perfectly aligned on right */}
             <div className="lg:pl-2 shrink-0">
-              <button
-                onClick={onOpenContact}
+              <Link
+                href="/projects"
                 className="w-full lg:w-auto inline-flex items-center justify-center space-x-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-xl sm:rounded-full bg-emerald-brand hover:bg-charcoal-950 text-white text-xs font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-md group shrink-0"
               >
                 <span>Explore Projects</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+              </Link>
             </div>
 
           </div>

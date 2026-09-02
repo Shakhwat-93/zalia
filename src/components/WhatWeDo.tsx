@@ -1,8 +1,9 @@
 'use client';
 
 import { useRef } from 'react';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { SERVICES_CONTENT } from '@/data/content';
 
 export default function WhatWeDo() {
@@ -59,6 +60,17 @@ export default function WhatWeDo() {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Gateway CTA to /what-we-do */}
+        <div className="pt-2 flex justify-start">
+          <Link
+            href="/what-we-do"
+            className="btn-magnetic inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
+          >
+            <span>Discover What We Do</span>
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
       </div>
     </section>

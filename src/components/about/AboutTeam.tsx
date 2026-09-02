@@ -2,12 +2,13 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { TEAM_CONTENT } from '@/data/content';
 
 interface AboutTeamProps {
-  onOpenContact: () => void;
+  onOpenContact?: () => void;
 }
 
 export default function AboutTeam({ onOpenContact }: AboutTeamProps) {
@@ -40,13 +41,13 @@ export default function AboutTeam({ onOpenContact }: AboutTeamProps) {
             </motion.h2>
           </div>
 
-          <button
-            onClick={onOpenContact}
+          <Link
+            href="/team"
             className="btn-magnetic inline-flex items-center space-x-3 px-7 py-3.5 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group self-start sm:self-auto shrink-0"
           >
             <span>Meet The Team</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-          </button>
+          </Link>
         </div>
 
         {/* Leadership Roster Grid */}

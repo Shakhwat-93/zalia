@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { WHY_ZALIA_CONTENT } from '@/data/content';
@@ -55,13 +56,13 @@ export default function WhyZalia({ onOpenContact }: WhyZaliaProps) {
             </div>
 
             <div className="pt-2">
-              <button
-                onClick={onOpenContact}
+              <Link
+                href="/about"
                 className="btn-magnetic inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-medium uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
               >
-                <span>{WHY_ZALIA_CONTENT.ctaText}</span>
+                <span>Discover More</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+              </Link>
             </div>
           </div>
 

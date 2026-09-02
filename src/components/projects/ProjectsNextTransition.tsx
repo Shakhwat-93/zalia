@@ -44,7 +44,7 @@ export default function ProjectsNextTransition() {
           className="pt-4"
         >
           <Link
-            href="/what-we-do"
+            href="/approach"
             className="btn-magnetic inline-flex items-center space-x-3 px-9 py-4 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
           >
             <span>Our Approach</span>

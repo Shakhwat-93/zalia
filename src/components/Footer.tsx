@@ -61,7 +61,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#approach" className="hover:text-white transition-colors duration-200 block py-0.5">
+                  <Link href="/approach" className="hover:text-white transition-colors duration-200 block py-0.5">
                     Our Approach
                   </Link>
                 </li>
@@ -75,17 +75,17 @@ export default function Footer() {
               </span>
               <ul className="space-y-2.5 text-xs sm:text-[13px] text-white/65">
                 <li>
-                  <Link href="/about#story" className="hover:text-white transition-colors duration-200 block py-0.5">
+                  <Link href="/about" className="hover:text-white transition-colors duration-200 block py-0.5">
                     Who We Are
                   </Link>
                 </li>
                 <li>
-                  <Link href="/about#team" className="hover:text-white transition-colors duration-200 block py-0.5">
+                  <Link href="/team" className="hover:text-white transition-colors duration-200 block py-0.5">
                     Our Team
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#contact" className="hover:text-white transition-colors duration-200 block py-0.5">
+                  <Link href="/contact" className="hover:text-white transition-colors duration-200 block py-0.5">
                     Contact
                   </Link>
                 </li>
@@ -132,10 +132,10 @@ export default function Footer() {
           </div>
 
           <div className="flex items-center space-x-6">
-            <Link href="/#contact" className="hover:text-white/80 transition-colors">
+            <Link href="/contact" className="hover:text-white/80 transition-colors">
               Privacy Policy
             </Link>
-            <Link href="/#contact" className="hover:text-white/80 transition-colors">
+            <Link href="/contact" className="hover:text-white/80 transition-colors">
               Terms &amp; Conditions
             </Link>
           </div>

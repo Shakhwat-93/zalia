@@ -2,12 +2,13 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { ABOUT_CONTENT } from '@/data/content';
 
 interface AboutZaliaProps {
-  onOpenContact: () => void;
+  onOpenContact?: () => void;
 }
 
 export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
@@ -52,7 +53,7 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
+              className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight text-left"
             >
               WE SEE MORE
               <span className="block text-emerald-brand italic font-normal mt-2">
@@ -64,7 +65,7 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="text-base sm:text-lg text-charcoal-700 font-sans leading-relaxed font-normal max-w-lg"
+              className="text-base sm:text-lg text-charcoal-700 font-sans leading-relaxed font-normal max-w-lg text-left"
             >
               Zalia Properties focuses on residential properties with potential — combining thoughtful acquisition, intelligent development and careful transformation to create quality homes.
             </motion.p>
@@ -73,15 +74,15 @@ export default function AboutZalia({ onOpenContact }: AboutZaliaProps) {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="pt-2"
+              className="pt-2 text-left"
             >
-              <button
-                onClick={onOpenContact}
+              <Link
+                href="/about"
                 className="btn-magnetic inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-medium uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
               >
                 <span>About Zalia</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+              </Link>
             </motion.div>
           </div>
         </div>

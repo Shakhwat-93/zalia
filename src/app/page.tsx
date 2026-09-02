@@ -10,7 +10,6 @@ import FeaturedProjects from '@/components/FeaturedProjects';
 import Property3DSection from '@/components/Property3DSection';
 import BeforeAfterSlider from '@/components/BeforeAfterSlider';
 import ApproachTimeline from '@/components/ApproachTimeline';
-import AboutZalia from '@/components/AboutZalia';
 import TeamPreview from '@/components/TeamPreview';
 import FinalCTA from '@/components/FinalCTA';
 import Footer from '@/components/Footer';
@@ -24,46 +23,43 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-canvas text-charcoal-950 selection:bg-emerald-brand selection:text-white relative">
-      {/* 01 — Compact Premium Navbar */}
+      {/* 01 — Route-Based Navbar */}
       <Navbar onOpenContact={handleOpenContact} />
 
-      {/* 02 — Cinematic Hero */}
+      {/* 02 — Cinematic Hero Gateway */}
       <Hero onOpenContact={handleOpenContact} />
 
-      {/* 03 — Brand / Trust Strip */}
+      {/* 03 — Brand / Trust Statement */}
       <BrandTrustStrip />
 
-      {/* 04 — Why Zalia / Who We Are */}
+      {/* 04 — Short Who We Are Introduction (CTA -> /about) */}
       <WhyZalia onOpenContact={handleOpenContact} />
 
-      {/* 05 — What We Do */}
+      {/* 05 — Short What We Do Overview (CTA -> /what-we-do) */}
       <WhatWeDo />
 
-      {/* 06 — Featured Projects (1 large + 2 supporting) */}
+      {/* 06 — Featured Projects (CTA -> /projects) */}
       <FeaturedProjects onOpenContact={handleOpenContact} />
 
-      {/* 07 — 3D Transformation Experience */}
+      {/* 07 — 3D Transformation / Potential Section */}
       <Property3DSection />
 
-      {/* 08 — Before → After Interactive Slider */}
+      {/* 08 — Before → After Split Inspection */}
       <BeforeAfterSlider />
 
-      {/* 09 — Our Approach (5 Steps) */}
+      {/* 09 — Short Our Approach Preview (CTA -> /approach) */}
       <ApproachTimeline />
 
-      {/* 10 — About / Philosophy */}
-      <AboutZalia onOpenContact={handleOpenContact} />
-
-      {/* 11 — Leadership Team Preview */}
+      {/* 10 — Short Team Preview (CTA -> /team) */}
       <TeamPreview />
 
-      {/* 12 — Final Direct CTA */}
+      {/* 11 — Final Direct CTA (CTA -> /contact) */}
       <FinalCTA onOpenContact={handleOpenContact} />
 
-      {/* 13 — Minimal White Footer */}
+      {/* 12 — Architectural Footer */}
       <Footer />
 
-      {/* Global Interactive Contact Drawer */}
+      {/* Interactive Contact Drawer */}
       <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
     </main>
   );

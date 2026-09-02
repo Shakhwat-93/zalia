@@ -2,12 +2,13 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { FINAL_CTA_CONTENT, SITE_METADATA } from '@/data/content';
+import { FINAL_CTA_CONTENT } from '@/data/content';
 
 interface FinalCTAProps {
-  onOpenContact: () => void;
+  onOpenContact?: () => void;
 }
 
 export default function FinalCTA({ onOpenContact }: FinalCTAProps) {
@@ -22,7 +23,7 @@ export default function FinalCTA({ onOpenContact }: FinalCTAProps) {
     >
       <div className="max-w-7xl mx-auto px-6 sm:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-          <div className="lg:col-span-7 space-y-8">
+          <div className="lg:col-span-7 space-y-8 text-left">
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -50,13 +51,14 @@ export default function FinalCTA({ onOpenContact }: FinalCTAProps) {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="pt-2"
             >
-              <button
+              <Link
+                href="/contact"
                 onClick={onOpenContact}
                 className="btn-magnetic inline-flex items-center space-x-3 px-9 py-4 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-medium uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-lg group"
               >
                 <span>Get in Touch</span>
                 <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-              </button>
+              </Link>
             </motion.div>
           </div>
 
