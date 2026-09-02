@@ -246,6 +246,24 @@ export const TEAM_CONTENT = {
       initials: "SA",
       image: "/images/Sayek AHMED.jpg",
     },
+    {
+      name: "Abdullah Al Faruq",
+      role: "Acquisition & Strategy Director",
+      initials: "AF",
+      image: "/images/Abdullah Al Faruq.jpg",
+    },
+    {
+      name: "Md. Shahinur Rahman Utsha",
+      role: "Architectural Planning & Project Lead",
+      initials: "SR",
+      image: "/images/Md. Shahinur Rahman Utsha.jpg",
+    },
+    {
+      name: "Mithu Huda",
+      role: "Client Relations & Operations Director",
+      initials: "MH",
+      image: "/images/Mithu Huda.jpg",
+    },
   ],
 };
 
