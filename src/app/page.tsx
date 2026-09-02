@@ -1,7 +1,7 @@
 'use client';
 
 import Navbar from '@/components/Navbar';
-import HomeHero from '@/components/home/HomeHero';
+import Hero from '@/components/Hero';
 import HomeIntro from '@/components/home/HomeIntro';
 import HomePillars from '@/components/home/HomePillars';
 import HomeProjects from '@/components/home/HomeProjects';
@@ -15,8 +15,8 @@ export default function Home() {
       {/* SECTION 01 — Route-Based Navbar */}
       <Navbar />
 
-      {/* SECTION 02 — Cinematic Hero */}
-      <HomeHero />
+      {/* SECTION 02 — Exact Original Cinematic Hero */}
+      <Hero />
 
       {/* SECTION 03 — Short Company Introduction */}
       <HomeIntro />
