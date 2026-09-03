@@ -222,7 +222,7 @@ export default function NavigationClientManager({
   };
 
   return (
-    <div className="space-y-6 max-w-4xl text-left select-none">
+    <div className="space-y-6 max-w-4xl text-left">
       
       {/* Top Action Bar & Live Preview */}
       <div className="p-4 sm:p-6 rounded-3xl bg-white border border-canvas-border shadow-soft-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">

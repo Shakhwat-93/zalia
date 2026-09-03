@@ -25,7 +25,7 @@ export default async function AdminMediaPage() {
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Media Library"
         description="Centralized architectural photography, high-res renders, and executive portraits."

@@ -23,7 +23,7 @@ export default async function AdminFooterSettingsPage() {
   });
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Footer &amp; Legal Architecture"
         description="Manage architectural footer description, navigation column links, social channels, and copyright statement."

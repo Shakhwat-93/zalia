@@ -23,7 +23,7 @@ export default async function AdminHomepagePage() {
   ]);
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Homepage Experience CMS"
         description="Manage headlines, brand narrative, 3 pillars, featured projects, and section sequence."

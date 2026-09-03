@@ -28,7 +28,7 @@ export default async function AdminEditProjectPage({ params }: EditProjectPagePr
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title={`Edit: ${project.title}`}
         description={`Update architectural particulars, gallery images, before/after comparisons, and status.`}

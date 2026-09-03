@@ -210,7 +210,7 @@ export default function ApproachPageEditor({ initialData }: ApproachPageEditorPr
   };
 
   return (
-    <form onSubmit={handleSave} className="space-y-8 max-w-5xl text-left select-none pb-16">
+    <form onSubmit={handleSave} className="space-y-8 max-w-5xl text-left pb-16">
       {/* Action Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Link

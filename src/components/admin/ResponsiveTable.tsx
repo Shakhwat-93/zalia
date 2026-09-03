@@ -85,7 +85,7 @@ export default function ResponsiveTable<T>({
   };
 
   return (
-    <div className="bg-white border border-canvas-border rounded-2xl sm:rounded-3xl shadow-soft-sm overflow-hidden select-none">
+    <div className="bg-white border border-canvas-border rounded-2xl sm:rounded-3xl shadow-soft-sm overflow-hidden">
       
       {/* 1. Table Toolbar matching reference image */}
       <div className="p-4 sm:p-5 border-b border-canvas-border flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white">

@@ -18,7 +18,7 @@ export default async function AdminProjectsPage() {
     .order('sort_order', { ascending: true });
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Projects Portfolio"
         description="Manage prime residential developments, status badges, case studies, and photography."

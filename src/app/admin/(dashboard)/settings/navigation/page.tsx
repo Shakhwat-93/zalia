@@ -15,7 +15,7 @@ export default async function AdminNavigationSettingsPage() {
     .order('sort_order', { ascending: true });
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Primary Header Navigation"
         description="Configure header menu order, routing URLs, label typography, and visibility toggles."

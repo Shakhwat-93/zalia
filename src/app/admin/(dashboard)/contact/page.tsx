@@ -14,7 +14,7 @@ export default async function AdminContactPage() {
     .order('created_at', { ascending: false });
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Contact Submissions"
         description="Inbound property acquisition enquiries, partnership proposals, and investor communications."

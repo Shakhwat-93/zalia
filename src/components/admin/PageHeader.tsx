@@ -34,7 +34,7 @@ export default function PageHeader({
   secondaryAction,
 }: PageHeaderProps) {
   return (
-    <div className="space-y-4 pb-2 select-none">
+    <div className="space-y-4 pb-2">
       {/* 1. Breadcrumbs */}
       {breadcrumbs && breadcrumbs.length > 0 && (
         <nav aria-label="Breadcrumb" className="flex items-center space-x-1.5 text-xs text-charcoal-500 font-sans">

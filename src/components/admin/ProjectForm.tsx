@@ -225,7 +225,7 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-5xl text-left select-none pb-12">
+    <form onSubmit={handleSubmit} className="space-y-8 max-w-5xl text-left pb-12">
       
       {/* Top Action Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">

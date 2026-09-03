@@ -82,7 +82,7 @@ export default async function AdminOverviewPage() {
   ];
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       
       {/* Page Header matching reference */}
       <PageHeader

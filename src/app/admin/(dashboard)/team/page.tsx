@@ -15,7 +15,7 @@ export default async function AdminTeamPage() {
     .order('sort_order', { ascending: true });
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Executive Team"
         description="Directorial leadership, roles, biographies, and authentic portraits."

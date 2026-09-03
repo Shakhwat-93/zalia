@@ -22,7 +22,7 @@ export default function EmptyState({
   onAction,
 }: EmptyStateProps) {
   return (
-    <div className="p-12 sm:p-16 text-center rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-4 max-w-lg mx-auto select-none">
+    <div className="p-12 sm:p-16 text-center rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-4 max-w-lg mx-auto">
       <div className="w-14 h-14 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center mx-auto shadow-2xs">
         <Icon className="w-7 h-7" />
       </div>

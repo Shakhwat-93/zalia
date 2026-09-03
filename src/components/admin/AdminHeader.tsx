@@ -18,7 +18,7 @@ export default function AdminHeader({
   unreadCount = 0,
 }: AdminHeaderProps) {
   return (
-    <header className="h-16 w-full bg-white border-b border-canvas-border px-4 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-30 select-none">
+    <header className="h-16 w-full bg-white border-b border-canvas-border px-4 sm:px-6 lg:px-8 flex items-center justify-between sticky top-0 z-30">
       
       {/* Left Area: Mobile Menu Trigger + Search Bar */}
       <div className="flex items-center space-x-3 sm:space-x-4 flex-1 max-w-md">

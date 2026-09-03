@@ -72,7 +72,7 @@ export default function SettingsClientForm({
   };
 
   return (
-    <form onSubmit={handleSave} className="space-y-8 max-w-4xl text-left select-none">
+    <form onSubmit={handleSave} className="space-y-8 max-w-4xl text-left">
       
       {/* 1. Brand Identity & Visual Assets */}
       <div className="p-6 sm:p-8 rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-6">

@@ -14,7 +14,7 @@ export default async function AdminPagesPage() {
     .order('created_at', { ascending: true });
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Site Pages Registry"
         description="Public App Router routes, meta page configurations, and publication states."

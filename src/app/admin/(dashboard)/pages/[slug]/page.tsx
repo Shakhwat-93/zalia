@@ -33,7 +33,7 @@ export default async function AdminDedicatedPageEditor({ params }: PageEditorPro
   }
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title={`Edit Page: ${page.title}`}
         description={`Manage copy, photography assets, and publishing status for /${slug === 'home' ? '' : slug}.`}

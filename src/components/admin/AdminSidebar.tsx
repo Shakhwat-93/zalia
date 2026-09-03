@@ -130,7 +130,7 @@ export default function AdminSidebar({
 
   return (
     <aside
-      className={`h-full bg-white border-r border-canvas-border flex flex-col justify-between transition-all duration-300 select-none ${
+      className={`h-full bg-white border-r border-canvas-border flex flex-col justify-between transition-all duration-300 ${
         isCollapsed ? 'w-[78px]' : 'w-[260px]'
       }`}
     >

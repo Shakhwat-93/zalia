@@ -254,7 +254,7 @@ export default function FooterClientManager({
   const sections = Array.from(new Set(links.map((l) => l.section_title)));
 
   return (
-    <div className="space-y-8 max-w-4xl text-left select-none">
+    <div className="space-y-8 max-w-4xl text-left">
       
       {/* Design Guardrail Banner */}
       <div className="p-4 rounded-2xl bg-[#EBF2EE] border border-[#07381E]/15 flex items-start space-x-3 text-xs text-[#07381E]">

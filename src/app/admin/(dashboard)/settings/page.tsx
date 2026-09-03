@@ -15,7 +15,7 @@ export default async function AdminSettingsPage() {
     .order('category', { ascending: true });
 
   return (
-    <div className="space-y-6 sm:space-y-8 select-none">
+    <div className="space-y-6 sm:space-y-8">
       <PageHeader
         title="Global Configuration"
         description="Brand identity, typography hierarchy, direct headquarters contact, and default search meta tags."
