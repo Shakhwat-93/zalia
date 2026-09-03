@@ -1,6 +1,7 @@
 import React from 'react';
 import { createServerSupabaseClient } from '@/lib/supabase-server';
 import PageHeader from '@/components/admin/PageHeader';
+import SettingsNav from '@/components/admin/SettingsNav';
 import SettingsClientForm from './SettingsClientForm';
 
 export const dynamic = 'force-dynamic';
@@ -16,10 +17,12 @@ export default async function AdminSettingsPage() {
   return (
     <div className="space-y-6 sm:space-y-8 select-none">
       <PageHeader
-        title="Global Site Settings"
-        description="Headquarters direct contact channels, company registration, and brand credentials."
+        title="Global Configuration"
+        description="Brand identity, typography hierarchy, direct headquarters contact, and default search meta tags."
         breadcrumbs={[{ label: 'System' }, { label: 'Settings' }]}
       />
+
+      <SettingsNav />
 
       <SettingsClientForm initialSettings={settings || []} />
     </div>

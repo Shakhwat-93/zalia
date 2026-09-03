@@ -24,6 +24,8 @@ async function run() {
   await check('http://localhost:3000/admin/contact');
   await check('http://localhost:3000/admin/media');
   await check('http://localhost:3000/admin/settings');
+  await check('http://localhost:3000/admin/settings/navigation');
+  await check('http://localhost:3000/admin/settings/footer');
   console.log('\n=== VERIFICATION COMPLETE ===');
 }
 

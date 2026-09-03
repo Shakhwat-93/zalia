@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, ArrowUpRight, X, Phone, Mail, MapPin } from 'lucide-react';
 import { NAVIGATION_LINKS, SITE_METADATA } from '@/data/content';
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 
 interface NavbarProps {
   onOpenContact?: () => void;
@@ -16,6 +17,27 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [navLinks, setNavLinks] = useState(NAVIGATION_LINKS);
+
+  useEffect(() => {
+    async function loadDynamicNav() {
+      try {
+        const supabase = createBrowserSupabaseClient();
+        const { data } = await supabase
+          .from('navigation')
+          .select('label, href, sort_order, is_active')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true });
+
+        if (data && data.length > 0) {
+          setNavLinks(data);
+        }
+      } catch {
+        // Fallback silently to static NAVIGATION_LINKS
+      }
+    }
+    loadDynamicNav();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -93,7 +115,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
             aria-label="Primary Navigation"
             className="hidden xl:flex items-center gap-6 2xl:gap-8 mx-6"
           >
-            {NAVIGATION_LINKS.map((link) => {
+            {navLinks.map((link) => {
               const isActive =
                 link.href === '/'
                   ? pathname === '/'
@@ -180,7 +202,7 @@ export default function Navbar({ onOpenContact }: NavbarProps) {
               </div>
 
               <nav className="flex flex-col space-y-3 sm:space-y-4">
-                {NAVIGATION_LINKS.map((link, idx) => {
+                {navLinks.map((link, idx) => {
                   const isActive =
                     link.href === '/'
                       ? pathname === '/'

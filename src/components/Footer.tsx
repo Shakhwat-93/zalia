@@ -1,10 +1,80 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
+
+const DEFAULT_EXPLORE_LINKS = [
+  { label: 'Our Projects', href: '/projects' },
+  { label: 'Our Approach', href: '/approach' },
+  { label: 'What We Do', href: '/what-we-do' },
+  { label: 'Who We Are', href: '/about' },
+];
+
+const DEFAULT_COMPANY_LINKS = [
+  { label: 'Philosophy', href: '/about' },
+  { label: 'Our Team', href: '/team' },
+  { label: 'Acquisitions', href: '/contact' },
+  { label: 'Contact', href: '/contact' },
+];
 
 export default function Footer() {
+  const [description, setDescription] = useState(
+    'Zalia Properties creates exceptional homes by identifying potential, transforming spaces, and refining every detail.'
+  );
+  const [copyright, setCopyright] = useState(
+    `© ${new Date().getFullYear()} Zalia Properties Ltd. All rights reserved. Registered in England & Wales.`
+  );
+  const [exploreLinks, setExploreLinks] = useState(DEFAULT_EXPLORE_LINKS);
+  const [companyLinks, setCompanyLinks] = useState(DEFAULT_COMPANY_LINKS);
+  const [email, setEmail] = useState('contact@zaliaproperties.com');
+  const [address, setAddress] = useState('Mayfair, London W1J');
+
+  useEffect(() => {
+    async function loadFooterCMS() {
+      try {
+        const supabase = createBrowserSupabaseClient();
+
+        // 1. Fetch footer links
+        const { data: links } = await supabase
+          .from('footer')
+          .select('section_title, label, href, sort_order')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true });
+
+        if (links && links.length > 0) {
+          const explore = links.filter((l) => l.section_title === 'Explore');
+          const company = links.filter((l) => l.section_title === 'Company');
+          if (explore.length > 0) setExploreLinks(explore);
+          if (company.length > 0) setCompanyLinks(company);
+        }
+
+        // 2. Fetch footer narrative settings
+        const { data: settings } = await supabase
+          .from('site_settings')
+          .select('key, value')
+          .in('key', ['footer_description', 'copyright_text', 'email', 'address']);
+
+        if (settings) {
+          settings.forEach((s) => {
+            if (s.key === 'footer_description' && s.value) setDescription(s.value);
+            if (s.key === 'copyright_text' && s.value) setCopyright(s.value);
+            if (s.key === 'email' && s.value) setEmail(s.value);
+            if (s.key === 'address' && s.value) setAddress(s.value);
+          });
+        }
+      } catch {
+        // Fallback silently to static defaults
+      }
+    }
+    loadFooterCMS();
+  }, []);
+
   return (
     <footer className="relative w-full bg-[#F7F8F6] py-6 sm:py-10 lg:py-14 px-3 sm:px-6 lg:px-8 overflow-hidden font-sans">
       {/* Dark Rounded Architectural Card Container */}
       <div className="relative w-full max-w-[1440px] mx-auto bg-[#07381E] text-white rounded-[1.75rem] sm:rounded-[2.25rem] lg:rounded-[2.75rem] overflow-hidden pt-12 sm:pt-16 lg:pt-20 px-6 sm:px-10 lg:px-14 flex flex-col justify-between shadow-2xl isolate">
+        
         {/* Top Section: Brand + Navigation Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-12 items-start pb-12 sm:pb-16">
           
@@ -17,7 +87,7 @@ export default function Footer() {
             </Link>
 
             <p className="text-sm sm:text-[14.5px] text-white/65 leading-relaxed font-normal max-w-sm pt-1">
-              Zalia Properties creates exceptional homes by identifying potential, transforming spaces, and refining every detail.
+              {description}
             </p>
           </div>
 
@@ -30,26 +100,13 @@ export default function Footer() {
                 Explore
               </span>
               <ul className="space-y-2.5 text-sm text-white/60">
-                <li>
-                  <Link href="/projects" className="hover:text-white transition-colors duration-200 block">
-                    Our Projects
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/approach" className="hover:text-white transition-colors duration-200 block">
-                    Our Approach
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/what-we-do" className="hover:text-white transition-colors duration-200 block">
-                    What We Do
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about" className="hover:text-white transition-colors duration-200 block">
-                    Who We Are
-                  </Link>
-                </li>
+                {exploreLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="hover:text-white transition-colors duration-200 block">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -59,26 +116,13 @@ export default function Footer() {
                 Company
               </span>
               <ul className="space-y-2.5 text-sm text-white/60">
-                <li>
-                  <Link href="/about" className="hover:text-white transition-colors duration-200 block">
-                    Philosophy
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/team" className="hover:text-white transition-colors duration-200 block">
-                    Our Team
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white transition-colors duration-200 block">
-                    Acquisitions
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/contact" className="hover:text-white transition-colors duration-200 block">
-                    Contact
-                  </Link>
-                </li>
+                {companyLinks.map((link) => (
+                  <li key={link.label}>
+                    <Link href={link.href} className="hover:text-white transition-colors duration-200 block">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
 
@@ -94,13 +138,13 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <a href="mailto:contact@zaliaproperties.com" className="hover:text-white transition-colors duration-200 block truncate">
-                    contact@zaliaproperties.com
+                  <a href={`mailto:${email}`} className="hover:text-white transition-colors duration-200 block truncate">
+                    {email}
                   </a>
                 </li>
                 <li>
                   <span className="text-white/40 block text-xs pt-1">
-                    Mayfair, London W1J
+                    {address}
                   </span>
                 </li>
               </ul>
@@ -113,7 +157,7 @@ export default function Footer() {
         {/* Middle Legal & Copyright Row */}
         <div className="w-full pt-6 pb-2 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
           <div className="text-center sm:text-left">
-            &copy; {new Date().getFullYear()} Zalia Properties Ltd. All rights reserved. Registered in England &amp; Wales.
+            {copyright}
           </div>
 
           <div className="flex items-center space-x-6">
@@ -126,7 +170,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Huge Oversized Architectural ZALIA Wordmark */}
+        {/* Huge Oversized Architectural ZALIA Wordmark — Anchored in Code */}
         <div className="relative w-full overflow-hidden select-none pointer-events-none mt-1 sm:mt-2 -mb-2 sm:-mb-5 lg:-mb-8 flex justify-center">
           <h2
             className="font-sans font-black text-[22vw] sm:text-[23vw] lg:text-[24vw] leading-[0.74] tracking-[-0.04em] text-[#2F7658] uppercase whitespace-nowrap text-center w-full select-none"
