@@ -202,7 +202,7 @@ export default function MediaLibraryModal({
   const filteredAssets = assets.filter(
     (a) =>
       !search ||
-      a.filename.toLowerCase().includes(search.toLowerCase()) ||
+      (a.filename && a.filename.toLowerCase().includes(search.toLowerCase())) ||
       (a.alt_text && a.alt_text.toLowerCase().includes(search.toLowerCase()))
   );
 
@@ -324,13 +324,15 @@ export default function MediaLibraryModal({
                   >
                     {/* Thumbnail */}
                     <div className="relative aspect-4/3 w-full bg-charcoal-100 overflow-hidden">
-                      <Image
-                        src={asset.file_url}
-                        alt={asset.filename}
-                        fill
-                        className="object-cover group-hover:scale-104 transition-transform duration-400"
-                        sizes="(max-width: 768px) 50vw, 20vw"
-                      />
+                      {asset.file_url ? (
+                        <Image
+                          src={encodeURI(asset.file_url)}
+                          alt={asset.filename || 'Asset'}
+                          fill
+                          className="object-cover group-hover:scale-104 transition-transform duration-400"
+                          sizes="(max-width: 768px) 50vw, 20vw"
+                        />
+                      ) : null}
 
                       {/* Selection Checkmark */}
                       <div
@@ -360,11 +362,11 @@ export default function MediaLibraryModal({
                     {/* Metadata Footer */}
                     <div className="p-2.5 text-left space-y-0.5 bg-white">
                       <span className="text-xs font-serif font-medium text-charcoal-950 block truncate">
-                        {asset.filename}
+                        {asset.filename || 'Untitled'}
                       </span>
                       <div className="flex items-center justify-between text-[10.5px] font-sans text-charcoal-400">
                         <span>{formatSize(asset.file_size)}</span>
-                        <span className="uppercase">{asset.file_type.split('/').pop()}</span>
+                        <span className="uppercase">{(asset.file_type || 'image/webp').split('/').pop()}</span>
                       </div>
                     </div>
                   </div>
@@ -431,13 +433,15 @@ export default function MediaLibraryModal({
 
             {/* Large Image Frame */}
             <div className="relative aspect-16/10 w-full rounded-2xl overflow-hidden bg-charcoal-100 border border-canvas-border">
-              <Image
-                src={previewAsset.file_url}
-                alt={previewAsset.filename}
-                fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 600px"
-              />
+              {previewAsset.file_url ? (
+                <Image
+                  src={encodeURI(previewAsset.file_url)}
+                  alt={previewAsset.filename || 'Preview'}
+                  fill
+                  className="object-contain"
+                  sizes="(max-width: 768px) 100vw, 600px"
+                />
+              ) : null}
             </div>
 
             {/* Data Grid */}

@@ -133,15 +133,20 @@ export default function MediaClientGrid({
 
   // Filtered list
   const filtered = assets.filter((item) => {
+    if (!item) return false;
+    const filename = item.filename || '';
+    const altText = item.alt_text || '';
+    const fileType = item.file_type || '';
+
     const matchSearch =
       !search ||
-      item.filename.toLowerCase().includes(search.toLowerCase()) ||
-      (item.alt_text && item.alt_text.toLowerCase().includes(search.toLowerCase()));
+      filename.toLowerCase().includes(search.toLowerCase()) ||
+      altText.toLowerCase().includes(search.toLowerCase());
 
     const matchType =
       typeFilter === 'ALL' ||
-      item.file_type.toLowerCase().includes(typeFilter.toLowerCase()) ||
-      item.filename.toLowerCase().endsWith(`.${typeFilter.toLowerCase()}`);
+      fileType.toLowerCase().includes(typeFilter.toLowerCase()) ||
+      filename.toLowerCase().endsWith(`.${typeFilter.toLowerCase()}`);
 
     return matchSearch && matchType;
   });
@@ -242,17 +247,19 @@ export default function MediaClientGrid({
               onClick={() => setActiveAsset(item)}
               className="relative aspect-4/3 w-full bg-charcoal-100 overflow-hidden cursor-pointer"
             >
-              <Image
-                src={item.file_url}
-                alt={item.filename}
-                fill
-                className="object-cover group-hover:scale-104 transition-transform duration-500"
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-              />
+              {item.file_url ? (
+                <Image
+                  src={encodeURI(item.file_url)}
+                  alt={item.filename || 'Media Asset'}
+                  fill
+                  className="object-cover group-hover:scale-104 transition-transform duration-500"
+                  sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                />
+              ) : null}
 
               {/* Format Tag */}
               <span className="absolute top-2.5 left-2.5 px-2 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-[10px] font-sans font-semibold uppercase tracking-wider text-white">
-                {item.file_type.split('/').pop() || 'IMAGE'}
+                {(item.file_type || 'image/webp').split('/').pop() || 'IMAGE'}
               </span>
 
               {/* Inspect Button Overlay */}
@@ -270,12 +277,12 @@ export default function MediaClientGrid({
                 <span
                   onClick={() => setActiveAsset(item)}
                   className="text-xs font-serif font-semibold text-charcoal-950 block truncate cursor-pointer hover:text-[#07381E]"
-                  title={item.filename}
+                  title={item.filename || 'Asset'}
                 >
-                  {item.filename}
+                  {item.filename || 'Untitled Asset'}
                 </span>
                 <span className="text-[10.5px] font-sans text-charcoal-400 block">
-                  {formatSize(item.file_size)} · {new Date(item.created_at).toLocaleDateString('en-GB')}
+                  {formatSize(item.file_size)} · {item.created_at ? new Date(item.created_at).toLocaleDateString('en-GB') : 'Archived'}
                 </span>
               </div>
 
@@ -348,13 +355,15 @@ export default function MediaClientGrid({
 
             {/* Large Preview */}
             <div className="relative aspect-16/10 w-full rounded-2xl overflow-hidden bg-charcoal-100 border border-canvas-border">
-              <Image
-                src={activeAsset.file_url}
-                alt={activeAsset.filename}
-                fill
-                className="object-contain"
-                sizes="600px"
-              />
+              {activeAsset.file_url ? (
+                <Image
+                  src={encodeURI(activeAsset.file_url)}
+                  alt={activeAsset.filename || 'Particulars'}
+                  fill
+                  className="object-contain"
+                  sizes="600px"
+                />
+              ) : null}
             </div>
 
             {/* Information Grid */}
