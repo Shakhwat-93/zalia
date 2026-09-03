@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, CheckCircle2, Phone, Mail, MapPin } from 'lucide-react';
+import { X, ArrowRight, CheckCircle2, Phone, Mail, MapPin, Loader2, AlertCircle } from 'lucide-react';
 import { SITE_METADATA } from '@/data/content';
 
 interface ContactModalProps {
@@ -12,18 +12,65 @@ interface ContactModalProps {
 
 export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
-    propertyType: 'residential-transformation',
+    propertyType: 'Residential Transformation',
     location: '',
     message: '',
+    website_url: '', // Honeypot spam trap
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.propertyType,
+          location: formData.location,
+          message: formData.message,
+          source_page: typeof window !== 'undefined' ? window.location.pathname || 'modal' : 'modal',
+          website_url: formData.website_url,
+        }),
+      });
+
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.error || 'Unable to submit enquiry. Please try again.');
+      }
+
+      setIsSubmitted(true);
+    } catch (err: any) {
+      setErrorMessage(err.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleReset = () => {
+    setIsSubmitted(false);
+    setFormData({
+      name: '',
+      email: '',
+      phone: '',
+      propertyType: 'Residential Transformation',
+      location: '',
+      message: '',
+      website_url: '',
+    });
+    onClose();
   };
 
   return (
@@ -57,7 +104,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
               </div>
               <button
                 onClick={onClose}
-                className="rounded-full p-2.5 text-charcoal-400 hover:text-charcoal-900 hover:bg-canvas-subtle transition-colors"
+                className="rounded-full p-2.5 text-charcoal-400 hover:text-charcoal-900 hover:bg-canvas-warm transition-colors"
                 aria-label="Close modal"
               >
                 <X className="w-5 h-5" />
@@ -74,30 +121,48 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <div className="w-16 h-16 rounded-full bg-[#EBF2EE] flex items-center justify-center text-[#07381E]">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h4 className="text-2xl font-serif text-charcoal-900">Enquiry Received</h4>
-                  <p className="text-sm text-charcoal-600 max-w-sm leading-relaxed">
-                    Thank you for reaching out to Zalia Properties. A member of our acquisitions and development team will review your property details and contact you within 24 hours.
+                  <h4 className="font-serif text-2xl font-medium text-charcoal-900">
+                    Enquiry Received
+                  </h4>
+                  <p className="text-sm font-sans text-charcoal-600 max-w-sm leading-relaxed">
+                    Thank you. Your message has been routed to our acquisition and design directors. We will review your property particulars with complete discretion.
                   </p>
                   <button
-                    onClick={() => {
-                      setIsSubmitted(false);
-                      onClose();
-                    }}
-                    className="mt-6 px-6 py-2.5 rounded-full bg-[#07381E] text-white text-xs font-medium uppercase tracking-widest hover:bg-[#052B17] transition-colors"
+                    onClick={handleReset}
+                    className="mt-6 px-6 py-2.5 bg-[#07381E] text-white rounded-full text-xs font-semibold uppercase tracking-wider hover:bg-[#052B17] transition-colors"
                   >
-                    Close Window
+                    Close &amp; Return
                   </button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {errorMessage && (
+                    <div className="p-3.5 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-sans flex items-start space-x-2">
+                      <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
+                  {/* Honeypot Spam Trap */}
+                  <div className="hidden" aria-hidden="true">
+                    <input
+                      type="text"
+                      name="website_url"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.website_url}
+                      onChange={(e) => setFormData({ ...formData, website_url: e.target.value })}
+                    />
+                  </div>
+
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-charcoal-700 mb-1.5">
                       Full Name *
                     </label>
                     <input
-                      required
                       type="text"
-                      placeholder="e.g. Alexander Sterling"
+                      required
+                      placeholder="e.g. Lord Alistair Sterling"
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
@@ -110,9 +175,9 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                         Email Address *
                       </label>
                       <input
-                        required
                         type="email"
-                        placeholder="alexander@domain.co.uk"
+                        required
+                        placeholder="name@domain.com"
                         value={formData.email}
                         onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                         className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
@@ -120,11 +185,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     </div>
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-charcoal-700 mb-1.5">
-                        Contact Phone
+                        Telephone
                       </label>
                       <input
                         type="tel"
-                        placeholder="+44 (0) 7900 000000"
+                        placeholder="+44 20 ..."
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                         className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
@@ -135,17 +200,17 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-xs font-semibold uppercase tracking-wider text-charcoal-700 mb-1.5">
-                        Interest Area
+                        Enquiry Nature
                       </label>
                       <select
                         value={formData.propertyType}
                         onChange={(e) => setFormData({ ...formData, propertyType: e.target.value })}
                         className="w-full px-4 py-3 text-sm bg-canvas-warm border border-canvas-border rounded-lg text-charcoal-900 focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 focus:bg-white transition-all"
                       >
-                        <option value="residential-transformation">Residential Transformation</option>
-                        <option value="property-acquisition">Direct Property Sale / Acquisition</option>
-                        <option value="joint-venture">Joint Development Venture</option>
-                        <option value="general-enquiry">General Advisory</option>
+                        <option value="Residential Transformation">Residential Transformation</option>
+                        <option value="Property Acquisition">Direct Property Sale / Acquisition</option>
+                        <option value="Joint Venture">Joint Development Venture</option>
+                        <option value="General Enquiry">General Advisory</option>
                       </select>
                     </div>
                     <div>
@@ -164,10 +229,11 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
                   <div>
                     <label className="block text-xs font-semibold uppercase tracking-wider text-charcoal-700 mb-1.5">
-                      Property Overview &amp; Message
+                      Property Overview &amp; Message *
                     </label>
                     <textarea
                       rows={4}
+                      required
                       placeholder="Tell us about the property, current condition, or any architectural goals..."
                       value={formData.message}
                       onChange={(e) => setFormData({ ...formData, message: e.target.value })}
@@ -177,10 +243,20 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
 
                   <button
                     type="submit"
-                    className="group w-full py-4 px-6 bg-[#07381E] hover:bg-[#052B17] text-white rounded-lg text-xs font-semibold uppercase tracking-widest flex items-center justify-center space-x-3 transition-all duration-300 shadow-md"
+                    disabled={isSubmitting}
+                    className="group w-full py-4 px-6 bg-[#07381E] hover:bg-[#052B17] text-white rounded-lg text-xs font-semibold uppercase tracking-widest flex items-center justify-center space-x-3 transition-all duration-300 shadow-md disabled:opacity-50"
                   >
-                    <span>Submit Confidential Inquiry</span>
-                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>Sending Discreet Enquiry...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Submit Confidential Enquiry</span>
+                        <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+                      </>
+                    )}
                   </button>
                 </form>
               )}

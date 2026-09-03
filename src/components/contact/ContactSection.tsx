@@ -2,10 +2,14 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Clock, CheckCircle2, ArrowRight, Shield } from 'lucide-react';
+import { Mail, Phone, MapPin, ArrowRight, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import { SITE_METADATA } from '@/data/content';
 
 export default function ContactSection() {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,18 +17,41 @@ export default function ContactSection() {
     type: 'Property Opportunity',
     location: '',
     message: '',
+    website_url: '', // Honeypot spam trap
   });
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    setErrorMessage(null);
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          subject: formData.type,
+          location: formData.location,
+          message: formData.message,
+          source_page: '/contact',
+          website_url: formData.website_url,
+        }),
+      });
+
+      const json = await res.json();
+      if (!res.ok || !json.success) {
+        throw new Error(json.error || 'Failed to submit enquiry. Please try again.');
+      }
+
       setIsSubmitted(true);
-    }, 900);
+    } catch (err: any) {
+      setErrorMessage(err.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -83,48 +110,47 @@ export default function ContactSection() {
                 </div>
               </div>
 
-              {/* Office Address Card */}
+              {/* London Address Card */}
               <div className="p-6 rounded-2xl bg-white border border-canvas-border shadow-soft-sm flex items-start space-x-4">
                 <div className="w-10 h-10 rounded-xl bg-[#EBF2EE] flex items-center justify-center text-emerald-brand shrink-0">
                   <MapPin className="w-4 h-4" />
                 </div>
                 <div className="space-y-1">
                   <span className="text-xs font-sans font-semibold uppercase tracking-wider text-charcoal-400 block">
-                    Registered Office
+                    Advisory Office
                   </span>
-                  <p className="text-base font-serif font-medium text-charcoal-950">
+                  <p className="text-base sm:text-lg font-serif font-medium text-charcoal-950 leading-snug">
                     {SITE_METADATA.address}
                   </p>
-                  <span className="text-xs text-charcoal-500 font-sans block pt-0.5">
-                    {SITE_METADATA.registration}
-                  </span>
                 </div>
               </div>
+            </div>
 
-              {/* Confidentiality Guarantee */}
-              <div className="p-5 rounded-2xl bg-[#EBF2EE]/60 border border-emerald-brand/20 flex items-center space-x-3 text-emerald-brand">
-                <Shield className="w-5 h-5 shrink-0" />
-                <span className="text-xs font-sans font-medium text-charcoal-700">
-                  All property submissions are handled under strict non-disclosure and commercial discretion.
-                </span>
-              </div>
+            {/* Advisory Note */}
+            <div className="p-6 rounded-2xl bg-[#EBF2EE]/60 border border-[#07381E]/15 text-left space-y-2">
+              <span className="text-xs font-sans font-semibold uppercase tracking-wider text-[#07381E] block">
+                Discretion &amp; Privacy Assured
+              </span>
+              <p className="text-xs text-charcoal-700 font-sans leading-relaxed">
+                All property opportunities, financial models, and seller particulars shared with Zalia Properties are handled with absolute discretion and non-disclosure governance.
+              </p>
             </div>
           </div>
 
-          {/* Right Column: Interactive Dedicated Contact Form */}
+          {/* Right Column: Direct Interactive Form */}
           <div className="lg:col-span-7">
-            <div className="p-8 sm:p-12 lg:p-14 rounded-3xl sm:rounded-[2.25rem] bg-white border border-canvas-border shadow-soft-xl text-left">
+            <div className="bg-white rounded-3xl sm:rounded-[2.5rem] border border-canvas-border p-8 sm:p-12 lg:p-14 shadow-soft-xl text-left">
               {isSubmitted ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="py-16 text-center space-y-5"
+                  className="py-16 text-center space-y-4"
                 >
-                  <div className="w-16 h-16 rounded-full bg-[#EBF2EE] text-emerald-brand flex items-center justify-center mx-auto">
+                  <div className="w-16 h-16 rounded-full bg-[#EBF2EE] flex items-center justify-center text-emerald-brand mx-auto">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
                   <h3 className="font-serif text-3xl font-medium text-charcoal-950">
-                    Thank You For Reaching Out
+                    Enquiry Received
                   </h3>
                   <p className="text-base text-charcoal-600 font-sans max-w-md mx-auto leading-relaxed">
                     Our acquisitions team has received your enquiry. A director will review your submission and respond within 24 business hours.
@@ -139,6 +165,7 @@ export default function ContactSection() {
                         type: 'Property Opportunity',
                         location: '',
                         message: '',
+                        website_url: '',
                       });
                     }}
                     className="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-[#07381E] text-white text-xs font-sans font-semibold uppercase tracking-wider hover:bg-[#052B17] transition-colors"
@@ -155,6 +182,25 @@ export default function ContactSection() {
                     <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal-950">
                       How Can We Collaborate?
                     </h3>
+                  </div>
+
+                  {errorMessage && (
+                    <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-sans flex items-start space-x-2.5">
+                      <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+                      <span>{errorMessage}</span>
+                    </div>
+                  )}
+
+                  {/* Honeypot Spam Trap */}
+                  <div className="hidden" aria-hidden="true">
+                    <input
+                      type="text"
+                      name="website_url"
+                      tabIndex={-1}
+                      autoComplete="off"
+                      value={formData.website_url}
+                      onChange={(e) => setFormData({ ...formData, website_url: e.target.value })}
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 pt-2">
@@ -199,39 +245,39 @@ export default function ContactSection() {
                         type="tel"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                        placeholder="+44 (0) 7000 000000"
+                        placeholder="+44 20 ..."
                         className="w-full px-4 py-3.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-950 text-sm font-sans focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 transition-all"
                       />
                     </div>
 
-                    {/* Enquiry Type */}
+                    {/* Nature of Enquiry */}
                     <div className="space-y-2">
                       <label className="text-xs font-sans font-semibold uppercase tracking-wider text-charcoal-700 block">
-                        Enquiry Nature *
+                        Nature of Enquiry
                       </label>
                       <select
                         value={formData.type}
                         onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                         className="w-full px-4 py-3.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-950 text-sm font-sans focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 transition-all"
                       >
-                        <option value="Property Opportunity">Property Sale / Acquisition</option>
+                        <option value="Property Opportunity">Property Opportunity (Acquisition)</option>
                         <option value="Joint Venture">Joint Venture Partnership</option>
-                        <option value="Portfolio Acquisition">Portfolio Enquiry</option>
-                        <option value="General Enquiry">General Information</option>
+                        <option value="Investor Enquiry">Private Capital &amp; Investor Enquiry</option>
+                        <option value="General Advisory">General Advisory &amp; Press</option>
                       </select>
                     </div>
                   </div>
 
-                  {/* Location / Postcode */}
+                  {/* Location of Interest */}
                   <div className="space-y-2">
                     <label className="text-xs font-sans font-semibold uppercase tracking-wider text-charcoal-700 block">
-                      Property Address or Area (if applicable)
+                      Property Location / Borough (If applicable)
                     </label>
                     <input
                       type="text"
                       value={formData.location}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      placeholder="e.g. Kensington, London SW7"
+                      placeholder="e.g. Mayfair, Belgravia, Kensington, Surrey"
                       className="w-full px-4 py-3.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-950 text-sm font-sans focus:outline-none focus:border-[#07381E] focus:ring-2 focus:ring-[#07381E]/15 transition-all"
                     />
                   </div>
@@ -255,10 +301,19 @@ export default function ContactSection() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="w-full py-4 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-[13px] font-sans font-semibold uppercase tracking-[0.16em] flex items-center justify-center space-x-2.5 transition-all duration-300 shadow-soft-sm disabled:opacity-50"
+                    className="w-full py-4 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-[13px] font-sans font-semibold uppercase tracking-[0.16em] flex items-center justify-center space-x-2.5 transition-all duration-300 shadow-soft-sm disabled:opacity-50 cursor-pointer"
                   >
-                    <span>{isSubmitting ? 'Transmitting Enquiry...' : 'Submit Enquiry'}</span>
-                    <ArrowRight className="w-4 h-4" />
+                    {isSubmitting ? (
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin text-white" />
+                        <span>Transmitting Enquiry...</span>
+                      </>
+                    ) : (
+                      <>
+                        <span>Submit Enquiry</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </>
+                    )}
                   </button>
                 </form>
               )}
