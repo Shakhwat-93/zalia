@@ -148,15 +148,3 @@ body {
 .btn-magnetic:active {
   transform: translateY(0px) scale(0.98);
 }
-
-/* Hide default cursor on desktop when custom cursor is active */
-@media (pointer: fine) {
-  body.custom-cursor-active a,
-  body.custom-cursor-active button,
-  body.custom-cursor-active [role="button"],
-  body.custom-cursor-active input,
-  body.custom-cursor-active select,
-  body.custom-cursor-active textarea {
-    cursor: none;
-  }
-}

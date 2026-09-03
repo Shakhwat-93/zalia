@@ -2,7 +2,6 @@ import type { Metadata, Viewport } from 'next';
 import { Inter, Cormorant_Garamond } from 'next/font/google';
 import './globals.css';
 import SmoothScroll from '@/components/SmoothScroll';
-import CustomCursor from '@/components/CustomCursor';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -79,7 +78,6 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${cormorant.variable} scroll-smooth font-sans`}>
       <body className="bg-canvas text-charcoal-900 font-sans antialiased selection:bg-emerald-brand selection:text-white min-h-screen relative">
         <SmoothScroll>
-          <CustomCursor />
           {children}
         </SmoothScroll>
       </body>
