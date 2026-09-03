@@ -1,24 +1,50 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { FEATURED_PROJECTS_CONTENT } from '@/data/content';
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 
 interface ProjectsGridProps {
   onOpenContact: () => void;
+  initialProjects?: any[];
 }
 
-export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
+export default function ProjectsGrid({ onOpenContact, initialProjects }: ProjectsGridProps) {
   const [filter, setFilter] = useState<'ALL' | 'CURRENT' | 'COMPLETED'>('ALL');
+  const [projectsList, setProjectsList] = useState<any[]>(initialProjects || FEATURED_PROJECTS_CONTENT);
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
 
-  const filteredProjects = FEATURED_PROJECTS_CONTENT.filter((p) => {
+  useEffect(() => {
+    async function loadProjects() {
+      try {
+        const supabase = createBrowserSupabaseClient();
+        const { data } = await supabase
+          .from('projects')
+          .select('*')
+          .eq('status', 'published')
+          .order('sort_order', { ascending: true });
+
+        if (data && data.length > 0) {
+          setProjectsList(data);
+        }
+      } catch {
+        // Graceful fallback to static FEATURED_PROJECTS_CONTENT
+      }
+    }
+    if (!initialProjects) {
+      loadProjects();
+    }
+  }, [initialProjects]);
+
+  const filteredProjects = projectsList.filter((p) => {
+    const s = (p.status_badge || p.status || '').toUpperCase();
     if (filter === 'ALL') return true;
-    return p.status === filter;
+    return s === filter;
   });
 
   return (
@@ -67,11 +93,14 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
         <div className="space-y-12 sm:space-y-16">
           {filteredProjects.map((project, idx) => {
             const isFeaturedLarge = project.featured;
+            const imgSrc = project.image_url || project.image || '/images/featured-project.webp';
+            const statusText = project.status_badge || project.status || 'COMPLETED';
+            const desc = project.short_description || project.description || '';
 
             if (isFeaturedLarge) {
               return (
                 <motion.div
-                  key={project.id}
+                  key={project.id || project.slug}
                   initial={{ opacity: 0, y: 30 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.9, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
@@ -82,7 +111,7 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                     className="lg:col-span-7 relative h-[360px] sm:h-[480px] lg:h-[560px] rounded-2xl sm:rounded-3xl overflow-hidden bg-canvas-warm block"
                   >
                     <Image
-                      src={project.image}
+                      src={imgSrc}
                       alt={project.title}
                       fill
                       loading="lazy"
@@ -91,7 +120,7 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                       sizes="(max-width: 1024px) 100vw, 60vw"
                     />
                     <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10.5px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
-                      {project.status}
+                      {statusText}
                     </div>
                   </Link>
 
@@ -106,7 +135,7 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
                         </h3>
                       </Link>
                       <p className="text-base text-charcoal-600 font-sans leading-relaxed font-normal pt-2">
-                        {project.description}
+                        {desc}
                       </p>
                     </div>
 
@@ -133,59 +162,63 @@ export default function ProjectsGrid({ onOpenContact }: ProjectsGridProps) {
 
             return (
               <motion.div
-                key={project.id}
+                key={project.id || project.slug}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
                 className="rounded-3xl sm:rounded-[2rem] overflow-hidden border border-canvas-border bg-white p-6 sm:p-8 space-y-6 shadow-soft-md hover:shadow-soft-xl hover:border-emerald-brand/30 transition-all duration-350 group"
               >
-                <Link
-                  href={'/projects/' + project.slug}
-                  className="relative h-[320px] sm:h-[420px] w-full rounded-2xl overflow-hidden bg-canvas-warm block"
-                >
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    loading="lazy"
-                    quality={85}
-                    className="object-cover object-center transition-transform duration-1000 ease-editorial group-hover:scale-104"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                  />
-                  <div className="absolute top-4 left-4 px-3.5 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10.5px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
-                    {project.status}
-                  </div>
-                </Link>
-
-                <div className="space-y-3 text-left">
-                  <span className="text-xs font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand block">
-                    {project.location} · {project.category}
-                  </span>
-                  <Link href={'/projects/' + project.slug} className="block group-hover:text-emerald-brand transition-colors">
-                    <h4 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal-950">
-                      {project.title}
-                    </h4>
-                  </Link>
-                  <p className="text-sm sm:text-base text-charcoal-600 font-sans leading-relaxed font-normal">
-                    {project.description}
-                  </p>
-                </div>
-
-                <div className="pt-4 border-t border-canvas-border flex items-center justify-between">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
                   <Link
                     href={'/projects/' + project.slug}
-                    className="inline-flex items-center space-x-2 text-[12.5px] font-sans font-semibold uppercase tracking-[0.14em] text-charcoal-950 group-hover:text-emerald-brand transition-colors"
+                    className="lg:col-span-6 relative h-[300px] sm:h-[380px] rounded-2xl overflow-hidden bg-canvas-warm block"
                   >
-                    <span>View Case Study</span>
-                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                    <Image
+                      src={imgSrc}
+                      alt={project.title}
+                      fill
+                      loading="lazy"
+                      quality={85}
+                      className="object-cover object-center transition-transform duration-700 ease-editorial group-hover:scale-104"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
+                    />
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
+                      {statusText}
+                    </div>
                   </Link>
 
-                  <button
-                    onClick={onOpenContact}
-                    className="text-xs font-sans font-medium uppercase tracking-wider text-charcoal-400 hover:text-charcoal-700 transition-colors"
-                  >
-                    Inquire
-                  </button>
+                  <div className="lg:col-span-6 space-y-5 lg:pl-2 text-left">
+                    <div className="space-y-2.5">
+                      <span className="text-xs font-sans font-semibold uppercase tracking-[0.18em] text-emerald-brand block">
+                        {project.location} · {project.category}
+                      </span>
+                      <Link href={'/projects/' + project.slug} className="block group-hover:text-emerald-brand transition-colors">
+                        <h3 className="font-serif text-2xl sm:text-3xl lg:text-4xl font-medium text-charcoal-950 leading-tight">
+                          {project.title}
+                        </h3>
+                      </Link>
+                      <p className="text-sm sm:text-base text-charcoal-600 font-sans leading-relaxed font-normal pt-1">
+                        {desc}
+                      </p>
+                    </div>
+
+                    <div className="pt-3 border-t border-canvas-border flex flex-wrap items-center gap-4">
+                      <Link
+                        href={'/projects/' + project.slug}
+                        className="btn-magnetic inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-xs font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group"
+                      >
+                        <span>View Project</span>
+                        <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+                      </Link>
+
+                      <button
+                        onClick={onOpenContact}
+                        className="inline-flex items-center space-x-2 text-xs font-sans font-semibold uppercase tracking-[0.14em] text-charcoal-600 hover:text-charcoal-950 transition-colors"
+                      >
+                        <span>Inquire</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             );

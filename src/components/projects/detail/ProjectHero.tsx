@@ -5,10 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
-import { ProjectItem } from '@/data/content';
-
 interface ProjectHeroProps {
-  project: ProjectItem;
+  project: any;
 }
 
 export default function ProjectHero({ project }: ProjectHeroProps) {
@@ -53,7 +51,7 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
           </h1>
 
           <p className="text-lg sm:text-xl text-charcoal-600 font-sans leading-relaxed font-normal max-w-3xl pt-1">
-            {project.description}
+            {project.short_description || project.description}
           </p>
         </motion.div>
 
@@ -66,7 +64,7 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
         >
           <motion.div style={{ scale: imageScale }} className="relative w-full h-full">
             <Image
-              src={project.image}
+              src={project.hero_image_url || project.image_url || project.image || '/images/featured-project.webp'}
               alt={project.title}
               fill
               priority
@@ -77,7 +75,7 @@ export default function ProjectHero({ project }: ProjectHeroProps) {
           </motion.div>
 
           <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 px-4 py-2.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[11px] font-sans font-semibold uppercase tracking-widest text-charcoal-900 shadow-soft-sm">
-            {project.location} • Status: {project.status}
+            {project.location} • Status: {project.status_badge || project.status || 'COMPLETED'}
           </div>
         </motion.div>
 

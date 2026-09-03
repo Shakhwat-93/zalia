@@ -4,10 +4,8 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight, Maximize2 } from 'lucide-react';
-import { ProjectItem } from '@/data/content';
-
 interface ProjectGalleryProps {
-  project: ProjectItem;
+  project: any;
 }
 
 export default function ProjectGallery({ project }: ProjectGalleryProps) {
@@ -15,12 +13,15 @@ export default function ProjectGallery({ project }: ProjectGalleryProps) {
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
   const [activeImageIndex, setActiveImageIndex] = useState<number | null>(null);
 
-  const galleryImages = [
-    project.image,
-    '/images/about-zalia.webp',
-    '/images/brand-statement.webp',
-    '/images/what-we-do.webp',
-  ];
+  const galleryImages: string[] =
+    project.gallery_images && project.gallery_images.length > 0
+      ? project.gallery_images.map((img: any) => (typeof img === 'string' ? img : img.url))
+      : [
+          project.image_url || project.image || '/images/featured-project.webp',
+          '/images/about-zalia.webp',
+          '/images/brand-statement.webp',
+          '/images/what-we-do.webp',
+        ];
 
   const handleNext = useCallback(() => {
     if (activeImageIndex === null) return;

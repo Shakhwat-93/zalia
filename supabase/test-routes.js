@@ -14,12 +14,10 @@ async function run() {
   await check('http://localhost:3000');
   await check('http://localhost:3000/about');
   await check('http://localhost:3000/projects');
-  await check('http://localhost:3000/admin/login');
-  await check('http://localhost:3000/admin');
-  await check('http://localhost:3000/admin/dashboard');
-  await check('http://localhost:3000/admin/homepage');
-  await check('http://localhost:3000/admin/pages');
+  await check('http://localhost:3000/projects/kensington-mews-glass-pavilion');
   await check('http://localhost:3000/admin/projects');
+  await check('http://localhost:3000/admin/projects/new');
+  await check('http://localhost:3000/admin/media');
   await check('http://localhost:3000/admin/team');
   await check('http://localhost:3000/admin/contact');
   await check('http://localhost:3000/admin/media');

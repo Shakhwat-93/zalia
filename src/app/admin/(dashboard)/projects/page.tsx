@@ -27,7 +27,7 @@ export default async function AdminProjectsPage() {
         breadcrumbs={[{ label: 'Projects' }]}
         primaryAction={{
           label: 'Add Project',
-          href: '#add-project',
+          href: '/admin/projects/new',
           icon: <Plus className="w-4 h-4 text-white" />,
         }}
         secondaryAction={{

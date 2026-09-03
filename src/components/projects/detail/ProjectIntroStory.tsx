@@ -3,10 +3,8 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView, useScroll, useTransform } from 'framer-motion';
-import { ProjectItem } from '@/data/content';
-
 interface ProjectIntroStoryProps {
-  project: ProjectItem;
+  project: any;
 }
 
 export default function ProjectIntroStory({ project }: ProjectIntroStoryProps) {
@@ -51,7 +49,9 @@ export default function ProjectIntroStory({ project }: ProjectIntroStoryProps) {
             transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-base sm:text-lg text-charcoal-600 font-sans leading-relaxed font-normal pt-2"
           >
-            Every project begins by understanding what exists — and what it could become. The existing property had strong residential character and spatial integrity, presenting an ideal canvas for architectural modernization and refined living zones.
+            {project.full_description ||
+              project.description ||
+              'Every project begins by understanding what exists — and what it could become. The existing property had strong residential character and spatial integrity, presenting an ideal canvas for architectural modernization and refined living zones.'}
           </motion.p>
         </div>
 
@@ -78,7 +78,7 @@ export default function ProjectIntroStory({ project }: ProjectIntroStoryProps) {
               className="relative h-[380px] sm:h-[460px] lg:h-[520px] w-full rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-canvas-warm group"
             >
               <Image
-                src={project.beforeImage || '/images/before-split.webp'}
+                src={project.before_image_url || project.beforeImage || '/images/before-split.webp'}
                 alt={project.title + ' Starting Point'}
                 fill
                 quality={95}

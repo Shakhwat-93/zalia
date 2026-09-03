@@ -3,10 +3,8 @@
 import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
-import { ProjectItem } from '@/data/content';
-
 interface ProjectResultProps {
-  project: ProjectItem;
+  project: any;
 }
 
 export default function ProjectResult({ project }: ProjectResultProps) {
@@ -48,7 +46,7 @@ export default function ProjectResult({ project }: ProjectResultProps) {
           className="relative h-[440px] sm:h-[580px] lg:h-[680px] w-full rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-canvas-border shadow-soft-xl bg-white group"
         >
           <Image
-            src={project.image}
+            src={project.after_image_url || project.hero_image_url || project.image_url || project.image || '/images/featured-project.webp'}
             alt={project.title + ' Transformed Result'}
             fill
             quality={95}
@@ -82,7 +80,7 @@ export default function ProjectResult({ project }: ProjectResultProps) {
               PORTFOLIO STATUS
             </span>
             <span className="font-serif text-2xl font-medium text-emerald-brand">
-              {project.status}
+              {project.status_badge || project.status || 'COMPLETED'}
             </span>
           </div>
         </div>

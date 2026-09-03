@@ -1,84 +1,102 @@
-'use client';
-
-import { useState } from 'react';
+import React from 'react';
 import { notFound } from 'next/navigation';
-import Navbar from '@/components/Navbar';
-import ProjectHero from '@/components/projects/detail/ProjectHero';
-import ProjectIntroStory from '@/components/projects/detail/ProjectIntroStory';
-import ProjectTransformation from '@/components/projects/detail/ProjectTransformation';
-import ProjectGallery from '@/components/projects/detail/ProjectGallery';
-import ProjectsBeforeAfter from '@/components/projects/ProjectsBeforeAfter';
-import Projects3DMoment from '@/components/projects/Projects3DMoment';
-import ProjectResult from '@/components/projects/detail/ProjectResult';
-import ProjectNextNav from '@/components/projects/detail/ProjectNextNav';
-import FinalCTA from '@/components/FinalCTA';
-import Footer from '@/components/Footer';
-import ContactModal from '@/components/ContactModal';
+import type { Metadata } from 'next';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 import { FEATURED_PROJECTS_CONTENT } from '@/data/content';
+import ProjectDetailClient from './ProjectDetailClient';
 
-interface ProjectDetailPageProps {
+export const dynamic = 'force-dynamic';
+
+interface PageProps {
   params: {
     slug: string;
   };
 }
 
-export default function ProjectDetailPage({ params }: ProjectDetailPageProps) {
-  const [isContactOpen, setIsContactOpen] = useState(false);
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const supabase = createServerSupabaseClient();
   const { slug } = params;
 
-  // Find project by slug or fallback by id (e.g. project-01)
-  const currentIndex = FEATURED_PROJECTS_CONTENT.findIndex(
-    (p) => p.slug === slug || p.id === slug
-  );
+  try {
+    const { data: project } = await supabase
+      .from('projects')
+      .select('title, short_description, description, seo_title, seo_description')
+      .or(`slug.eq.${slug},id.eq.${slug}`)
+      .single();
 
-  if (currentIndex === -1) {
+    if (project) {
+      return {
+        title: project.seo_title || `${project.title} | Zalia Properties Ltd`,
+        description: project.seo_description || project.short_description || project.description,
+      };
+    }
+  } catch {
+    // fallback
+  }
+
+  const staticProj = FEATURED_PROJECTS_CONTENT.find((p) => p.slug === slug || p.id === slug);
+  if (staticProj) {
+    return {
+      title: `${staticProj.title} | Zalia Properties Ltd`,
+      description: staticProj.description,
+    };
+  }
+
+  return {
+    title: 'Architectural Case Study | Zalia Properties Ltd',
+  };
+}
+
+export default async function ProjectDetailPage({ params }: PageProps) {
+  const supabase = createServerSupabaseClient();
+  const { slug } = params;
+
+  let project: any = null;
+  let nextProject: any = null;
+
+  try {
+    // 1. Fetch current project from Supabase
+    const { data: dbProject } = await supabase
+      .from('projects')
+      .select('*')
+      .or(`slug.eq.${slug},id.eq.${slug}`)
+      .single();
+
+    if (dbProject) {
+      project = dbProject;
+
+      // 2. Fetch all published projects to compute nextProject
+      const { data: allProjects } = await supabase
+        .from('projects')
+        .select('*')
+        .eq('status', 'published')
+        .order('sort_order', { ascending: true });
+
+      if (allProjects && allProjects.length > 0) {
+        const currentIndex = allProjects.findIndex((p) => p.id === dbProject.id);
+        const nextIndex = (currentIndex + 1) % allProjects.length;
+        nextProject = allProjects[nextIndex];
+      }
+    }
+  } catch (err) {
+    console.error('Failed to query project from database:', err);
+  }
+
+  // Fallback to static content if not found in database
+  if (!project) {
+    const staticIndex = FEATURED_PROJECTS_CONTENT.findIndex(
+      (p) => p.slug === slug || p.id === slug
+    );
+    if (staticIndex !== -1) {
+      project = FEATURED_PROJECTS_CONTENT[staticIndex];
+      nextProject =
+        FEATURED_PROJECTS_CONTENT[(staticIndex + 1) % FEATURED_PROJECTS_CONTENT.length];
+    }
+  }
+
+  if (!project) {
     notFound();
   }
 
-  const project = FEATURED_PROJECTS_CONTENT[currentIndex];
-  const nextProject =
-    FEATURED_PROJECTS_CONTENT[(currentIndex + 1) % FEATURED_PROJECTS_CONTENT.length];
-
-  const handleOpenContact = () => setIsContactOpen(true);
-  const handleCloseContact = () => setIsContactOpen(false);
-
-  return (
-    <main className="min-h-screen bg-canvas text-charcoal-950 selection:bg-emerald-brand selection:text-white relative">
-      {/* Reusable Navbar */}
-      <Navbar onOpenContact={handleOpenContact} />
-
-      {/* 05 & 06 — Project Hero */}
-      <ProjectHero project={project} />
-
-      {/* 08, 09, 10 — Project Introduction & The Starting Point */}
-      <ProjectIntroStory project={project} />
-
-      {/* 11 & 12 — Transformation Concepts */}
-      <ProjectTransformation />
-
-      {/* 13, 14, 15 — Editorial Image Gallery & Lightbox */}
-      <ProjectGallery project={project} />
-
-      {/* 16 — Before / After Comparison Feature */}
-      <ProjectsBeforeAfter />
-
-      {/* 17 & 18 — 3D Spatial Moment */}
-      <Projects3DMoment />
-
-      {/* 19 & 20 — The Result & Minimal Summary */}
-      <ProjectResult project={project} />
-
-      {/* 21 & 22 — Next Project Navigation */}
-      <ProjectNextNav nextProject={nextProject} />
-
-      {/* 23 — Final CTA */}
-      <FinalCTA onOpenContact={handleOpenContact} />
-
-      {/* 25 — Footer */}
-      <Footer />
-
-      {/* Global Contact Drawer */}
-      <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
-    </main>
-  );
+  return <ProjectDetailClient project={project} nextProject={nextProject} />;
 }

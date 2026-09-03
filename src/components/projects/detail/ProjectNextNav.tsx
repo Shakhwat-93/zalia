@@ -3,10 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { ProjectItem } from '@/data/content';
-
 interface ProjectNextNavProps {
-  nextProject: ProjectItem;
+  nextProject: any;
 }
 
 export default function ProjectNextNav({ nextProject }: ProjectNextNavProps) {
@@ -48,7 +46,7 @@ export default function ProjectNextNav({ nextProject }: ProjectNextNavProps) {
 
           <div className="lg:col-span-6 relative h-[300px] sm:h-[380px] rounded-2xl sm:rounded-3xl overflow-hidden bg-white shadow-soft-md group">
             <Image
-              src={nextProject.image}
+              src={nextProject.image_url || nextProject.image || '/images/featured-project.webp'}
               alt={nextProject.title}
               fill
               quality={95}

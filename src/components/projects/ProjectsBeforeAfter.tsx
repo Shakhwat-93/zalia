@@ -7,11 +7,19 @@ import { motion, useInView } from 'framer-motion';
 import { ChevronsLeftRight, ArrowRight } from 'lucide-react';
 import { BEFORE_AFTER_CONTENT } from '@/data/content';
 
-export default function ProjectsBeforeAfter() {
+interface ProjectsBeforeAfterProps {
+  beforeImage?: string;
+  afterImage?: string;
+}
+
+export default function ProjectsBeforeAfter({ beforeImage, afterImage }: ProjectsBeforeAfterProps = {}) {
   const [sliderPosition, setSliderPosition] = useState(50);
   const [isDragging, setIsDragging] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+
+  const finalBeforeImage = beforeImage || BEFORE_AFTER_CONTENT.beforeImage;
+  const finalAfterImage = afterImage || BEFORE_AFTER_CONTENT.afterImage;
 
   const handleMove = useCallback((clientX: number) => {
     if (!containerRef.current) return;
@@ -78,7 +86,7 @@ export default function ProjectsBeforeAfter() {
         >
           <div className="absolute inset-0 w-full h-full">
             <Image
-              src={BEFORE_AFTER_CONTENT.afterImage}
+              src={finalAfterImage}
               alt="Transformed Residential Home"
               fill
               quality={95}
@@ -95,7 +103,7 @@ export default function ProjectsBeforeAfter() {
             style={{ clipPath: 'inset(0 ' + (100 - sliderPosition) + '% 0 0)' }}
           >
             <Image
-              src={BEFORE_AFTER_CONTENT.beforeImage}
+              src={finalBeforeImage}
               alt="Original Unmodernised Property"
               fill
               quality={95}
