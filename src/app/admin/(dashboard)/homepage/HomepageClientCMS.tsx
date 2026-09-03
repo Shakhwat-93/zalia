@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import StatusBadge from '@/components/admin/StatusBadge';
+import MediaPickerField from '@/components/admin/MediaPickerField';
 
 export interface HomepageSection {
   id: string;
@@ -549,27 +550,13 @@ export default function HomepageClientCMS({
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-                Hero Architectural Background Image Path
-              </label>
-              <div className="flex items-center space-x-3">
-                <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                  <Image
-                    src={getSection('hero').media_url || '/images/hero-model.webp'}
-                    alt="Hero Preview"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <input
-                  type="text"
-                  value={getSection('hero').media_url || ''}
-                  onChange={(e) => updateSectionField('hero', 'media_url', e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-                />
-              </div>
-            </div>
+            <MediaPickerField
+              label="Hero Architectural Background Image"
+              value={getSection('hero').media_url || ''}
+              onChange={(url) => updateSectionField('hero', 'media_url', url)}
+              description="Full-screen ambient visual behind hero copy"
+              aspectRatio="landscape"
+            />
           </div>
 
           <div className="pt-4 border-t border-canvas-border flex items-center justify-end">
@@ -666,27 +653,13 @@ export default function HomepageClientCMS({
               </div>
             </div>
 
-            <div className="space-y-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-                Architectural Frame Image Path
-              </label>
-              <div className="flex items-center space-x-3">
-                <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                  <Image
-                    src={getSection('intro').media_url || '/images/about-zalia.webp'}
-                    alt="Intro Preview"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <input
-                  type="text"
-                  value={getSection('intro').media_url || ''}
-                  onChange={(e) => updateSectionField('intro', 'media_url', e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-                />
-              </div>
-            </div>
+            <MediaPickerField
+              label="Architectural Frame Image"
+              value={getSection('intro').media_url || ''}
+              onChange={(url) => updateSectionField('intro', 'media_url', url)}
+              description="Editorial showcase image for company intro"
+              aspectRatio="landscape"
+            />
           </div>
 
           <div className="pt-4 border-t border-canvas-border flex items-center justify-end">

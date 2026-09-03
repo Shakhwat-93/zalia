@@ -1,27 +1,33 @@
 import React from 'react';
 import { UploadCloud } from 'lucide-react';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
 import PageHeader from '@/components/admin/PageHeader';
 import MediaClientGrid from './MediaClientGrid';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminMediaPage() {
+  const supabase = createServerSupabaseClient();
+  const { data: assets, count } = await supabase
+    .from('media_assets')
+    .select('*', { count: 'exact' })
+    .order('created_at', { ascending: false });
+
   return (
     <div className="space-y-6 sm:space-y-8 select-none">
       <PageHeader
         title="Media Library"
-        description="High-resolution photography, WebP architectural renders, and director portraits."
-        totalCount={18}
-        countLabel="optimized assets"
-        breadcrumbs={[{ label: 'Media' }, { label: 'Library' }]}
-        primaryAction={{
-          label: 'Upload Media',
-          href: '#upload',
-          icon: <UploadCloud className="w-4 h-4 text-white" />,
+        description="Centralized architectural photography, high-res renders, and executive portraits."
+        totalCount={count ?? 0}
+        countLabel="media assets"
+        breadcrumbs={[{ label: 'Assets' }, { label: 'Media Library' }]}
+        secondaryAction={{
+          label: 'Storage Bucket',
+          href: '#storage',
         }}
       />
 
-      <MediaClientGrid />
+      <MediaClientGrid initialAssets={assets || []} />
     </div>
   );
 }

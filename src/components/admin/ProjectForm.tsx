@@ -21,9 +21,12 @@ import {
   Globe,
   ImageIcon,
   ShieldCheck,
-  SplitSquareVertical
+  SplitSquareVertical,
+  UploadCloud
 } from 'lucide-react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
+import MediaPickerField from './MediaPickerField';
+import MediaLibraryModal from './MediaLibraryModal';
 
 export interface GalleryImage {
   url: string;
@@ -108,6 +111,7 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
   // New gallery image inputs
   const [newGalleryUrl, setNewGalleryUrl] = useState('');
   const [newGalleryCaption, setNewGalleryCaption] = useState('');
+  const [isGalleryPickerOpen, setIsGalleryPickerOpen] = useState(false);
 
   // Auto-generate slug from title for new projects
   const handleTitleChange = (val: string) => {
@@ -481,68 +485,51 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs font-sans">
-          <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-              Portfolio Grid Image Path *
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image
-                  src={formData.image_url}
-                  alt="Grid Preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <input
-                type="text"
-                required
-                value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Portfolio Grid Image"
+            value={formData.image_url}
+            onChange={(url) => setFormData({ ...formData, image_url: url })}
+            description="Featured card on /projects and highlights"
+            aspectRatio="landscape"
+            required
+          />
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-              Case Study Hero Image Path *
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image
-                  src={formData.hero_image_url}
-                  alt="Hero Preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <input
-                type="text"
-                required
-                value={formData.hero_image_url}
-                onChange={(e) => setFormData({ ...formData, hero_image_url: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Case Study Hero Image"
+            value={formData.hero_image_url}
+            onChange={(url) => setFormData({ ...formData, hero_image_url: url })}
+            description="Full-width header on project detail view"
+            aspectRatio="landscape"
+            required
+          />
         </div>
       </div>
 
       {/* 4. Project Gallery Manager */}
       <div className="p-6 sm:p-8 rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-6">
-        <div className="flex items-center space-x-3 border-b border-canvas-border pb-4">
-          <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
-            <Sliders className="w-5 h-5" />
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-canvas-border pb-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
+              <Sliders className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
+                CURATED GALLERY
+              </span>
+              <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+                Architectural Photo Gallery ({formData.gallery_images.length})
+              </h2>
+            </div>
           </div>
-          <div>
-            <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-              CURATED GALLERY
-            </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
-              Architectural Photo Gallery ({formData.gallery_images.length})
-            </h2>
-          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsGalleryPickerOpen(true)}
+            className="px-4 py-2 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-semibold uppercase tracking-wider flex items-center space-x-2 transition-colors shadow-soft-sm self-start sm:self-auto"
+          >
+            <UploadCloud className="w-3.5 h-3.5" />
+            <span>Select from Media Library</span>
+          </button>
         </div>
 
         {/* Existing Gallery List with Reordering */}
@@ -655,51 +642,21 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs font-sans">
-          <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-              Before Image Path *
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image
-                  src={formData.before_image_url}
-                  alt="Before Preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <input
-                type="text"
-                required
-                value={formData.before_image_url}
-                onChange={(e) => setFormData({ ...formData, before_image_url: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Before Transformation Photo"
+            value={formData.before_image_url}
+            onChange={(url) => setFormData({ ...formData, before_image_url: url })}
+            description="Existing property prior to redevelopment"
+            aspectRatio="landscape"
+          />
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-              After Image Path *
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image
-                  src={formData.after_image_url}
-                  alt="After Preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <input
-                type="text"
-                required
-                value={formData.after_image_url}
-                onChange={(e) => setFormData({ ...formData, after_image_url: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="After Transformation Photo"
+            value={formData.after_image_url}
+            onChange={(url) => setFormData({ ...formData, after_image_url: url })}
+            description="Finished residence with architectural intervention"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 
@@ -767,6 +724,21 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
         </button>
       </div>
 
+      {/* Multi-select Gallery Picker Modal */}
+      <MediaLibraryModal
+        isOpen={isGalleryPickerOpen}
+        onClose={() => setIsGalleryPickerOpen(false)}
+        multiple={true}
+        title="Select Images for Project Gallery"
+        onSelectMultiple={(urls) => {
+          const newItems = urls.map((u) => ({ url: u, caption: '' }));
+          setFormData((prev) => ({
+            ...prev,
+            gallery_images: [...prev.gallery_images, ...newItems],
+          }));
+          setIsGalleryPickerOpen(false);
+        }}
+      />
     </form>
   );
 }

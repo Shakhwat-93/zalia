@@ -18,6 +18,7 @@ import {
   EyeOff
 } from 'lucide-react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
+import MediaPickerField from './MediaPickerField';
 
 interface ApproachPageEditorProps {
   initialData: any;
@@ -335,22 +336,13 @@ export default function ApproachPageEditor({ initialData }: ApproachPageEditorPr
             />
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1.5">
-              Hero Image Path
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image src={heroImageUrl} alt="Hero Preview" fill className="object-cover" />
-              </div>
-              <input
-                type="text"
-                value={heroImageUrl}
-                onChange={(e) => setHeroImageUrl(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Hero Architecture Photo"
+            value={heroImageUrl}
+            onChange={setHeroImageUrl}
+            description="Hero frame on /approach"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 
@@ -461,27 +453,13 @@ export default function ApproachPageEditor({ initialData }: ApproachPageEditorPr
                 ))}
               </div>
 
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
-                  Stage Photography Asset Path
-                </label>
-                <div className="flex items-center space-x-3">
-                  <div className="relative w-10 h-10 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                    <Image
-                      src={stg.image_url || '/images/featured-project.webp'}
-                      alt="Stage Preview"
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    value={stg.image_url || ''}
-                    onChange={(e) => updateStageField(idx, 'image_url', e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-white border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-                  />
-                </div>
-              </div>
+              <MediaPickerField
+                label="Stage Photography Asset"
+                value={stg.image_url || ''}
+                onChange={(url) => updateStageField(idx, 'image_url', url)}
+                description="Visual demonstration of this methodology phase"
+                aspectRatio="landscape"
+              />
             </div>
           ))}
         </div>

@@ -19,6 +19,7 @@ import {
   EyeOff
 } from 'lucide-react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
+import MediaPickerField from './MediaPickerField';
 
 interface WhatWeDoPageEditorProps {
   initialData: any;
@@ -363,27 +364,13 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             />
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1.5">
-              Hero Image Path
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image
-                  src={heroImageUrl}
-                  alt="Hero Preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <input
-                type="text"
-                value={heroImageUrl}
-                onChange={(e) => setHeroImageUrl(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Hero Architecture Photo"
+            value={heroImageUrl}
+            onChange={setHeroImageUrl}
+            description="Hero header visual on /what-we-do"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 
@@ -456,22 +443,13 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             ))}
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1.5">
-              Pillar Image Path
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image src={acquireImage} alt="Acquire Preview" fill className="object-cover" />
-              </div>
-              <input
-                type="text"
-                value={acquireImage}
-                onChange={(e) => setAcquireImage(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Pillar 01 (Acquire) Image"
+            value={acquireImage}
+            onChange={setAcquireImage}
+            description="Opportunity sourcing & acquisition photography"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 
@@ -544,22 +522,13 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             ))}
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1.5">
-              Pillar Image Path
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image src={transformImage} alt="Transform Preview" fill className="object-cover" />
-              </div>
-              <input
-                type="text"
-                value={transformImage}
-                onChange={(e) => setTransformImage(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Pillar 02 (Transform) Image"
+            value={transformImage}
+            onChange={setTransformImage}
+            description="Structural reconfiguration & engineering visual"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 
@@ -632,22 +601,13 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             ))}
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1.5">
-              Pillar Image Path
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image src={createImage} alt="Create Preview" fill className="object-cover" />
-              </div>
-              <input
-                type="text"
-                value={createImage}
-                onChange={(e) => setCreateImage(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Pillar 03 (Create) Image"
+            value={createImage}
+            onChange={setCreateImage}
+            description="Turnkey luxury finished interior photography"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 

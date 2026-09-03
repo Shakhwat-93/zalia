@@ -21,6 +21,7 @@ import ResponsiveTable, { Column, TableAction } from '@/components/admin/Respons
 import StatusBadge from '@/components/admin/StatusBadge';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
+import MediaPickerField from '@/components/admin/MediaPickerField';
 
 export interface MemberRecord {
   id: string;
@@ -454,28 +455,14 @@ export default function TeamClientTable({
                 />
               </div>
 
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
-                  Portrait Photography Path *
-                </label>
-                <div className="flex items-center space-x-3">
-                  <div className="relative w-12 h-12 rounded-full overflow-hidden bg-charcoal-100 shrink-0 border border-canvas-border">
-                    {formImageUrl ? (
-                      <Image src={formImageUrl} alt="Preview" fill className="object-cover object-top" />
-                    ) : (
-                      <User className="w-5 h-5 text-charcoal-400 m-auto mt-3" />
-                    )}
-                  </div>
-                  <input
-                    type="text"
-                    required
-                    value={formImageUrl}
-                    onChange={(e) => setFormImageUrl(e.target.value)}
-                    placeholder="/images/Zaki shamseer.webp"
-                    className="w-full px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-                  />
-                </div>
-              </div>
+              <MediaPickerField
+                label="Portrait Photography"
+                value={formImageUrl}
+                onChange={(url) => setFormImageUrl(url)}
+                description="800x1000 WebP portrait"
+                aspectRatio="portrait"
+                required
+              />
 
               <div className="grid grid-cols-2 gap-3 pt-2">
                 <div>

@@ -19,6 +19,7 @@ import {
   EyeOff
 } from 'lucide-react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
+import MediaPickerField from './MediaPickerField';
 
 interface AboutPageEditorProps {
   initialData: any;
@@ -344,27 +345,13 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
             />
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1.5">
-              Hero Architectural Image Path
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image
-                  src={heroImageUrl}
-                  alt="Hero Preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <input
-                type="text"
-                value={heroImageUrl}
-                onChange={(e) => setHeroImageUrl(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Hero Architectural Image"
+            value={heroImageUrl}
+            onChange={setHeroImageUrl}
+            description="Full-bleed header visual on /about"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 
@@ -488,27 +475,13 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
             />
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1.5">
-              Philosophy Architectural Image Path
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image
-                  src={philosophyImageUrl}
-                  alt="Philosophy Preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <input
-                type="text"
-                value={philosophyImageUrl}
-                onChange={(e) => setPhilosophyImageUrl(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Philosophy Architectural Photography"
+            value={philosophyImageUrl}
+            onChange={setPhilosophyImageUrl}
+            description="Editorial photo showcasing brand perspective"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 
@@ -636,27 +609,13 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
             </div>
           </div>
 
-          <div>
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1.5">
-              Featured Image Path
-            </label>
-            <div className="flex items-center space-x-3">
-              <div className="relative w-12 h-12 rounded-xl bg-charcoal-100 overflow-hidden shrink-0 border border-canvas-border">
-                <Image
-                  src={visualStoryImageUrl}
-                  alt="Visual Story Preview"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <input
-                type="text"
-                value={visualStoryImageUrl}
-                onChange={(e) => setVisualStoryImageUrl(e.target.value)}
-                className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-              />
-            </div>
-          </div>
+          <MediaPickerField
+            label="Metamorphosis Story Image"
+            value={visualStoryImageUrl}
+            onChange={setVisualStoryImageUrl}
+            description="Large visual demonstration frame"
+            aspectRatio="landscape"
+          />
         </div>
       </div>
 
