@@ -7,12 +7,44 @@ import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { FEATURED_PROJECTS_CONTENT } from '@/data/content';
 
-export default function HomeProjects() {
+interface ProjectItem {
+  id: string;
+  slug: string;
+  title: string;
+  location: string;
+  category: string;
+  status?: string;
+  status_badge?: string;
+  image?: string;
+  image_url?: string;
+}
+
+interface HomeProjectsProps {
+  data?: {
+    eyebrow?: string;
+    headline?: string;
+    primary_cta_label?: string;
+    primary_cta_href?: string;
+  };
+  featuredProjects?: ProjectItem[];
+}
+
+export default function HomeProjects({ data, featuredProjects }: HomeProjectsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
 
-  // Only 3 featured projects on the homepage
-  const selectedProjects = FEATURED_PROJECTS_CONTENT.slice(0, 3);
+  const eyebrow = data?.eyebrow || 'PORTFOLIO HIGHLIGHTS';
+  const headline = data?.headline || 'SELECTED PROJECTS';
+  const ctaLabel = data?.primary_cta_label || 'View All Projects';
+  const ctaHref = data?.primary_cta_href || '/projects';
+
+  // Use database featured projects if available, otherwise static fallback
+  const rawProjects =
+    featuredProjects && featuredProjects.length > 0
+      ? featuredProjects
+      : FEATURED_PROJECTS_CONTENT;
+
+  const selectedProjects = rawProjects.slice(0, 3);
 
   return (
     <section
@@ -25,7 +57,7 @@ export default function HomeProjects() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-2">
           <div className="space-y-3 text-left">
             <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
-              PORTFOLIO HIGHLIGHTS
+              {eyebrow}
             </div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
@@ -33,71 +65,76 @@ export default function HomeProjects() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
             >
-              SELECTED PROJECTS
+              {headline}
             </motion.h2>
           </div>
 
           <Link
-            href="/projects"
+            href={ctaHref}
             className="btn-magnetic inline-flex items-center space-x-3 px-7 py-3.5 rounded-full bg-[#07381E] text-white hover:bg-[#052B17] text-[13px] font-sans font-medium uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group self-start sm:self-auto shrink-0"
           >
-            <span>View All Projects</span>
+            <span>{ctaLabel}</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
 
         {/* 3 Compact Project Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {selectedProjects.map((project, idx) => (
-            <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-3xl overflow-hidden border border-canvas-border bg-white p-6 space-y-6 shadow-soft-sm hover:shadow-soft-xl hover:border-emerald-brand/35 transition-all duration-350 group flex flex-col justify-between"
-            >
-              <div className="space-y-5 text-left">
-                <Link
-                  href={'/projects/' + project.slug}
-                  className="relative h-[260px] sm:h-[300px] w-full rounded-2xl overflow-hidden bg-canvas-warm block"
-                >
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    loading="lazy"
-                    quality={85}
-                    className="object-cover object-center transition-transform duration-700 ease-editorial group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
-                    {project.status}
-                  </div>
-                </Link>
+          {selectedProjects.map((project: any, idx) => {
+            const imgSrc = project.image_url || project.image || '/images/hero-model.webp';
+            const statusText = project.status_badge || project.status || 'COMPLETED';
 
-                <div className="space-y-2">
-                  <div className="text-xs font-sans font-semibold uppercase tracking-[0.16em] text-emerald-brand">
-                    {project.location} · {project.category}
+            return (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: idx * 0.12, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-3xl overflow-hidden border border-canvas-border bg-white p-6 space-y-6 shadow-soft-sm hover:shadow-soft-xl hover:border-emerald-brand/35 transition-all duration-350 group flex flex-col justify-between"
+              >
+                <div className="space-y-5 text-left">
+                  <Link
+                    href={'/projects/' + project.slug}
+                    className="relative h-[260px] sm:h-[300px] w-full rounded-2xl overflow-hidden bg-canvas-warm block"
+                  >
+                    <Image
+                      src={imgSrc}
+                      alt={project.title}
+                      fill
+                      loading="lazy"
+                      quality={85}
+                      className="object-cover object-center transition-transform duration-700 ease-editorial group-hover:scale-105"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[10px] font-sans font-semibold uppercase tracking-wider text-charcoal-900 shadow-sm">
+                      {statusText}
+                    </div>
+                  </Link>
+
+                  <div className="space-y-2">
+                    <div className="text-xs font-sans font-semibold uppercase tracking-[0.16em] text-emerald-brand">
+                      {project.location} · {project.category}
+                    </div>
+                    <Link href={'/projects/' + project.slug} className="block group-hover:text-emerald-brand transition-colors">
+                      <h3 className="font-serif text-2xl font-medium text-charcoal-950 leading-tight">
+                        {project.title}
+                      </h3>
+                    </Link>
                   </div>
-                  <Link href={'/projects/' + project.slug} className="block group-hover:text-emerald-brand transition-colors">
-                    <h3 className="font-serif text-2xl font-medium text-charcoal-950 leading-tight">
-                      {project.title}
-                    </h3>
+                </div>
+
+                <div className="pt-4 border-t border-canvas-border text-left">
+                  <Link
+                    href={'/projects/' + project.slug}
+                    className="inline-flex items-center space-x-2 text-[12.5px] font-sans font-medium uppercase tracking-[0.14em] text-charcoal-950 group-hover:text-emerald-brand transition-colors"
+                  >
+                    <span>View Project</span>
+                    <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
                   </Link>
                 </div>
-              </div>
-
-              <div className="pt-4 border-t border-canvas-border text-left">
-                <Link
-                  href={'/projects/' + project.slug}
-                  className="inline-flex items-center space-x-2 text-[12.5px] font-sans font-medium uppercase tracking-[0.14em] text-charcoal-950 group-hover:text-emerald-brand transition-colors"
-                >
-                  <span>View Project</span>
-                  <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>

@@ -9,13 +9,28 @@ import { HERO_CONTENT } from '@/data/content';
 
 interface HeroProps {
   onOpenContact?: () => void;
+  data?: {
+    eyebrow?: string;
+    headline?: string;
+    subheadline?: string;
+    primary_cta_label?: string;
+    primary_cta_href?: string;
+    secondary_cta_label?: string;
+    secondary_cta_href?: string;
+    media_url?: string;
+  };
 }
 
-export default function Hero({ onOpenContact }: HeroProps) {
+export default function Hero({ onOpenContact, data }: HeroProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedLocation, setSelectedLocation] = useState('London & Prime UK');
   const [selectedType, setSelectedType] = useState('Residential Transformation');
   const [selectedStandard, setSelectedStandard] = useState('Turnkey & Architectural');
+
+  const eyebrow = data?.eyebrow || 'ACQUIRE • TRANSFORM • CREATE';
+  const headline = data?.headline || 'WE BUY. WE TRANSFORM. WE CREATE.';
+  const subheadline = data?.subheadline || 'We identify residential properties with potential and transform them into exceptional homes designed for modern British living.';
+  const heroImage = data?.media_url || HERO_CONTENT.image;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -37,7 +52,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
         {/* Full-bleed Architectural Villa Background */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none overflow-hidden">
           <Image
-            src={HERO_CONTENT.image}
+            src={heroImage}
             alt="Zalia Properties Architectural Villa"
             fill
             priority
@@ -61,7 +76,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
           >
             <Compass className="w-3.5 h-3.5 text-gold-accent" />
             <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.18em]">
-              ACQUIRE • TRANSFORM • CREATE
+              {eyebrow}
             </span>
           </motion.div>
 
@@ -104,9 +119,15 @@ export default function Hero({ onOpenContact }: HeroProps) {
             transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
             className="font-serif text-5xl sm:text-6xl lg:text-7xl font-medium tracking-tight text-white leading-[1.04]"
           >
-            <span className="block text-white">WE BUY.</span>
-            <span className="block text-emerald-light italic font-normal">WE TRANSFORM.</span>
-            <span className="block text-white">WE CREATE.</span>
+            {headline.includes('WE TRANSFORM.') ? (
+              <>
+                <span className="block text-white">WE BUY.</span>
+                <span className="block text-emerald-light italic font-normal">WE TRANSFORM.</span>
+                <span className="block text-white">WE CREATE.</span>
+              </>
+            ) : (
+              <span className="block text-white">{headline}</span>
+            )}
           </motion.h1>
 
           <motion.p
@@ -115,7 +136,7 @@ export default function Hero({ onOpenContact }: HeroProps) {
             transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
             className="text-base sm:text-lg text-white/90 font-sans leading-relaxed font-normal max-w-xl"
           >
-            We identify residential properties with potential and transform them into exceptional homes designed for modern British living.
+            {subheadline}
           </motion.p>
         </div>
 
