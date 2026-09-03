@@ -2,14 +2,13 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { Search, KeyRound, Compass, Sparkles, Home } from 'lucide-react';
+import { Search, KeyRound, Compass, Sparkles, Home, CheckCircle2 } from 'lucide-react';
 
 const DETAILED_STAGES = [
   {
     number: '01',
     name: 'IDENTIFY',
     title: "Understand The Property's Potential",
-    icon: Search,
     summary:
       'We look past cosmetic decay, awkward floorplans, and dated finishes to uncover inherent volume, daylight orientation, and structural possibilities.',
     details: [
@@ -22,7 +21,6 @@ const DETAILED_STAGES = [
     number: '02',
     name: 'ACQUIRE',
     title: 'Select Opportunities With Genuine Potential',
-    icon: KeyRound,
     summary:
       'Disciplined property acquisition backed by rigorous underwriting. We only commit to properties where our architectural vision can unlock meaningful value.',
     details: [
@@ -35,7 +33,6 @@ const DETAILED_STAGES = [
     number: '03',
     name: 'TRANSFORM',
     title: 'Reimagine The Space Through Thoughtful Design',
-    icon: Compass,
     summary:
       'Structural reconfiguration that liberates interior flow. Introducing floor-to-ceiling glass pavilions, double-height volumes, and courtyard integration.',
     details: [
@@ -48,7 +45,6 @@ const DETAILED_STAGES = [
     number: '04',
     name: 'REFINE',
     title: 'Focus On Materials, Details And Quality',
-    icon: Sparkles,
     summary:
       'Every tactile touchpoint is selected with permanence in mind. Natural Portuguese limestone, oiled oak joinery, slimline steel fenestration, and silent acoustic envelopes.',
     details: [
@@ -60,21 +56,39 @@ const DETAILED_STAGES = [
   {
     number: '05',
     name: 'CREATE',
-    title: 'Deliver Exceptional Homes',
-    icon: Home,
+    title: 'Deliver A Finished Home Designed For Living',
     summary:
-      'The culmination of the process: complete, turnkey residences designed around effortless luxury, timeless British character, and enduring longevity.',
+      'The finished property is delivered turnkey — ready for discerning homeowners who prioritize understated luxury, serene acoustics, and enduring aesthetics.',
     details: [
-      'Turnkey move-in readiness with curated interior detailing',
-      'Homes conceived for daily warmth and generational resilience',
-      'An elevated residential standard true to the Zalia signature',
+      'Turnkey handover with bespoke architectural manual and warranties',
+      'Enduring environmental efficiency and thermal envelope excellence',
+      'Timeless residential character that appreciates with longevity',
     ],
   },
 ];
 
-export default function ApproachStages() {
+const STAGE_ICONS: Record<string, any> = {
+  IDENTIFY: Search,
+  ACQUIRE: KeyRound,
+  TRANSFORM: Compass,
+  REFINE: Sparkles,
+  CREATE: Home,
+};
+
+const DEFAULT_ICONS = [Search, KeyRound, Compass, Sparkles, Home];
+
+interface ApproachStagesProps {
+  stages?: any[];
+}
+
+export default function ApproachStages({ stages }: ApproachStagesProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+
+  const activeStages =
+    stages && stages.length > 0
+      ? stages.filter((s: any) => s.visibility !== false)
+      : DETAILED_STAGES;
 
   return (
     <section
@@ -103,11 +117,15 @@ export default function ApproachStages() {
 
         {/* 5 Stages Alternating Editorial Cards */}
         <div className="space-y-8 lg:space-y-12">
-          {DETAILED_STAGES.map((stage, idx) => {
-            const Icon = stage.icon;
+          {activeStages.map((stage: any, idx: number) => {
+            const Icon =
+              STAGE_ICONS[stage.name?.toUpperCase()] ||
+              DEFAULT_ICONS[idx % DEFAULT_ICONS.length] ||
+              CheckCircle2;
+
             return (
               <motion.div
-                key={stage.number}
+                key={stage.number || idx}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
@@ -140,16 +158,16 @@ export default function ApproachStages() {
                     {stage.summary}
                   </p>
 
-                  <div className="space-y-2.5 pt-2">
-                    {stage.details.map((detail, dIdx) => (
-                      <div key={dIdx} className="flex items-start space-x-3">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-brand mt-2 shrink-0" />
-                        <span className="text-xs sm:text-sm text-charcoal-600 font-sans leading-relaxed">
-                          {detail}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
+                  {stage.details && stage.details.length > 0 && (
+                    <div className="space-y-3 pt-2">
+                      {stage.details.map((detail: string, dIdx: number) => (
+                        <div key={dIdx} className="flex items-start space-x-3 text-sm text-charcoal-600 font-sans">
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-brand mt-2 shrink-0" />
+                          <span>{detail}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </motion.div>
             );

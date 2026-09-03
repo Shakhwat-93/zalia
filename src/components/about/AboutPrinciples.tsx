@@ -22,9 +22,19 @@ const PRINCIPLES = [
   },
 ];
 
-export default function AboutPrinciples() {
+interface AboutPrinciplesProps {
+  principles?: {
+    number: string;
+    title: string;
+    description: string;
+  }[];
+}
+
+export default function AboutPrinciples({ principles }: AboutPrinciplesProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+
+  const activePrinciples = principles && principles.length > 0 ? principles : PRINCIPLES;
 
   return (
     <section
@@ -51,7 +61,7 @@ export default function AboutPrinciples() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-10">
-          {PRINCIPLES.map((principle, idx) => (
+          {activePrinciples.map((principle, idx) => (
             <motion.div
               key={principle.number}
               initial={{ opacity: 0, y: 30 }}

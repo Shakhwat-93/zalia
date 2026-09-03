@@ -4,7 +4,17 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 
-export default function AcquireSection() {
+interface AcquireSectionProps {
+  acquire?: {
+    pillar?: string;
+    title?: string;
+    description?: string;
+    points?: string[];
+    image_url?: string;
+  };
+}
+
+export default function AcquireSection({ acquire }: AcquireSectionProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
 
@@ -14,6 +24,18 @@ export default function AcquireSection() {
   });
 
   const imageY = useTransform(scrollYProgress, [0, 1], [-25, 25]);
+
+  const displayPillar = acquire?.pillar || '01 — ACQUIRE';
+  const displayTitle = acquire?.title || 'Identifying Unrealized Architectural Potential';
+  const displayDesc =
+    acquire?.description ||
+    'We identify residential properties where thoughtful development can unlock something more.';
+  const displayImage = acquire?.image_url || '/images/before-split.webp';
+  const points = acquire?.points || [
+    'Discreet off-market sourcing across London and prime UK enclaves',
+    'Rapid structural appraisal and feasibility modeling',
+    'Disciplined underwriting with long-term value perspective',
+  ];
 
   return (
     <section
@@ -25,21 +47,18 @@ export default function AcquireSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Narrative */}
-          <div className="lg:col-span-6 space-y-8 text-left">
+          <div className="lg:col-span-6 space-y-6 text-left">
             <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
-              01 — ACQUIRE
+              {displayPillar}
             </div>
 
             <motion.h2
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
+              className="font-serif text-3xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
             >
-              FINDING
-              <span className="block text-emerald-brand italic font-normal mt-1">
-                THE POTENTIAL.
-              </span>
+              {displayTitle}
             </motion.h2>
 
             <motion.p
@@ -48,8 +67,19 @@ export default function AcquireSection() {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="text-base sm:text-lg text-charcoal-600 font-sans leading-relaxed font-normal max-w-lg"
             >
-              We identify residential properties where thoughtful development can unlock something more.
+              {displayDesc}
             </motion.p>
+
+            {points && points.length > 0 && (
+              <ul className="space-y-2.5 pt-2 text-xs font-sans text-charcoal-700">
+                {points.map((pt: string, idx: number) => (
+                  <li key={idx} className="flex items-start space-x-2.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-brand mt-1.5 shrink-0" />
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
 
           {/* Right Image */}
@@ -62,7 +92,7 @@ export default function AcquireSection() {
               className="relative h-[420px] sm:h-[500px] lg:h-[580px] w-full rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-white group"
             >
               <Image
-                src="/images/before-split.webp"
+                src={displayImage}
                 alt="Zalia Acquisition Property Potential"
                 fill
                 quality={95}

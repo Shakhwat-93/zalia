@@ -47,11 +47,21 @@ const JOURNEY_STAGES = [
   },
 ];
 
-export default function TransformationJourney() {
+interface TransformationJourneyProps {
+  journeyStages?: {
+    number: string;
+    title: string;
+    description: string;
+  }[];
+}
+
+export default function TransformationJourney({ journeyStages }: TransformationJourneyProps = {}) {
   const [activeStage, setActiveStage] = useState(0);
   const [viewMode, setViewMode] = useState<'3d' | 'exploded'>('3d');
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+
+  const stages = journeyStages && journeyStages.length > 0 ? journeyStages : JOURNEY_STAGES;
 
   return (
     <section
@@ -130,7 +140,7 @@ export default function TransformationJourney() {
           </div>
 
           <div className="lg:col-span-4 flex flex-col space-y-3.5">
-            {JOURNEY_STAGES.map((stage, idx) => {
+            {stages.map((stage, idx) => {
               const isActive = activeStage === idx;
               return (
                 <button

@@ -22,15 +22,6 @@ export default async function AdminTeamPage() {
         totalCount={count ?? 0}
         countLabel="directors"
         breadcrumbs={[{ label: 'Content' }, { label: 'Team' }]}
-        primaryAction={{
-          label: 'Add Member',
-          href: '#add-member',
-          icon: <Plus className="w-4 h-4 text-white" />,
-        }}
-        secondaryAction={{
-          label: 'Export Roster',
-          href: '#export',
-        }}
       />
 
       <TeamClientTable initialMembers={members || []} />

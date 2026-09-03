@@ -5,7 +5,17 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
-export default function AboutPhilosophy() {
+interface AboutPhilosophyProps {
+  philosophy?: {
+    eyebrow?: string;
+    heading?: string;
+    body_p1?: string;
+    body_p2?: string;
+    image_url?: string;
+  };
+}
+
+export default function AboutPhilosophy({ philosophy }: AboutPhilosophyProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
 
@@ -15,6 +25,16 @@ export default function AboutPhilosophy() {
   });
 
   const imageY = useTransform(scrollYProgress, [0, 1], [-25, 25]);
+
+  const displayEyebrow = philosophy?.eyebrow || 'OUR PHILOSOPHY';
+  const displayHeading = philosophy?.heading || "WE DON'T SIMPLY DEVELOP.\nWE REIMAGINE LIVING.";
+  const displayP1 =
+    philosophy?.body_p1 ||
+    'We believe every property has an opportunity to become something better. Our approach combines careful acquisition, thoughtful transformation and a focus on creating quality homes.';
+  const displayP2 = philosophy?.body_p2 || '';
+  const displayImage = philosophy?.image_url || '/images/brand-statement.webp';
+
+  const headingLines = displayHeading.split('\n');
 
   return (
     <section
@@ -35,7 +55,7 @@ export default function AboutPhilosophy() {
               className="relative h-[420px] sm:h-[500px] lg:h-[580px] w-full rounded-3xl overflow-hidden shadow-soft-xl border border-canvas-border bg-white group"
             >
               <Image
-                src="/images/brand-statement.webp"
+                src={displayImage}
                 alt="Zalia Properties Architectural Philosophy"
                 fill
                 quality={95}
@@ -48,7 +68,7 @@ export default function AboutPhilosophy() {
           {/* Right: Philosophy Narrative */}
           <div className="lg:col-span-6 space-y-8">
             <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
-              OUR PHILOSOPHY
+              {displayEyebrow}
             </div>
 
             <motion.h2
@@ -57,11 +77,12 @@ export default function AboutPhilosophy() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
             >
-              WE DON&apos;T SIMPLY
-              <span className="block text-charcoal-950">BUY PROPERTY.</span>
-              <span className="block text-emerald-brand italic font-normal mt-2">
-                WE SEE POTENTIAL.
-              </span>
+              {headingLines[0]}
+              {headingLines[1] && (
+                <span className="block text-emerald-brand italic font-normal mt-2">
+                  {headingLines.slice(1).join(' ')}
+                </span>
+              )}
             </motion.h2>
 
             <motion.p
@@ -70,8 +91,19 @@ export default function AboutPhilosophy() {
               transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
               className="text-base sm:text-lg text-charcoal-600 font-sans leading-relaxed font-normal max-w-lg"
             >
-              We believe every property has an opportunity to become something better. Our approach combines careful acquisition, thoughtful transformation and a focus on creating quality homes.
+              {displayP1}
             </motion.p>
+
+            {displayP2 && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="text-base sm:text-lg text-charcoal-600 font-sans leading-relaxed font-normal max-w-lg"
+              >
+                {displayP2}
+              </motion.p>
+            )}
 
             <motion.div
               initial={{ opacity: 0, y: 20 }}

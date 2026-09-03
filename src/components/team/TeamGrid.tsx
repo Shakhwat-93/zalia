@@ -1,13 +1,41 @@
 'use client';
 
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { TEAM_CONTENT } from '@/data/content';
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 
-export default function TeamGrid() {
+interface TeamGridProps {
+  initialMembers?: any[];
+}
+
+export default function TeamGrid({ initialMembers }: TeamGridProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-80px' });
+  const [members, setMembers] = useState<any[]>(initialMembers || TEAM_CONTENT.members);
+
+  useEffect(() => {
+    async function loadMembers() {
+      try {
+        const supabase = createBrowserSupabaseClient();
+        const { data } = await supabase
+          .from('team_members')
+          .select('*')
+          .eq('status', 'published')
+          .order('sort_order', { ascending: true });
+
+        if (data && data.length > 0) {
+          setMembers(data);
+        }
+      } catch {
+        // graceful fallback to initial static content
+      }
+    }
+    if (!initialMembers) {
+      loadMembers();
+    }
+  }, [initialMembers]);
 
   return (
     <section
@@ -26,50 +54,67 @@ export default function TeamGrid() {
             </h2>
           </div>
           <span className="text-xs font-sans font-semibold uppercase tracking-widest text-charcoal-500 self-start sm:self-auto">
-            {TEAM_CONTENT.members.length} LEADERS • UK RESIDENTIAL
+            {members.length} LEADERS • UK RESIDENTIAL
           </span>
         </div>
 
         {/* 3-Column Editorial Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-          {TEAM_CONTENT.members.map((member, idx) => (
-            <motion.div
-              key={member.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-3xl bg-white border border-canvas-border p-6 sm:p-7 space-y-6 shadow-soft-sm hover:shadow-soft-xl hover:border-emerald-brand/40 transition-all duration-400 group text-left"
-            >
-              {/* Portrait Aspect Ratio */}
-              <div className="relative w-full aspect-[4/5] rounded-2xl bg-canvas-warm overflow-hidden flex items-center justify-center text-charcoal-900 font-serif text-3xl font-medium">
-                {member.image ? (
-                  <Image
-                    src={member.image}
-                    alt={member.name}
-                    fill
-                    loading="lazy"
-                    quality={82}
-                    className="object-cover object-top transition-transform duration-700 ease-editorial group-hover:scale-104"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                ) : (
-                  <span className="group-hover:text-emerald-brand transition-colors">
-                    {member.initials}
-                  </span>
-                )}
-              </div>
+          {members.map((member, idx) => {
+            const imgSrc = member.image_url || member.image;
+            const initials =
+              member.initials ||
+              member.name
+                .split(' ')
+                .map((n: string) => n[0])
+                .slice(0, 2)
+                .join('')
+                .toUpperCase();
 
-              {/* Information Block */}
-              <div className="space-y-1.5 pt-1">
-                <h3 className="font-serif text-2xl font-medium text-charcoal-950 group-hover:text-emerald-brand transition-colors">
-                  {member.name}
-                </h3>
-                <p className="text-xs sm:text-sm font-sans text-charcoal-500 font-normal">
-                  {member.role}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+            return (
+              <motion.div
+                key={member.id || member.name}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.8, delay: idx * 0.1, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-3xl bg-white border border-canvas-border p-6 sm:p-7 space-y-6 shadow-soft-sm hover:shadow-soft-xl hover:border-emerald-brand/40 transition-all duration-400 group text-left"
+              >
+                {/* Portrait Aspect Ratio */}
+                <div className="relative w-full aspect-[4/5] rounded-2xl bg-canvas-warm overflow-hidden flex items-center justify-center text-charcoal-900 font-serif text-3xl font-medium">
+                  {imgSrc ? (
+                    <Image
+                      src={imgSrc}
+                      alt={member.name}
+                      fill
+                      loading="lazy"
+                      quality={82}
+                      className="object-cover object-top transition-transform duration-700 ease-editorial group-hover:scale-104"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <span className="group-hover:text-emerald-brand transition-colors">
+                      {initials}
+                    </span>
+                  )}
+                </div>
+
+                {/* Information Block */}
+                <div className="space-y-1.5 pt-1">
+                  <h3 className="font-serif text-2xl font-medium text-charcoal-950 group-hover:text-emerald-brand transition-colors">
+                    {member.name}
+                  </h3>
+                  <p className="text-xs sm:text-sm font-sans text-charcoal-500 font-normal">
+                    {member.role}
+                  </p>
+                  {member.bio && (
+                    <p className="text-xs font-sans text-charcoal-600 font-normal leading-relaxed pt-1">
+                      {member.bio}
+                    </p>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })}
         </div>
 
       </div>

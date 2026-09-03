@@ -1,62 +1,51 @@
-'use client';
+import React from 'react';
+import type { Metadata } from 'next';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
+import WhatWeDoPageClient from './WhatWeDoPageClient';
 
-import { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import WhatWeDoHero from '@/components/what-we-do/WhatWeDoHero';
-import CoreCapabilities from '@/components/what-we-do/CoreCapabilities';
-import AcquireSection from '@/components/what-we-do/AcquireSection';
-import TransformSection from '@/components/what-we-do/TransformSection';
-import CreateSection from '@/components/what-we-do/CreateSection';
-import TransformationJourney from '@/components/what-we-do/TransformationJourney';
-import ValuePrinciples from '@/components/what-we-do/ValuePrinciples';
-import ProjectTransition from '@/components/what-we-do/ProjectTransition';
-import FinalCTA from '@/components/FinalCTA';
-import Footer from '@/components/Footer';
-import ContactModal from '@/components/ContactModal';
+export const dynamic = 'force-dynamic';
 
-export default function WhatWeDoPage() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
+export async function generateMetadata(): Promise<Metadata> {
+  const supabase = createServerSupabaseClient();
+  try {
+    const { data: page } = await supabase
+      .from('pages')
+      .select('seo_title, seo_description, title, description')
+      .eq('slug', 'what-we-do')
+      .single();
 
-  const handleOpenContact = () => setIsContactOpen(true);
-  const handleCloseContact = () => setIsContactOpen(false);
+    if (page) {
+      return {
+        title: page.seo_title || page.title || 'What We Do | Acquire • Transform • Create | Zalia Properties',
+        description: page.seo_description || page.description || 'Explore Zalia Properties three-pillar development model.',
+      };
+    }
+  } catch {
+    // fallback
+  }
 
-  return (
-    <main className="min-h-screen bg-canvas text-charcoal-950 selection:bg-emerald-brand selection:text-white relative">
-      {/* 01 — Reusable Navbar */}
-      <Navbar onOpenContact={handleOpenContact} />
+  return {
+    title: 'What We Do | Acquire • Transform • Create | Zalia Properties',
+  };
+}
 
-      {/* 02 — What We Do Hero */}
-      <WhatWeDoHero />
+export default async function WhatWeDoPage() {
+  const supabase = createServerSupabaseClient();
+  let pageData: any = null;
 
-      {/* 03 — Three Core Capabilities */}
-      <CoreCapabilities />
+  try {
+    const { data } = await supabase
+      .from('pages')
+      .select('*')
+      .eq('slug', 'what-we-do')
+      .single();
 
-      {/* 04 — Acquire Section */}
-      <AcquireSection />
+    if (data) {
+      pageData = data;
+    }
+  } catch (err) {
+    console.error('Failed to fetch what-we-do page:', err);
+  }
 
-      {/* 05 — Transform Section */}
-      <TransformSection />
-
-      {/* 06 — Create Section */}
-      <CreateSection />
-
-      {/* 07 — 3D Transformation Journey */}
-      <TransformationJourney />
-
-      {/* 08 — How We Add Value */}
-      <ValuePrinciples />
-
-      {/* 09 — Featured Project Transition */}
-      <ProjectTransition />
-
-      {/* 10 — Reusable Final CTA */}
-      <FinalCTA onOpenContact={handleOpenContact} />
-
-      {/* 11 — Reusable Footer */}
-      <Footer />
-
-      {/* Global Interactive Contact Drawer */}
-      <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
-    </main>
-  );
+  return <WhatWeDoPageClient pageData={pageData} />;
 }

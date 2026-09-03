@@ -6,9 +6,31 @@ import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 
-export default function AboutVisualStory() {
+interface AboutVisualStoryProps {
+  visualStory?: {
+    eyebrow?: string;
+    heading?: string;
+    description?: string;
+    image_url?: string;
+    cta_text?: string;
+    cta_url?: string;
+  };
+}
+
+export default function AboutVisualStory({ visualStory }: AboutVisualStoryProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: '-100px' });
+
+  const displayEyebrow = visualStory?.eyebrow || 'ARCHITECTURAL METAMORPHOSIS';
+  const displayHeading = visualStory?.heading || 'FROM WHAT IS\nTO WHAT COULD BE.';
+  const displayDesc =
+    visualStory?.description ||
+    'Every project begins with potential and ends with a home thoughtfully shaped for modern life.';
+  const displayImage = visualStory?.image_url || '/images/3d-transformation.webp';
+  const displayCtaText = visualStory?.cta_text || 'Explore Our Projects';
+  const displayCtaUrl = visualStory?.cta_url || '/projects';
+
+  const headingLines = displayHeading.split('\n');
 
   return (
     <section
@@ -20,7 +42,7 @@ export default function AboutVisualStory() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6">
           <div className="space-y-3 max-w-2xl">
             <div className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
-              ARCHITECTURAL METAMORPHOSIS
+              {displayEyebrow}
             </div>
             <motion.h2
               initial={{ opacity: 0, y: 24 }}
@@ -28,21 +50,23 @@ export default function AboutVisualStory() {
               transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
               className="font-serif text-4xl sm:text-5xl lg:text-6xl text-charcoal-950 font-medium leading-[1.08] tracking-tight"
             >
-              FROM WHAT IS
-              <span className="block text-emerald-brand italic font-normal mt-1">
-                TO WHAT COULD BE.
-              </span>
+              {headingLines[0]}
+              {headingLines[1] && (
+                <span className="block text-emerald-brand italic font-normal mt-1">
+                  {headingLines.slice(1).join(' ')}
+                </span>
+              )}
             </motion.h2>
             <p className="text-base text-charcoal-600 font-sans leading-relaxed font-normal pt-1">
-              Every project begins with potential and ends with a home thoughtfully shaped for modern life.
+              {displayDesc}
             </p>
           </div>
 
           <Link
-            href="/#projects"
+            href={displayCtaUrl}
             className="btn-magnetic inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-charcoal-950 text-white hover:bg-emerald-brand text-[13px] font-sans font-semibold uppercase tracking-[0.14em] transition-all duration-300 shadow-soft-sm group self-start sm:self-auto shrink-0"
           >
-            <span>Explore Our Projects</span>
+            <span>{displayCtaText}</span>
             <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
@@ -54,7 +78,7 @@ export default function AboutVisualStory() {
           className="relative h-[420px] sm:h-[560px] lg:h-[660px] w-full rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-canvas-border shadow-soft-xl bg-white group"
         >
           <Image
-            src="/images/3d-transformation.webp"
+            src={displayImage}
             alt="Zalia Properties Architectural Transformation"
             fill
             quality={95}

@@ -73,10 +73,20 @@ export default function PagesClientTable({
       },
     },
     {
-      label: 'Edit Meta Content',
+      label: 'Edit Page CMS',
       icon: Edit2,
       onClick: (p) => {
-        alert(`Page editor for "/${p.slug}" will open in CMS editor.`);
+        if (p.slug === 'home') {
+          window.location.href = '/admin/homepage';
+        } else if (p.slug === 'team') {
+          window.location.href = '/admin/team';
+        } else if (p.slug === 'projects') {
+          window.location.href = '/admin/projects';
+        } else if (p.slug === 'contact') {
+          window.location.href = '/admin/contact';
+        } else {
+          window.location.href = `/admin/pages/${p.slug}`;
+        }
       },
     },
   ];

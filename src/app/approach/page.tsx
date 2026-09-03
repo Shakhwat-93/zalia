@@ -1,46 +1,51 @@
-'use client';
+import React from 'react';
+import type { Metadata } from 'next';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
+import ApproachPageClient from './ApproachPageClient';
 
-import { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import ApproachHero from '@/components/approach/ApproachHero';
-import ApproachStages from '@/components/approach/ApproachStages';
-import Property3DSection from '@/components/Property3DSection';
-import BeforeAfterSlider from '@/components/BeforeAfterSlider';
-import FinalCTA from '@/components/FinalCTA';
-import Footer from '@/components/Footer';
-import ContactModal from '@/components/ContactModal';
+export const dynamic = 'force-dynamic';
 
-export default function ApproachPage() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
+export async function generateMetadata(): Promise<Metadata> {
+  const supabase = createServerSupabaseClient();
+  try {
+    const { data: page } = await supabase
+      .from('pages')
+      .select('seo_title, seo_description, title, description')
+      .eq('slug', 'approach')
+      .single();
 
-  const handleOpenContact = () => setIsContactOpen(true);
-  const handleCloseContact = () => setIsContactOpen(false);
+    if (page) {
+      return {
+        title: page.seo_title || page.title || 'Our Approach | Disciplined 5-Stage Methodology | Zalia Properties',
+        description: page.seo_description || page.description || 'Discover the 5-stage Zalia methodology.',
+      };
+    }
+  } catch {
+    // fallback
+  }
 
-  return (
-    <main className="min-h-screen bg-canvas text-charcoal-950 selection:bg-emerald-brand selection:text-white relative">
-      {/* 01 — Route-Based Navbar */}
-      <Navbar onOpenContact={handleOpenContact} />
+  return {
+    title: 'Our Approach | Disciplined 5-Stage Methodology | Zalia Properties',
+  };
+}
 
-      {/* 02 — Approach Hero */}
-      <ApproachHero />
+export default async function ApproachPage() {
+  const supabase = createServerSupabaseClient();
+  let pageData: any = null;
 
-      {/* 03 — 5-Phase Detailed Stages */}
-      <ApproachStages />
+  try {
+    const { data } = await supabase
+      .from('pages')
+      .select('*')
+      .eq('slug', 'approach')
+      .single();
 
-      {/* 04 — Interactive 3D Metamorphosis */}
-      <Property3DSection />
+    if (data) {
+      pageData = data;
+    }
+  } catch (err) {
+    console.error('Failed to fetch approach page:', err);
+  }
 
-      {/* 05 — Before → After Split Inspection */}
-      <BeforeAfterSlider />
-
-      {/* 06 — Reusable Final CTA */}
-      <FinalCTA onOpenContact={handleOpenContact} />
-
-      {/* 07 — Architectural Footer */}
-      <Footer />
-
-      {/* Interactive Contact Drawer */}
-      <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
-    </main>
-  );
+  return <ApproachPageClient pageData={pageData} />;
 }

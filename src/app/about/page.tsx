@@ -1,62 +1,51 @@
-'use client';
+import React from 'react';
+import type { Metadata } from 'next';
+import { createServerSupabaseClient } from '@/lib/supabase-server';
+import AboutPageClient from './AboutPageClient';
 
-import { useState } from 'react';
-import Navbar from '@/components/Navbar';
-import AboutHero from '@/components/about/AboutHero';
-import AboutStory from '@/components/about/AboutStory';
-import AboutPhilosophy from '@/components/about/AboutPhilosophy';
-import AboutPrinciples from '@/components/about/AboutPrinciples';
-import AboutVisualStory from '@/components/about/AboutVisualStory';
-import AboutApproachPreview from '@/components/about/AboutApproachPreview';
-import AboutTeam from '@/components/about/AboutTeam';
-import AboutStatement from '@/components/about/AboutStatement';
-import FinalCTA from '@/components/FinalCTA';
-import Footer from '@/components/Footer';
-import ContactModal from '@/components/ContactModal';
+export const dynamic = 'force-dynamic';
 
-export default function AboutPage() {
-  const [isContactOpen, setIsContactOpen] = useState(false);
+export async function generateMetadata(): Promise<Metadata> {
+  const supabase = createServerSupabaseClient();
+  try {
+    const { data: page } = await supabase
+      .from('pages')
+      .select('seo_title, seo_description, title, description')
+      .eq('slug', 'about')
+      .single();
 
-  const handleOpenContact = () => setIsContactOpen(true);
-  const handleCloseContact = () => setIsContactOpen(false);
+    if (page) {
+      return {
+        title: page.seo_title || page.title || 'About Zalia Properties | Who We Are & Architectural Philosophy',
+        description: page.seo_description || page.description || 'Discover Zalia Properties — prime residential development.',
+      };
+    }
+  } catch {
+    // fallback
+  }
 
-  return (
-    <main className="min-h-screen bg-canvas text-charcoal-950 selection:bg-emerald-brand selection:text-white relative">
-      {/* Reusable Navbar with active state */}
-      <Navbar onOpenContact={handleOpenContact} />
+  return {
+    title: 'About Zalia Properties | Who We Are & Architectural Philosophy',
+  };
+}
 
-      {/* 05 — Page Hero */}
-      <AboutHero />
+export default async function AboutPage() {
+  const supabase = createServerSupabaseClient();
+  let pageData: any = null;
 
-      {/* 08 — Introduction / Our Story */}
-      <AboutStory />
+  try {
+    const { data } = await supabase
+      .from('pages')
+      .select('*')
+      .eq('slug', 'about')
+      .single();
 
-      {/* 09 — Brand Philosophy */}
-      <AboutPhilosophy />
+    if (data) {
+      pageData = data;
+    }
+  } catch (err) {
+    console.error('Failed to fetch about page:', err);
+  }
 
-      {/* 11 — What Makes Zalia Different */}
-      <AboutPrinciples />
-
-      {/* 13 — Architectural Story */}
-      <AboutVisualStory />
-
-      {/* 16 — Our Approach Preview */}
-      <AboutApproachPreview />
-
-      {/* 17 & 18 — Leadership Team Introduction */}
-      <AboutTeam onOpenContact={handleOpenContact} />
-
-      {/* 19 — Final Philosophy Statement */}
-      <AboutStatement />
-
-      {/* 20 — Reusable Final CTA */}
-      <FinalCTA onOpenContact={handleOpenContact} />
-
-      {/* 21 — Reusable Footer */}
-      <Footer />
-
-      {/* Global Interactive Contact Drawer */}
-      <ContactModal isOpen={isContactOpen} onClose={handleCloseContact} />
-    </main>
-  );
+  return <AboutPageClient pageData={pageData} />;
 }

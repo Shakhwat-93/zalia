@@ -4,7 +4,19 @@ import { useRef } from 'react';
 import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-export default function ApproachHero() {
+interface ApproachHeroProps {
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  image?: string;
+}
+
+export default function ApproachHero({
+  eyebrow,
+  heading,
+  description,
+  image,
+}: ApproachHeroProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -14,6 +26,15 @@ export default function ApproachHero() {
 
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 50]);
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.06]);
+
+  const displayEyebrow = eyebrow || 'OUR APPROACH';
+  const displayHeading = heading || 'A DISCIPLINED\nPHILOSOPHY.';
+  const displayDesc =
+    description ||
+    'From initial acquisition through spatial reconfiguration and bespoke craft, our five-stage methodology turns overlooked properties into exceptional British residences.';
+  const displayImage = image || '/images/hero-floating-villa.webp';
+
+  const headingLines = displayHeading.split('\n');
 
   return (
     <section
@@ -25,18 +46,20 @@ export default function ApproachHero() {
         {/* Editorial Text Block */}
         <motion.div style={{ y: heroY }} className="space-y-6 max-w-4xl text-left">
           <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-canvas-warm border border-canvas-border text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-emerald-brand">
-            OUR APPROACH
+            {displayEyebrow}
           </div>
 
           <h1 className="font-serif text-5xl sm:text-7xl lg:text-8xl font-medium tracking-tight text-charcoal-950 leading-[1.02]">
-            A DISCIPLINED
-            <span className="block text-emerald-brand italic font-normal mt-1">
-              PHILOSOPHY.
-            </span>
+            {headingLines[0]}
+            {headingLines[1] && (
+              <span className="block text-emerald-brand italic font-normal mt-1">
+                {headingLines.slice(1).join(' ')}
+              </span>
+            )}
           </h1>
 
           <p className="text-lg sm:text-xl text-charcoal-600 font-sans leading-relaxed font-normal max-w-2xl pt-2">
-            From initial acquisition through spatial reconfiguration and bespoke craft, our five-stage methodology turns overlooked properties into exceptional British residences.
+            {displayDesc}
           </p>
         </motion.div>
 
@@ -49,7 +72,7 @@ export default function ApproachHero() {
         >
           <motion.div style={{ scale: imageScale }} className="relative w-full h-full">
             <Image
-              src="/images/hero-floating-villa.webp"
+              src={displayImage}
               alt="Zalia Properties Architectural Method"
               fill
               priority
@@ -58,10 +81,6 @@ export default function ApproachHero() {
               sizes="(max-width: 1440px) 100vw, 1440px"
             />
           </motion.div>
-
-          <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 px-4 py-2 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[11px] font-sans font-semibold uppercase tracking-widest text-charcoal-900 shadow-soft-sm">
-            5 PHASES • 1 RIGOROUS STANDARD
-          </div>
         </motion.div>
 
       </div>

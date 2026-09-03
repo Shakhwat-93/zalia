@@ -6,7 +6,19 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Compass } from 'lucide-react';
 
-export default function WhatWeDoHero() {
+interface WhatWeDoHeroProps {
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  image?: string;
+}
+
+export default function WhatWeDoHero({
+  eyebrow,
+  heading,
+  description,
+  image,
+}: WhatWeDoHeroProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -16,6 +28,15 @@ export default function WhatWeDoHero() {
 
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 50]);
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
+  const displayEyebrow = eyebrow || 'WHAT WE DO';
+  const displayHeading = heading || 'FROM POTENTIAL\nTO POSSIBILITY.';
+  const displayDesc =
+    description ||
+    'We identify residential properties with potential, transform them thoughtfully, and create homes designed for modern living.';
+  const displayImage = image || '/images/what-we-do.webp';
+
+  const headingLines = displayHeading.split('\n');
 
   return (
     <section
@@ -29,19 +50,21 @@ export default function WhatWeDoHero() {
           <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-canvas-warm border border-canvas-border shadow-soft-sm">
             <Compass className="w-3.5 h-3.5 text-emerald-brand" />
             <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-charcoal-700">
-              WHAT WE DO
+              {displayEyebrow}
             </span>
           </div>
 
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight text-charcoal-950 leading-[1.02]">
-            FROM POTENTIAL
-            <span className="block text-emerald-brand italic font-normal mt-1 sm:mt-2">
-              TO POSSIBILITY.
-            </span>
+            {headingLines[0]}
+            {headingLines[1] && (
+              <span className="block text-emerald-brand italic font-normal mt-1 sm:mt-2">
+                {headingLines.slice(1).join(' ')}
+              </span>
+            )}
           </h1>
 
           <p className="text-lg sm:text-xl text-charcoal-600 font-sans leading-relaxed font-normal max-w-2xl pt-2">
-            We identify residential properties with potential, transform them thoughtfully, and create homes designed for modern living.
+            {displayDesc}
           </p>
 
           <div className="pt-2">
@@ -60,12 +83,12 @@ export default function WhatWeDoHero() {
           initial={{ opacity: 0, y: 30, scale: 0.98 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-          className="relative w-full h-[420px] sm:h-[540px] lg:h-[680px] rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-canvas-border shadow-soft-2xl bg-canvas-warm group"
+          className="relative w-full h-[400px] sm:h-[520px] lg:h-[640px] rounded-3xl sm:rounded-[2.5rem] overflow-hidden border border-canvas-border shadow-soft-2xl bg-canvas-warm group"
         >
           <motion.div style={{ scale: imageScale }} className="relative w-full h-full">
             <Image
-              src="/images/what-we-do.webp"
-              alt="Zalia Properties Architectural Scope"
+              src={displayImage}
+              alt="Zalia Properties Development Model"
               fill
               priority
               quality={95}
@@ -75,7 +98,7 @@ export default function WhatWeDoHero() {
           </motion.div>
 
           <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 px-4 py-2.5 rounded-full bg-white/90 backdrop-blur-md border border-white/60 text-[11px] font-sans font-semibold uppercase tracking-widest text-charcoal-900 shadow-soft-sm">
-            Acquisition • Structural Transformation • Turnkey Creation
+            Acquire • Transform • Create
           </div>
         </motion.div>
 

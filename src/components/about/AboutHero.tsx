@@ -5,7 +5,14 @@ import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRight, Compass } from 'lucide-react';
 
-export default function AboutHero() {
+interface AboutHeroProps {
+  eyebrow?: string;
+  heading?: string;
+  description?: string;
+  image?: string;
+}
+
+export default function AboutHero({ eyebrow, heading, description, image }: AboutHeroProps = {}) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress } = useScroll({
@@ -15,6 +22,15 @@ export default function AboutHero() {
 
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 60]);
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.05]);
+
+  const displayEyebrow = eyebrow || 'WHO WE ARE';
+  const displayHeading = heading || 'WE SEE MORE\nIN EVERY PROPERTY.';
+  const displayDesc =
+    description ||
+    'We look beyond what a property is today to understand what it could become tomorrow.';
+  const displayImage = image || '/images/about-zalia.webp';
+
+  const headingLines = displayHeading.split('\n');
 
   return (
     <section
@@ -28,19 +44,21 @@ export default function AboutHero() {
           <div className="inline-flex items-center space-x-2.5 px-3.5 py-1.5 rounded-full bg-canvas-warm border border-canvas-border shadow-soft-sm">
             <Compass className="w-3.5 h-3.5 text-emerald-brand" />
             <span className="text-[11px] font-sans font-semibold uppercase tracking-[0.2em] text-charcoal-700">
-              WHO WE ARE
+              {displayEyebrow}
             </span>
           </div>
 
           <h1 className="font-serif text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-medium tracking-tight text-charcoal-950 leading-[1.02]">
-            WE SEE MORE
-            <span className="block text-emerald-brand italic font-normal mt-1 sm:mt-2">
-              IN EVERY PROPERTY.
-            </span>
+            {headingLines[0]}
+            {headingLines[1] && (
+              <span className="block text-emerald-brand italic font-normal mt-1 sm:mt-2">
+                {headingLines.slice(1).join(' ')}
+              </span>
+            )}
           </h1>
 
           <p className="text-lg sm:text-xl text-charcoal-600 font-sans leading-relaxed font-normal max-w-2xl pt-2">
-            We look beyond what a property is today to understand what it could become tomorrow.
+            {displayDesc}
           </p>
 
           <div className="pt-2">
@@ -63,7 +81,7 @@ export default function AboutHero() {
         >
           <motion.div style={{ scale: imageScale }} className="relative w-full h-full">
             <Image
-              src="/images/about-zalia.webp"
+              src={displayImage}
               alt="Zalia Properties Architectural Living"
               fill
               priority
