@@ -17,7 +17,7 @@ export default async function AdminMediaPage() {
         primaryAction={{
           label: 'Upload Media',
           href: '#upload',
-          icon: UploadCloud,
+          icon: <UploadCloud className="w-4 h-4 text-white" />,
         }}
       />
 

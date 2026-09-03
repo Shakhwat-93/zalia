@@ -91,12 +91,12 @@ export default async function AdminOverviewPage() {
         primaryAction={{
           label: 'New Project',
           href: '/admin/projects',
-          icon: Building2,
+          icon: <Building2 className="w-4 h-4 text-white" />,
         }}
         secondaryAction={{
           label: 'Review Enquiries',
           href: '/admin/contact',
-          icon: Inbox,
+          icon: <Inbox className="w-3.5 h-3.5 text-charcoal-500" />,
         }}
       />
 

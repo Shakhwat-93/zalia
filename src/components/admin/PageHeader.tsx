@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import Link from 'next/link';
 import { Plus, Download, ChevronRight } from 'lucide-react';
@@ -12,8 +10,7 @@ interface BreadcrumbItem {
 interface ActionButton {
   label: string;
   href?: string;
-  onClick?: () => void;
-  icon?: React.ComponentType<{ className?: string }>;
+  icon?: React.ReactNode;
   variant?: 'primary' | 'secondary' | 'outline';
 }
 
@@ -87,64 +84,34 @@ export default function PageHeader({
         {(primaryAction || secondaryAction) && (
           <div className="flex items-center space-x-2.5 shrink-0 pt-1 sm:pt-0">
             
-            {/* Secondary Action (e.g. Export data) */}
-            {secondaryAction && (
-              secondaryAction.href ? (
-                <Link
-                  href={secondaryAction.href}
-                  className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl border border-canvas-border bg-white hover:bg-canvas-warm text-charcoal-700 text-xs font-sans font-semibold uppercase tracking-wider transition-colors shadow-2xs"
-                >
-                  {secondaryAction.icon ? (
-                    <secondaryAction.icon className="w-3.5 h-3.5 text-charcoal-500" />
-                  ) : (
-                    <Download className="w-3.5 h-3.5 text-charcoal-500" />
-                  )}
-                  <span>{secondaryAction.label}</span>
-                </Link>
-              ) : (
-                <button
-                  type="button"
-                  onClick={secondaryAction.onClick}
-                  className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl border border-canvas-border bg-white hover:bg-canvas-warm text-charcoal-700 text-xs font-sans font-semibold uppercase tracking-wider transition-colors shadow-2xs"
-                >
-                  {secondaryAction.icon ? (
-                    <secondaryAction.icon className="w-3.5 h-3.5 text-charcoal-500" />
-                  ) : (
-                    <Download className="w-3.5 h-3.5 text-charcoal-500" />
-                  )}
-                  <span>{secondaryAction.label}</span>
-                </button>
-              )
+            {/* Secondary Action */}
+            {secondaryAction && secondaryAction.href && (
+              <Link
+                href={secondaryAction.href}
+                className="inline-flex items-center space-x-2 px-4 py-2.5 rounded-xl border border-canvas-border bg-white hover:bg-canvas-warm text-charcoal-700 text-xs font-sans font-semibold uppercase tracking-wider transition-colors shadow-2xs"
+              >
+                {secondaryAction.icon ? (
+                  secondaryAction.icon
+                ) : (
+                  <Download className="w-3.5 h-3.5 text-charcoal-500" />
+                )}
+                <span>{secondaryAction.label}</span>
+              </Link>
             )}
 
-            {/* Primary Action (e.g. + Add Project) */}
-            {primaryAction && (
-              primaryAction.href ? (
-                <Link
-                  href={primaryAction.href}
-                  className="inline-flex items-center space-x-2 px-4.5 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-soft-sm hover:shadow-soft-md"
-                >
-                  {primaryAction.icon ? (
-                    <primaryAction.icon className="w-4 h-4 text-white" />
-                  ) : (
-                    <Plus className="w-4 h-4 text-white" />
-                  )}
-                  <span>{primaryAction.label}</span>
-                </Link>
-              ) : (
-                <button
-                  type="button"
-                  onClick={primaryAction.onClick}
-                  className="inline-flex items-center space-x-2 px-4.5 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-soft-sm hover:shadow-soft-md"
-                >
-                  {primaryAction.icon ? (
-                    <primaryAction.icon className="w-4 h-4 text-white" />
-                  ) : (
-                    <Plus className="w-4 h-4 text-white" />
-                  )}
-                  <span>{primaryAction.label}</span>
-                </button>
-              )
+            {/* Primary Action */}
+            {primaryAction && primaryAction.href && (
+              <Link
+                href={primaryAction.href}
+                className="inline-flex items-center space-x-2 px-4.5 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-soft-sm hover:shadow-soft-md"
+              >
+                {primaryAction.icon ? (
+                  primaryAction.icon
+                ) : (
+                  <Plus className="w-4 h-4 text-white" />
+                )}
+                <span>{primaryAction.label}</span>
+              </Link>
             )}
 
           </div>

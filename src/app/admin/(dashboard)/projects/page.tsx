@@ -28,7 +28,7 @@ export default async function AdminProjectsPage() {
         primaryAction={{
           label: 'Add Project',
           href: '#add-project',
-          icon: Plus,
+          icon: <Plus className="w-4 h-4 text-white" />,
         }}
         secondaryAction={{
           label: 'Export Catalog',

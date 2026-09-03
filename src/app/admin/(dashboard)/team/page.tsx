@@ -25,7 +25,7 @@ export default async function AdminTeamPage() {
         primaryAction={{
           label: 'Add Member',
           href: '#add-member',
-          icon: Plus,
+          icon: <Plus className="w-4 h-4 text-white" />,
         }}
         secondaryAction={{
           label: 'Export Roster',
