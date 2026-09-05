@@ -35,25 +35,36 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          full_name: formData.name,
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           subject: formData.propertyType,
           location: formData.location,
           message: formData.message,
-          source_page: typeof window !== 'undefined' ? window.location.pathname || 'modal' : 'modal',
+          source: typeof window !== 'undefined' ? window.location.pathname || 'modal' : 'modal',
           website_url: formData.website_url,
         }),
       });
 
       const json = await res.json();
       if (!res.ok || !json.success) {
-        throw new Error(json.error || 'Unable to submit enquiry. Please try again.');
+        throw new Error(json.error || 'Something went wrong. Please try again.');
       }
 
       setIsSubmitted(true);
+      // Clear the form only after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        propertyType: 'Residential Transformation',
+        location: '',
+        message: '',
+        website_url: '',
+      });
     } catch (err: any) {
-      setErrorMessage(err.message || 'An unexpected error occurred. Please try again.');
+      setErrorMessage(err.message || 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -125,7 +136,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
                     Enquiry Received
                   </h4>
                   <p className="text-sm font-sans text-charcoal-600 max-w-sm leading-relaxed">
-                    Thank you. Your message has been routed to our acquisition and design directors. We will review your property particulars with complete discretion.
+                    Thank you. Your enquiry has been received. We&apos;ll be in touch shortly.
                   </p>
                   <button
                     onClick={handleReset}

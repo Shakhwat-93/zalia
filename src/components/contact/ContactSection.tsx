@@ -30,25 +30,36 @@ export default function ContactSection() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          full_name: formData.name,
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
           subject: formData.type,
           location: formData.location,
           message: formData.message,
-          source_page: '/contact',
+          source: '/contact',
           website_url: formData.website_url,
         }),
       });
 
       const json = await res.json();
       if (!res.ok || !json.success) {
-        throw new Error(json.error || 'Failed to submit enquiry. Please try again.');
+        throw new Error(json.error || 'Something went wrong. Please try again.');
       }
 
       setIsSubmitted(true);
+      // Clear the form only after successful submission
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        type: 'Property Opportunity',
+        location: '',
+        message: '',
+        website_url: '',
+      });
     } catch (err: any) {
-      setErrorMessage(err.message || 'An unexpected error occurred. Please try again.');
+      setErrorMessage(err.message || 'Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -153,7 +164,7 @@ export default function ContactSection() {
                     Enquiry Received
                   </h3>
                   <p className="text-base text-charcoal-600 font-sans max-w-md mx-auto leading-relaxed">
-                    Our acquisitions team has received your enquiry. A director will review your submission and respond within 24 business hours.
+                    Thank you. Your enquiry has been received. We&apos;ll be in touch shortly.
                   </p>
                   <button
                     onClick={() => {

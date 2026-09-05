@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 export function createAdminSupabaseClient() {
   const url =
+    process.env.SUPABASE_URL ||
     process.env.NEXT_PUBLIC_SUPABASE_URL ||
     'http://supabasekong-qybvw9y2o7gbhbzfyyrlit6p.187.77.159.209.sslip.io';
   const serviceKey =
