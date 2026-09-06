@@ -20,6 +20,7 @@ import {
 import ResponsiveTable, { Column, TableAction } from '@/components/admin/ResponsiveTable';
 import StatusBadge from '@/components/admin/StatusBadge';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import AdminModal from '@/components/admin/AdminModal';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import MediaPickerField from '@/components/admin/MediaPickerField';
 
@@ -260,30 +261,30 @@ export default function TeamClientTable({
     },
     {
       key: 'name',
-      header: 'Leader Particulars',
+      header: 'Team Member',
       priority: 'high',
       render: (m) => (
         <div className="flex items-center space-x-3.5 py-1">
-          <div className="relative w-11 h-11 rounded-full overflow-hidden bg-charcoal-100 shrink-0 border border-canvas-border flex items-center justify-center shadow-2xs">
+          <div className="relative w-10 h-10 rounded-full overflow-hidden bg-charcoal-100 shrink-0 border border-canvas-border flex items-center justify-center shadow-2xs">
             {m.image_url ? (
               <Image
                 src={m.image_url}
                 alt={m.name}
                 fill
                 className="object-cover object-top"
-                sizes="44px"
+                sizes="40px"
               />
             ) : (
-              <span className="font-serif text-xs font-semibold text-charcoal-800">
+              <span className="font-sans text-xs font-semibold text-charcoal-800">
                 {m.initials || computeInitials(m.name)}
               </span>
             )}
           </div>
           <div className="min-w-0">
-            <span className="font-serif font-semibold text-charcoal-950 block text-sm sm:text-[15px] truncate">
+            <span className="font-sans font-medium text-charcoal-950 block text-sm truncate">
               {m.name}
             </span>
-            <span className="text-[11px] font-sans text-charcoal-500 block truncate">
+            <span className="text-xs font-sans text-charcoal-500 block truncate">
               {m.role}
             </span>
           </div>
@@ -292,7 +293,7 @@ export default function TeamClientTable({
     },
     {
       key: 'role',
-      header: 'Executive Role',
+      header: 'Role',
       priority: 'medium',
       render: (m) => (
         <span className="text-xs font-sans font-medium text-charcoal-700">
@@ -302,13 +303,13 @@ export default function TeamClientTable({
     },
     {
       key: 'status',
-      header: 'Visibility',
+      header: 'Status',
       priority: 'high',
       render: (m) => (
         <button
           type="button"
           onClick={() => toggleVisibility(m)}
-          className={`inline-flex items-center space-x-1 px-2.5 py-1 rounded-full text-xs font-medium border transition-colors ${
+          className={`inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full text-xs font-medium border transition-colors ${
             m.status === 'published'
               ? 'bg-[#EBF2EE] text-[#07381E] border-[#07381E]/20'
               : 'bg-stone-100 text-stone-500 border-stone-200'
@@ -332,7 +333,7 @@ export default function TeamClientTable({
 
   const actions: TableAction<MemberRecord>[] = [
     {
-      label: 'Edit Particulars',
+      label: 'Edit Details',
       icon: Edit2,
       onClick: (m) => {
         openEditModal(m);
@@ -346,7 +347,7 @@ export default function TeamClientTable({
       },
     },
     {
-      label: 'Remove Director',
+      label: 'Delete',
       icon: Trash2,
       onClick: (m) => {
         setDeleteTarget(m);
@@ -356,20 +357,19 @@ export default function TeamClientTable({
 
   return (
     <div className="space-y-6">
-      {/* Top Banner with Add Action */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center space-x-2 text-xs text-[#07381E] bg-[#EBF2EE] px-3.5 py-1.5 rounded-full border border-[#07381E]/20 w-fit">
-          <ShieldCheck className="w-4 h-4 text-[#07381E]" />
-          <span>Strict verified executive roles only — no invented credentials</span>
-        </div>
+      {/* Top Action Bar */}
+      <div className="flex items-center justify-between gap-4">
+        <span className="text-xs text-charcoal-500 font-sans">
+          Showing {members.length} team members
+        </span>
 
         <button
           type="button"
           onClick={openAddModal}
-          className="px-5 py-2.5 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider flex items-center space-x-2 transition-all shadow-soft-sm self-start sm:self-auto"
+          className="px-4 py-2 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-medium flex items-center space-x-1.5 transition-all shadow-soft-sm"
         >
           <Plus className="w-4 h-4 text-white" />
-          <span>Add Executive</span>
+          <span>Add Team Member</span>
         </button>
       </div>
 
@@ -380,140 +380,220 @@ export default function TeamClientTable({
         </div>
       )}
 
-      <ResponsiveTable
-        columns={columns}
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        searchPlaceholder="Search leadership by name or role..."
-        onSearchChange={setSearch}
-        actions={actions}
-        pageSize={8}
-        emptyMessage="No team members match your active search."
-      />
+      {/* Desktop Table */}
+      <div className="hidden sm:block">
+        <ResponsiveTable
+          columns={columns}
+          data={filtered}
+          keyExtractor={(item) => item.id}
+          searchPlaceholder="Search leadership by name or role..."
+          onSearchChange={setSearch}
+          actions={actions}
+          pageSize={8}
+          emptyMessage="No team members match your active search."
+        />
+      </div>
+
+      {/* Mobile Stacked Cards Layout */}
+      <div className="block sm:hidden space-y-3">
+        <div className="mb-2">
+          <input
+            type="text"
+            placeholder="Search team..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-canvas-border text-xs font-sans text-charcoal-900 focus:outline-none focus:border-[#07381E]"
+          />
+        </div>
+
+        {filtered.length === 0 ? (
+          <div className="p-8 text-center bg-white rounded-xl border border-canvas-border text-xs text-charcoal-500">
+            No team members found.
+          </div>
+        ) : (
+          filtered.map((m) => {
+            const isPublished = m.status === 'published';
+            return (
+              <div
+                key={m.id}
+                className="p-4 rounded-xl bg-white border border-canvas-border shadow-2xs space-y-3"
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center space-x-3">
+                    <div className="relative w-10 h-10 rounded-full overflow-hidden bg-charcoal-100 shrink-0 border border-canvas-border flex items-center justify-center">
+                      {m.image_url ? (
+                        <Image
+                          src={m.image_url}
+                          alt={m.name}
+                          fill
+                          className="object-cover object-top"
+                          sizes="40px"
+                        />
+                      ) : (
+                        <span className="font-sans text-xs font-semibold text-charcoal-800">
+                          {m.initials || computeInitials(m.name)}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <span className="font-sans font-medium text-charcoal-950 text-xs block">
+                        {m.name}
+                      </span>
+                      <span className="text-[11px] font-sans text-charcoal-500 block">
+                        {m.role}
+                      </span>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleVisibility(m)}
+                    className={`inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-medium border transition-colors ${
+                      isPublished
+                        ? 'bg-[#EBF2EE] text-[#07381E] border-[#07381E]/20'
+                        : 'bg-stone-100 text-stone-500 border-stone-200'
+                    }`}
+                  >
+                    {isPublished ? <Eye className="w-2.5 h-2.5" /> : <EyeOff className="w-2.5 h-2.5" />}
+                    <span>{isPublished ? 'Published' : 'Draft'}</span>
+                  </button>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-canvas-border/50 text-xs">
+                  <span className="font-mono text-[10px] text-charcoal-400">Order #{m.sort_order}</span>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setDeleteTarget(m)}
+                      className="px-2.5 py-1 text-rose-600 hover:bg-rose-50 rounded-lg text-xs font-medium transition-colors"
+                    >
+                      Delete
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => openEditModal(m)}
+                      className="px-3 py-1 bg-[#07381E] text-white rounded-lg text-xs font-medium hover:bg-[#052B17] transition-colors"
+                    >
+                      Edit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
 
       {/* Add / Edit Modal Drawer */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal-950/60 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 border border-canvas-border shadow-soft-2xl space-y-6 text-left">
-            <div className="flex items-center justify-between border-b border-canvas-border pb-4">
-              <div>
-                <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-                  EXECUTIVE ROSTER
-                </span>
-                <h3 className="font-serif text-2xl font-medium text-charcoal-950">
-                  {editingMember ? `Edit ${editingMember.name}` : 'Add Leadership Member'}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setIsModalOpen(false)}
-                className="p-2 rounded-xl text-charcoal-400 hover:text-charcoal-950 hover:bg-canvas-warm transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+      <AdminModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        asForm={true}
+        onSubmit={handleSaveMember}
+        maxWidth="lg"
+        title={editingMember ? `Edit ${editingMember.name}` : 'Add Team Member'}
+        description="Update member role, portrait photo, and biography."
+        footer={
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 sm:gap-3 w-full">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(false)}
+              className="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-canvas-border text-charcoal-700 hover:bg-canvas-warm text-xs font-medium transition-colors min-h-[44px] sm:min-h-0 flex items-center justify-center"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isProcessing}
+              className="w-full sm:w-auto px-5 py-2.5 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium flex items-center justify-center space-x-1.5 transition-colors shadow-2xs disabled:opacity-50 min-h-[44px] sm:min-h-0"
+            >
+              <Save className="w-3.5 h-3.5" />
+              <span>{editingMember ? 'Save Changes' : 'Add Member'}</span>
+            </button>
+          </div>
+        }
+      >
+        <div className="space-y-4 text-xs font-sans">
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
+              Full Name *
+            </label>
+            <input
+              type="text"
+              required
+              value={formName}
+              onChange={(e) => setFormName(e.target.value)}
+              placeholder="e.g. Zaki Shamseer"
+              className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm focus:outline-none focus:bg-white focus:border-[#07381E] box-border"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
+              Executive Role (Verified actual title only) *
+            </label>
+            <input
+              type="text"
+              required
+              value={formRole}
+              onChange={(e) => setFormRole(e.target.value)}
+              placeholder="e.g. Founder & Managing Director"
+              className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm focus:outline-none focus:bg-white focus:border-[#07381E] box-border"
+            />
+          </div>
+
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
+              Biography (Optional)
+            </label>
+            <textarea
+              rows={3}
+              value={formBio}
+              onChange={(e) => setFormBio(e.target.value)}
+              placeholder="Executive background and leadership focus..."
+              className="w-full min-w-0 px-4 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:bg-white focus:border-[#07381E] box-border resize-y"
+            />
+          </div>
+
+          <MediaPickerField
+            label="Portrait Photography"
+            value={formImageUrl}
+            onChange={(url) => setFormImageUrl(url)}
+            description="800x1000 WebP portrait"
+            aspectRatio="portrait"
+            required
+          />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
+                Display Order
+              </label>
+              <input
+                type="number"
+                min={1}
+                value={formOrder}
+                onChange={(e) => setFormOrder(Number(e.target.value))}
+                className="w-full min-w-0 px-3 py-2 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E] box-border"
+              />
             </div>
 
-            <form onSubmit={handleSaveMember} className="space-y-4 text-xs font-sans">
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
-                  Full Name *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formName}
-                  onChange={(e) => setFormName(e.target.value)}
-                  placeholder="e.g. Zaki Shamseer"
-                  className="w-full px-4 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm focus:outline-none focus:bg-white focus:border-[#07381E]"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
-                  Executive Role (Verified actual title only) *
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formRole}
-                  onChange={(e) => setFormRole(e.target.value)}
-                  placeholder="e.g. Founder & Managing Director"
-                  className="w-full px-4 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm focus:outline-none focus:bg-white focus:border-[#07381E]"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
-                  Biography (Optional)
-                </label>
-                <textarea
-                  rows={3}
-                  value={formBio}
-                  onChange={(e) => setFormBio(e.target.value)}
-                  placeholder="Executive background and leadership focus..."
-                  className="w-full px-4 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
-                />
-              </div>
-
-              <MediaPickerField
-                label="Portrait Photography"
-                value={formImageUrl}
-                onChange={(url) => setFormImageUrl(url)}
-                description="800x1000 WebP portrait"
-                aspectRatio="portrait"
-                required
-              />
-
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <div>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
-                    Display Order
-                  </label>
-                  <input
-                    type="number"
-                    min={1}
-                    value={formOrder}
-                    onChange={(e) => setFormOrder(Number(e.target.value))}
-                    className="w-full px-3 py-2 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
-                    Publishing Status
-                  </label>
-                  <select
-                    value={formStatus}
-                    onChange={(e) => setFormStatus(e.target.value)}
-                    className="w-full px-3 py-2 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:border-[#07381E]"
-                  >
-                    <option value="published">Published</option>
-                    <option value="draft">Draft</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-end space-x-3 pt-4 border-t border-canvas-border">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2 rounded-xl border border-canvas-border text-charcoal-700 hover:bg-canvas-warm text-xs font-semibold transition-colors"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isProcessing}
-                  className="px-6 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-semibold uppercase tracking-wider flex items-center space-x-1.5 transition-all shadow-soft-sm disabled:opacity-50"
-                >
-                  <Save className="w-3.5 h-3.5" />
-                  <span>{editingMember ? 'Save Changes' : 'Add Executive'}</span>
-                </button>
-              </div>
-            </form>
+            <div>
+              <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block mb-1">
+                Publishing Status
+              </label>
+              <select
+                value={formStatus}
+                onChange={(e) => setFormStatus(e.target.value)}
+                className="w-full min-w-0 px-3 py-2 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:border-[#07381E] box-border"
+              >
+                <option value="published">Published</option>
+                <option value="draft">Draft</option>
+              </select>
+            </div>
           </div>
         </div>
-      )}
+      </AdminModal>
 
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog

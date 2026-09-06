@@ -102,7 +102,7 @@ export default function ContactModal({ isOpen, onClose }: ContactModalProps) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="relative z-10 flex h-full w-full max-w-xl flex-col bg-white p-8 sm:p-12 shadow-2xl overflow-y-auto"
+            className="relative z-10 flex h-full w-full max-w-xl flex-col bg-white p-5 sm:p-8 md:p-12 shadow-2xl overflow-y-auto"
           >
             <div className="flex items-center justify-between pb-6 border-b border-canvas-border">
               <div>

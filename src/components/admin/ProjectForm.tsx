@@ -22,7 +22,9 @@ import {
   ImageIcon,
   ShieldCheck,
   SplitSquareVertical,
-  UploadCloud
+  UploadCloud,
+  ChevronDown,
+  ChevronUp
 } from 'lucide-react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import MediaPickerField from './MediaPickerField';
@@ -112,6 +114,7 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
   const [newGalleryUrl, setNewGalleryUrl] = useState('');
   const [newGalleryCaption, setNewGalleryCaption] = useState('');
   const [isGalleryPickerOpen, setIsGalleryPickerOpen] = useState(false);
+  const [isSeoOpen, setIsSeoOpen] = useState(false);
 
   // Auto-generate slug from title for new projects
   const handleTitleChange = (val: string) => {
@@ -231,15 +234,15 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <Link
           href="/admin/projects"
-          className="inline-flex items-center space-x-2 text-xs font-sans font-semibold uppercase tracking-wider text-charcoal-600 hover:text-charcoal-950 transition-colors"
+          className="inline-flex items-center space-x-2 text-xs font-sans font-medium text-charcoal-600 hover:text-charcoal-950 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to Projects List</span>
+          <span>Back to Projects</span>
         </Link>
 
         <div className="flex items-center space-x-3">
           {statusMessage && (
-            <div className="flex items-center space-x-1.5 text-xs text-emerald-800 font-semibold animate-in fade-in">
+            <div className="flex items-center space-x-1.5 text-xs text-emerald-800 font-medium animate-in fade-in">
               <Check className="w-4 h-4 text-emerald-600" />
               <span>{statusMessage}</span>
             </div>
@@ -248,7 +251,7 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
           <button
             type="submit"
             disabled={isSaving}
-            className="px-6 py-3 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider flex items-center space-x-2 transition-all shadow-soft-sm disabled:opacity-50"
+            className="px-5 py-2.5 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-medium flex items-center space-x-2 transition-all shadow-soft-sm disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
             <span>{isSaving ? 'Saving...' : isNew ? 'Create Project' : 'Save Changes'}</span>
@@ -256,36 +259,25 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
         </div>
       </div>
 
-      {/* Design Guardrail Banner */}
-      <div className="p-4 rounded-2xl bg-[#EBF2EE] border border-[#07381E]/15 flex items-start space-x-3 text-xs text-[#07381E]">
-        <ShieldCheck className="w-5 h-5 shrink-0 mt-0.5" />
-        <div className="space-y-0.5">
-          <span className="font-semibold block">Design Presentation Guardrails Active</span>
-          <span className="text-[#07381E]/80 leading-relaxed block">
-            This project will automatically render within the luxury Zalia architectural case study template at <code>/projects/{formData.slug || '[slug]'}</code>. Only authentic verified particulars are recorded.
-          </span>
-        </div>
-      </div>
-
       {/* 1. Core Particulars */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-6">
-        <div className="flex items-center space-x-3 border-b border-canvas-border pb-4">
-          <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
-            <Building2 className="w-5 h-5" />
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-canvas-border shadow-2xs space-y-5">
+        <div className="flex items-center space-x-3 border-b border-canvas-border pb-3">
+          <div className="w-8 h-8 rounded-lg bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
+            <Building2 className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-              PROJECT IDENTITY
-            </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
-              Core Particulars &amp; Classification
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
+              Basic Information
             </h2>
+            <p className="text-xs text-charcoal-500 font-sans mt-0.5">
+              Project title, slug, location, and classification.
+            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs font-sans">
-          <div className="sm:col-span-2 space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
+          <div className="sm:col-span-2 space-y-1.5">
+            <label className="text-xs font-medium text-charcoal-700 block">
               Project Title *
             </label>
             <input
@@ -293,8 +285,8 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
               required
               value={formData.title}
               onChange={(e) => handleTitleChange(e.target.value)}
-              placeholder="e.g. The Kensington Mews & Glass Pavilion"
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-lg focus:outline-none focus:bg-white focus:border-[#07381E]"
+              placeholder="e.g. The Kensington Mews"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:bg-white focus:border-[#07381E]"
             />
           </div>
 
@@ -422,25 +414,25 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
       </div>
 
       {/* 2. Editorial Narrative & Descriptions */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-6">
-        <div className="flex items-center space-x-3 border-b border-canvas-border pb-4">
-          <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
-            <FileText className="w-5 h-5" />
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-canvas-border shadow-2xs space-y-5">
+        <div className="flex items-center space-x-3 border-b border-canvas-border pb-3">
+          <div className="w-8 h-8 rounded-lg bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
+            <FileText className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-              ARCHITECTURAL NARRATIVE
-            </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Project Descriptions
             </h2>
+            <p className="text-xs text-charcoal-500 font-sans mt-0.5">
+              Short summary for card grids and full narrative for the case study page.
+            </p>
           </div>
         </div>
 
-        <div className="space-y-5 text-xs font-sans">
-          <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-              Short Description (Card Summary) *
+        <div className="space-y-4 text-xs font-sans">
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-charcoal-700 block">
+              Short Summary (Card Preview) *
             </label>
             <textarea
               rows={2}
@@ -448,43 +440,43 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
               value={formData.short_description}
               onChange={(e) => setFormData({ ...formData, short_description: e.target.value })}
               placeholder="Concise 1-2 sentence overview of the architectural transformation."
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm focus:outline-none focus:bg-white focus:border-[#07381E] resize-none"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:bg-white focus:border-[#07381E] resize-none"
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-              Full Case Study Narrative (Project Detail Page) *
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-charcoal-700 block">
+              Full Narrative (Case Study Page) *
             </label>
             <textarea
-              rows={6}
+              rows={5}
               required
               value={formData.full_description}
               onChange={(e) => setFormData({ ...formData, full_description: e.target.value })}
               placeholder="Detailed architectural story describing the existing property, spatial concept, material specifications, and transformation outcome."
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm leading-relaxed focus:outline-none focus:bg-white focus:border-[#07381E]"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs leading-relaxed focus:outline-none focus:bg-white focus:border-[#07381E]"
             />
           </div>
         </div>
       </div>
 
       {/* 3. Primary Visual Assets */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-6">
-        <div className="flex items-center space-x-3 border-b border-canvas-border pb-4">
-          <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
-            <ImageIcon className="w-5 h-5" />
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-canvas-border shadow-2xs space-y-5">
+        <div className="flex items-center space-x-3 border-b border-canvas-border pb-3">
+          <div className="w-8 h-8 rounded-lg bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
+            <ImageIcon className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-              MEDIA ASSETS
-            </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
-              Hero &amp; Grid Photography
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
+              Cover &amp; Hero Photography
             </h2>
+            <p className="text-xs text-charcoal-500 font-sans mt-0.5">
+              High-resolution imagery for portfolio cards and page hero.
+            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs font-sans">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
           <MediaPickerField
             label="Portfolio Grid Image"
             value={formData.image_url}
@@ -506,41 +498,41 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
       </div>
 
       {/* 4. Project Gallery Manager */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-canvas-border pb-4">
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-canvas-border shadow-2xs space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-canvas-border pb-3">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
-              <Sliders className="w-5 h-5" />
+            <div className="w-8 h-8 rounded-lg bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
+              <Sliders className="w-4 h-4" />
             </div>
             <div>
-              <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-                CURATED GALLERY
-              </span>
-              <h2 className="font-serif text-2xl font-medium text-charcoal-950">
-                Architectural Photo Gallery ({formData.gallery_images.length})
+              <h2 className="font-sans text-base font-semibold text-charcoal-950">
+                Photo Gallery ({formData.gallery_images.length})
               </h2>
+              <p className="text-xs text-charcoal-500 font-sans mt-0.5">
+                Curated photos showcased in the case study gallery slider.
+              </p>
             </div>
           </div>
 
           <button
             type="button"
             onClick={() => setIsGalleryPickerOpen(true)}
-            className="px-4 py-2 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-semibold uppercase tracking-wider flex items-center space-x-2 transition-colors shadow-soft-sm self-start sm:self-auto"
+            className="px-3.5 py-1.5 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium flex items-center space-x-1.5 transition-colors shadow-2xs self-start sm:self-auto"
           >
             <UploadCloud className="w-3.5 h-3.5" />
-            <span>Select from Media Library</span>
+            <span>Select from Library</span>
           </button>
         </div>
 
         {/* Existing Gallery List with Reordering */}
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {formData.gallery_images.map((img, idx) => (
             <div
               key={idx}
-              className="p-3.5 rounded-2xl bg-canvas-warm border border-canvas-border flex items-center justify-between gap-4"
+              className="p-3 rounded-xl bg-canvas-warm border border-canvas-border flex items-center justify-between gap-3"
             >
               <div className="flex items-center space-x-3 min-w-0">
-                <div className="flex items-center space-x-1 shrink-0">
+                <div className="flex items-center space-x-0.5 shrink-0">
                   <button
                     type="button"
                     disabled={idx === 0}
@@ -561,7 +553,7 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
                   </button>
                 </div>
 
-                <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-charcoal-100 shrink-0 border border-canvas-border">
+                <div className="relative w-11 h-11 rounded-lg overflow-hidden bg-charcoal-100 shrink-0 border border-canvas-border">
                   <Image
                     src={img.url}
                     alt={img.caption || 'Gallery Image'}
@@ -583,8 +575,8 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
               <button
                 type="button"
                 onClick={() => removeGalleryImage(idx)}
-                className="p-2 rounded-lg text-charcoal-400 hover:text-red-700 hover:bg-red-50 transition-colors shrink-0"
-                title="Remove from gallery"
+                className="p-1.5 rounded-lg text-charcoal-400 hover:text-red-700 hover:bg-red-50 transition-colors shrink-0"
+                title="Remove image"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -592,32 +584,32 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
           ))}
         </div>
 
-        {/* Add New Gallery Image */}
-        <div className="p-4 rounded-2xl bg-white border border-canvas-border space-y-3">
-          <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-charcoal-700 block">
-            Add Image to Gallery
+        {/* Add New Gallery Image manually */}
+        <div className="p-3.5 rounded-xl bg-white border border-canvas-border space-y-2.5">
+          <span className="text-xs font-medium text-charcoal-700 block">
+            Add Image by URL
           </span>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-sans">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 text-xs font-sans">
             <input
               type="text"
               value={newGalleryUrl}
               onChange={(e) => setNewGalleryUrl(e.target.value)}
-              placeholder="Asset URL (e.g. /images/about-zalia.webp)"
-              className="sm:col-span-2 px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
+              placeholder="Asset URL (e.g. /images/project.webp)"
+              className="sm:col-span-2 px-3 py-2 rounded-lg bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:border-[#07381E]"
             />
             <input
               type="text"
               value={newGalleryCaption}
               onChange={(e) => setNewGalleryCaption(e.target.value)}
-              placeholder="Caption (e.g. Courtyard Daylight)"
-              className="px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:border-[#07381E]"
+              placeholder="Caption (optional)"
+              className="px-3 py-2 rounded-lg bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:border-[#07381E]"
             />
           </div>
           <button
             type="button"
             onClick={addGalleryImage}
             disabled={!newGalleryUrl.trim()}
-            className="px-4 py-2 rounded-xl bg-canvas-warm hover:bg-[#07381E] hover:text-white text-xs font-semibold uppercase tracking-wider text-charcoal-800 transition-colors flex items-center space-x-1.5 disabled:opacity-30"
+            className="px-3 py-1.5 rounded-lg bg-canvas-warm hover:bg-[#07381E] hover:text-white text-xs font-medium text-charcoal-800 transition-colors flex items-center space-x-1.5 disabled:opacity-30"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add to Gallery</span>
@@ -626,24 +618,24 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
       </div>
 
       {/* 5. Before & After Metamorphosis */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-6">
-        <div className="flex items-center space-x-3 border-b border-canvas-border pb-4">
-          <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
-            <SplitSquareVertical className="w-5 h-5" />
+      <div className="p-5 sm:p-6 rounded-2xl bg-white border border-canvas-border shadow-2xs space-y-5">
+        <div className="flex items-center space-x-3 border-b border-canvas-border pb-3">
+          <div className="w-8 h-8 rounded-lg bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
+            <SplitSquareVertical className="w-4 h-4" />
           </div>
           <div>
-            <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-              TRANSFORMATION PROOF
-            </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
-              Before / After Comparison Sets
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
+              Before &amp; After Comparison
             </h2>
+            <p className="text-xs text-charcoal-500 font-sans mt-0.5">
+              Interactive split-slider images showing architectural metamorphosis.
+            </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-xs font-sans">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
           <MediaPickerField
-            label="Before Transformation Photo"
+            label="Before Transformation"
             value={formData.before_image_url}
             onChange={(url) => setFormData({ ...formData, before_image_url: url })}
             description="Existing property prior to redevelopment"
@@ -651,65 +643,76 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
           />
 
           <MediaPickerField
-            label="After Transformation Photo"
+            label="After Transformation"
             value={formData.after_image_url}
             onChange={(url) => setFormData({ ...formData, after_image_url: url })}
-            description="Finished residence with architectural intervention"
+            description="Finished residence after intervention"
             aspectRatio="landscape"
           />
         </div>
       </div>
 
-      {/* 6. Search Engine Optimization (SEO) */}
-      <div className="p-6 sm:p-8 rounded-3xl bg-white border border-canvas-border shadow-soft-sm space-y-6">
-        <div className="flex items-center space-x-3 border-b border-canvas-border pb-4">
-          <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
-            <Globe className="w-5 h-5" />
+      {/* 6. Collapsible Search Engine Optimization (SEO) */}
+      <div className="rounded-2xl bg-white border border-canvas-border shadow-2xs overflow-hidden">
+        <button
+          type="button"
+          onClick={() => setIsSeoOpen(!isSeoOpen)}
+          className="w-full p-5 flex items-center justify-between text-left hover:bg-stone-50 transition-colors"
+        >
+          <div className="flex items-center space-x-3">
+            <div className="w-8 h-8 rounded-lg bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
+              <Globe className="w-4 h-4" />
+            </div>
+            <div>
+              <h2 className="font-sans text-base font-semibold text-charcoal-950">
+                Search Engine Optimization (SEO)
+              </h2>
+              <p className="text-xs text-charcoal-500 font-sans mt-0.5">
+                Optional custom meta title and description for search engines.
+              </p>
+            </div>
           </div>
-          <div>
-            <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-              DISCOVERABILITY
-            </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
-              Project SEO Meta Tags
-            </h2>
+          <div className="text-charcoal-400 p-1">
+            {isSeoOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
           </div>
-        </div>
+        </button>
 
-        <div className="space-y-5 text-xs font-sans">
-          <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-              SEO Title Tag
-            </label>
-            <input
-              type="text"
-              value={formData.seo_title || ''}
-              onChange={(e) => setFormData({ ...formData, seo_title: e.target.value })}
-              placeholder={`${formData.title || 'Project'} | Zalia Properties`}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm focus:outline-none focus:bg-white focus:border-[#07381E]"
-            />
-          </div>
+        {isSeoOpen && (
+          <div className="p-5 pt-0 space-y-4 text-xs font-sans border-t border-canvas-border/50 mt-2">
+            <div className="space-y-1.5 pt-3">
+              <label className="text-xs font-medium text-charcoal-700 block">
+                SEO Title Tag
+              </label>
+              <input
+                type="text"
+                value={formData.seo_title || ''}
+                onChange={(e) => setFormData({ ...formData, seo_title: e.target.value })}
+                placeholder={`${formData.title || 'Project'} | Zalia Properties`}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
+              />
+            </div>
 
-          <div className="space-y-2">
-            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-              SEO Meta Description
-            </label>
-            <textarea
-              rows={2}
-              value={formData.seo_description || ''}
-              onChange={(e) => setFormData({ ...formData, seo_description: e.target.value })}
-              placeholder={formData.short_description || 'Search meta description for this case study.'}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm focus:outline-none focus:bg-white focus:border-[#07381E] resize-none"
-            />
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-charcoal-700 block">
+                SEO Meta Description
+              </label>
+              <textarea
+                rows={2}
+                value={formData.seo_description || ''}
+                onChange={(e) => setFormData({ ...formData, seo_description: e.target.value })}
+                placeholder={formData.short_description || 'Search meta description for this case study.'}
+                className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:bg-white focus:border-[#07381E] resize-none"
+              />
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       {/* Bottom Floating Action Bar */}
-      <div className="flex items-center justify-between pt-4 border-t border-canvas-border">
+      <div className="flex items-center justify-between pt-3 border-t border-canvas-border">
         <Link
           href="/admin/projects"
-          className="px-5 py-2.5 rounded-xl border border-canvas-border text-charcoal-700 hover:bg-canvas-warm font-sans text-xs font-semibold transition-colors"
+          className="px-4 py-2 rounded-lg border border-canvas-border text-charcoal-700 hover:bg-canvas-warm font-sans text-xs font-medium transition-colors"
         >
           Cancel
         </Link>
@@ -717,7 +720,7 @@ export default function ProjectForm({ initialData, isNew = false }: ProjectFormP
         <button
           type="submit"
           disabled={isSaving}
-          className="px-8 py-3.5 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider flex items-center space-x-2 transition-all shadow-soft-sm disabled:opacity-50"
+          className="px-6 py-2.5 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-medium flex items-center space-x-2 transition-all shadow-soft-sm disabled:opacity-50"
         >
           <Save className="w-4 h-4" />
           <span>{isSaving ? 'Saving...' : isNew ? 'Create Project' : 'Save Changes'}</span>

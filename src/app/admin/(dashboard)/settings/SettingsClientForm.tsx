@@ -84,7 +84,7 @@ export default function SettingsClientForm({
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               VISUAL SYSTEM
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Identity, Logo &amp; Brand Color
             </h2>
           </div>
@@ -192,13 +192,21 @@ export default function SettingsClientForm({
           <div className="w-10 h-10 rounded-2xl bg-[#EBF2EE] text-[#07381E] flex items-center justify-center shrink-0">
             <Mail className="w-5 h-5" />
           </div>
-          <div>
-            <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
-              COMMUNICATION
-            </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
-              Headquarters &amp; Direct Channels
-            </h2>
+          <div className="flex-1">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
+                  COMMUNICATION
+                </span>
+                <h2 className="font-sans text-base font-semibold text-charcoal-950">
+                  Headquarters &amp; Direct Channels
+                </h2>
+              </div>
+              <div className="flex items-center space-x-1.5 px-2.5 py-1 rounded-full bg-[#EBF2EE] border border-[#07381E]/15 text-[#07381E] text-xs font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span>Zoho Mail Active</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -267,7 +275,7 @@ export default function SettingsClientForm({
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               SOCIAL CHANNELS
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Corporate Profiles &amp; Networks
             </h2>
           </div>
@@ -312,7 +320,7 @@ export default function SettingsClientForm({
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               SEARCH VISIBILITY
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Default SEO Meta Configuration
             </h2>
           </div>
@@ -356,7 +364,7 @@ export default function SettingsClientForm({
 
         <div className="flex items-center space-x-3">
           {saveSuccess && (
-            <div className="flex items-center space-x-1.5 text-xs text-emerald-800 font-semibold animate-in fade-in">
+            <div className="flex items-center space-x-1.5 text-xs text-emerald-800 font-medium animate-in fade-in">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
               <span>Settings updated successfully!</span>
             </div>
@@ -365,9 +373,9 @@ export default function SettingsClientForm({
           <button
             type="submit"
             disabled={isSaving}
-            className="px-7 py-3.5 rounded-full bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider flex items-center space-x-2.5 transition-all shadow-soft-sm disabled:opacity-50"
+            className="px-5 py-2.5 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium flex items-center space-x-2 transition-all shadow-2xs disabled:opacity-50"
           >
-            <Save className="w-4 h-4" />
+            <Save className="w-3.5 h-3.5" />
             <span>{isSaving ? 'Saving...' : 'Save Global Settings'}</span>
           </button>
         </div>

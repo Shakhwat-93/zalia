@@ -275,7 +275,7 @@ export default function ProjectsClientTable({
           <div className="min-w-0">
             <Link
               href={`/admin/projects/${proj.id}`}
-              className="font-serif font-semibold text-charcoal-950 block truncate text-sm sm:text-[15px] hover:text-emerald-brand transition-colors"
+              className="font-sans font-medium text-charcoal-950 block truncate text-sm hover:text-[#07381E] transition-colors"
             >
               {proj.title}
             </Link>
@@ -399,26 +399,132 @@ export default function ProjectsClientTable({
         </div>
       )}
 
-      <ResponsiveTable
-        columns={columns}
-        data={filtered}
-        keyExtractor={(item) => item.id}
-        searchPlaceholder="Search projects by title, slug, location, or category..."
-        filterOptions={[
-          { label: 'All Projects', value: 'ALL' },
-          { label: 'Completed', value: 'COMPLETED' },
-          { label: 'Current Developments', value: 'CURRENT' },
-          { label: 'In Development', value: 'IN DEVELOPMENT' },
-          { label: 'Published Only', value: 'PUBLISHED' },
-          { label: 'Drafts Only', value: 'DRAFT' },
-        ]}
-        activeFilter={filter}
-        onFilterChange={setFilter}
-        onSearchChange={setSearch}
-        actions={actions}
-        pageSize={8}
-        emptyMessage="No projects match your active search or filter criteria."
-      />
+      {/* Desktop Table View */}
+      <div className="hidden sm:block">
+        <ResponsiveTable
+          columns={columns}
+          data={filtered}
+          keyExtractor={(item) => item.id}
+          searchPlaceholder="Search projects by title, slug, location, or category..."
+          filterOptions={[
+            { label: 'All Projects', value: 'ALL' },
+            { label: 'Completed', value: 'COMPLETED' },
+            { label: 'Current Developments', value: 'CURRENT' },
+            { label: 'In Development', value: 'IN DEVELOPMENT' },
+            { label: 'Published Only', value: 'PUBLISHED' },
+            { label: 'Drafts Only', value: 'DRAFT' },
+          ]}
+          activeFilter={filter}
+          onFilterChange={setFilter}
+          onSearchChange={setSearch}
+          actions={actions}
+          pageSize={8}
+          emptyMessage="No projects match your active search or filter criteria."
+        />
+      </div>
+
+      {/* Mobile Stacked Cards Layout */}
+      <div className="block sm:hidden space-y-3">
+        <div className="mb-2">
+          <input
+            type="text"
+            placeholder="Search projects..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-canvas-border text-xs font-sans text-charcoal-900 focus:outline-none focus:border-[#07381E]"
+          />
+        </div>
+
+        {filtered.length === 0 ? (
+          <div className="p-8 text-center bg-white rounded-xl border border-canvas-border text-xs text-charcoal-500">
+            No projects found matching criteria.
+          </div>
+        ) : (
+          filtered.map((proj) => {
+            const isPublished = proj.status === 'published';
+            return (
+              <div
+                key={proj.id}
+                className="p-4 rounded-xl bg-white border border-canvas-border shadow-2xs space-y-3"
+              >
+                <div className="flex items-start space-x-3">
+                  <div className="relative w-14 h-14 rounded-lg overflow-hidden bg-charcoal-100 shrink-0 border border-canvas-border">
+                    <Image
+                      src={proj.image_url}
+                      alt={proj.title}
+                      fill
+                      className="object-cover"
+                      sizes="56px"
+                    />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-1.5">
+                      <Link
+                        href={`/admin/projects/${proj.id}`}
+                        className="font-sans font-medium text-charcoal-950 block text-xs hover:text-[#07381E]"
+                      >
+                        {proj.title}
+                      </Link>
+                      <button
+                        type="button"
+                        onClick={() => toggleFeatured(proj)}
+                        className={`p-1.5 rounded-lg border transition-colors shrink-0 ${
+                          proj.featured
+                            ? 'bg-[#EBF2EE] text-[#07381E] border-[#07381E]/30'
+                            : 'bg-white text-stone-300 border-canvas-border'
+                        }`}
+                        title={proj.featured ? 'Featured on homepage' : 'Not featured'}
+                      >
+                        <Star className={`w-3.5 h-3.5 ${proj.featured ? 'fill-[#07381E]' : ''}`} />
+                      </button>
+                    </div>
+
+                    <div className="text-[11px] text-charcoal-500 font-sans mt-0.5 truncate">
+                      {proj.location}
+                    </div>
+
+                    <div className="flex items-center space-x-2 mt-1.5">
+                      <StatusBadge status={proj.status_badge} />
+                      <button
+                        type="button"
+                        onClick={() => togglePublishStatus(proj)}
+                        className={`inline-flex items-center space-x-1 px-2 py-0.5 rounded-full text-[10px] font-medium border transition-colors ${
+                          isPublished
+                            ? 'bg-[#EBF2EE] text-[#07381E] border-[#07381E]/20'
+                            : 'bg-stone-100 text-stone-500 border-stone-200'
+                        }`}
+                      >
+                        {isPublished ? <Eye className="w-2.5 h-2.5" /> : <EyeOff className="w-2.5 h-2.5" />}
+                        <span>{isPublished ? 'Published' : 'Draft'}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 border-t border-canvas-border/50 text-xs">
+                  <span className="font-mono text-[10px] text-charcoal-400">Order #{proj.sort_order}</span>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      type="button"
+                      onClick={() => setDeleteTarget(proj)}
+                      className="px-2.5 py-1 text-rose-600 hover:bg-rose-50 rounded-lg text-xs font-medium transition-colors"
+                    >
+                      Delete
+                    </button>
+                    <Link
+                      href={`/admin/projects/${proj.id}`}
+                      className="px-3 py-1 bg-[#07381E] text-white rounded-lg text-xs font-medium hover:bg-[#052B17] transition-colors"
+                    >
+                      Edit
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
 
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog

@@ -18,6 +18,7 @@ import {
   Image as ImageIcon
 } from 'lucide-react';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import AdminModal from '@/components/admin/AdminModal';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 
 export interface MediaAsset {
@@ -209,33 +210,30 @@ export default function MediaLibraryModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal-950/70 backdrop-blur-xs animate-in fade-in">
-      <div className="bg-white rounded-3xl w-full max-w-5xl h-[88vh] flex flex-col border border-canvas-border shadow-soft-2xl overflow-hidden text-left">
-        
-        {/* Header */}
-        <div className="px-6 py-4 border-b border-canvas-border flex items-center justify-between bg-white shrink-0">
-          <div>
-            <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.2em] text-[#07381E]">
-              MEDIA REPOSITORY
-            </span>
-            <h3 className="font-serif text-xl sm:text-2xl font-medium text-charcoal-950">
-              {title}
-            </h3>
-          </div>
-
-          <div className="flex items-center space-x-3">
+    <>
+      <AdminModal
+        isOpen={isOpen}
+        onClose={onClose}
+        maxWidth="5xl"
+        zIndex={50}
+        eyebrow="MEDIA REPOSITORY"
+        title={title}
+        bodyClassName="p-0"
+        headerAction={
+          <>
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isUploading}
-              className="px-4 py-2 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider flex items-center space-x-2 transition-colors shadow-soft-sm disabled:opacity-50"
+              className="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium flex items-center space-x-1.5 sm:space-x-2 transition-colors shadow-2xs disabled:opacity-50 touch-manipulation min-h-[36px]"
             >
               {isUploading ? (
                 <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
                 <UploadCloud className="w-3.5 h-3.5" />
               )}
-              <span>{isUploading ? 'Uploading...' : 'Upload Image'}</span>
+              <span className="hidden xs:inline sm:inline">{isUploading ? 'Uploading...' : 'Upload Image'}</span>
+              <span className="xs:hidden sm:hidden">{isUploading ? '...' : 'Upload'}</span>
             </button>
             <input
               ref={fileInputRef}
@@ -245,19 +243,43 @@ export default function MediaLibraryModal({
               onChange={handleFileUpload}
               className="hidden"
             />
+          </>
+        }
+        footer={
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="text-xs font-sans text-charcoal-600">
+              {selectedUrls.length > 0 ? (
+                <span>
+                  Ready to insert <strong className="text-charcoal-900">{selectedUrls.length}</strong> asset(s)
+                </span>
+              ) : (
+                <span className="text-charcoal-400">Tap or click any image to select</span>
+              )}
+            </div>
 
-            <button
-              type="button"
-              onClick={onClose}
-              className="p-2 rounded-xl text-charcoal-400 hover:text-charcoal-900 hover:bg-canvas-warm transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
+            <div className="flex items-center space-x-2.5">
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex-1 sm:flex-none px-4 py-2.5 sm:py-2 rounded-xl border border-canvas-border text-charcoal-700 hover:bg-canvas-warm text-xs font-medium transition-colors min-h-[44px] sm:min-h-0"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                disabled={selectedUrls.length === 0}
+                onClick={handleConfirmSelect}
+                className="flex-1 sm:flex-none px-5 py-2.5 sm:py-2 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium transition-colors shadow-2xs disabled:opacity-40 min-h-[44px] sm:min-h-0"
+              >
+                Confirm Selection
+              </button>
+            </div>
           </div>
-        </div>
-
+        }
+      >
         {/* Toolbar & Search */}
-        <div className="px-6 py-3 border-b border-canvas-border bg-canvas-warm/50 flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
+        <div className="sticky top-0 z-10 px-4 sm:px-6 py-3 border-b border-canvas-border bg-white/95 backdrop-blur-xs flex flex-col sm:flex-row items-center justify-between gap-3 shrink-0">
           <div className="relative w-full sm:max-w-sm">
             <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-charcoal-400 pointer-events-none" />
             <input
@@ -265,16 +287,16 @@ export default function MediaLibraryModal({
               placeholder="Filter by filename or caption..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 rounded-xl bg-white border border-canvas-border text-xs font-sans text-charcoal-900 focus:outline-none focus:border-[#07381E]"
+              className="w-full pl-10 pr-4 py-2 rounded-xl bg-canvas-warm border border-canvas-border text-xs font-sans text-charcoal-900 focus:outline-none focus:bg-white focus:border-[#07381E]"
             />
           </div>
 
-          <div className="text-xs text-charcoal-500 font-sans flex items-center space-x-4 self-start sm:self-auto">
+          <div className="text-xs text-charcoal-500 font-sans flex items-center space-x-3 self-start sm:self-auto">
             <span>
               Showing <strong className="text-charcoal-900">{filteredAssets.length}</strong> assets
             </span>
             {selectedUrls.length > 0 && (
-              <span className="text-[#07381E] font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+              <span className="text-[#07381E] font-semibold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                 {selectedUrls.length} selected
               </span>
             )}
@@ -282,33 +304,33 @@ export default function MediaLibraryModal({
         </div>
 
         {uploadError && (
-          <div className="mx-6 mt-3 p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-sans flex items-center space-x-2">
+          <div className="m-4 sm:m-6 p-3 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs font-sans flex items-center space-x-2">
             <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
             <span>{uploadError}</span>
           </div>
         )}
 
         {/* Main Grid View */}
-        <div className="flex-1 overflow-y-auto p-6 bg-canvas-warm/30">
+        <div className="p-4 sm:p-6 bg-canvas-warm/30 min-h-[280px]">
           {isLoading ? (
-            <div className="h-full flex items-center justify-center space-x-2 text-charcoal-400 text-xs font-sans">
+            <div className="py-16 flex items-center justify-center space-x-2 text-charcoal-400 text-xs font-sans">
               <Loader2 className="w-5 h-5 animate-spin text-[#07381E]" />
               <span>Loading media repository...</span>
             </div>
           ) : filteredAssets.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center space-y-3 p-8">
+            <div className="py-16 flex flex-col items-center justify-center text-center space-y-3 p-4 sm:p-8">
               <ImageIcon className="w-12 h-12 text-charcoal-300 stroke-[1.2]" />
               <p className="text-sm font-sans text-charcoal-600">No media assets match your search.</p>
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="text-xs font-semibold text-[#07381E] hover:underline"
+                className="text-xs font-semibold text-[#07381E] hover:underline min-h-[36px] flex items-center"
               >
                 Upload your first image
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 sm:gap-4">
               {filteredAssets.map((asset) => {
                 const isSelected = selectedUrls.includes(asset.file_url);
 
@@ -354,6 +376,7 @@ export default function MediaLibraryModal({
                         }}
                         className="absolute bottom-2 right-2 p-1.5 rounded-lg bg-black/60 text-white hover:bg-black/80 backdrop-blur-xs opacity-0 group-hover:opacity-100 transition-opacity"
                         title="Inspect particulars"
+                        aria-label="Inspect particulars"
                       >
                         <Eye className="w-3.5 h-3.5" />
                       </button>
@@ -361,7 +384,7 @@ export default function MediaLibraryModal({
 
                     {/* Metadata Footer */}
                     <div className="p-2.5 text-left space-y-0.5 bg-white">
-                      <span className="text-xs font-serif font-medium text-charcoal-950 block truncate">
+                      <span className="text-xs font-sans font-medium text-charcoal-950 block truncate">
                         {asset.filename || 'Untitled'}
                       </span>
                       <div className="flex items-center justify-between text-[10.5px] font-sans text-charcoal-400">
@@ -375,62 +398,48 @@ export default function MediaLibraryModal({
             </div>
           )}
         </div>
-
-        {/* Footer Actions */}
-        <div className="px-6 py-4 border-t border-canvas-border bg-white flex items-center justify-between shrink-0">
-          <div className="text-xs font-sans text-charcoal-600">
-            {selectedUrls.length > 0 ? (
-              <span>
-                Ready to insert <strong className="text-charcoal-900">{selectedUrls.length}</strong> asset(s)
-              </span>
-            ) : (
-              <span className="text-charcoal-400">Click any image to select</span>
-            )}
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 rounded-xl border border-canvas-border text-charcoal-700 hover:bg-canvas-warm text-xs font-semibold transition-colors"
-            >
-              Cancel
-            </button>
-
-            <button
-              type="button"
-              disabled={selectedUrls.length === 0}
-              onClick={handleConfirmSelect}
-              className="px-6 py-2 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-colors shadow-soft-sm disabled:opacity-40"
-            >
-              Confirm Selection
-            </button>
-          </div>
-        </div>
-      </div>
+      </AdminModal>
 
       {/* Asset Inspection Lightbox Modal */}
-      {previewAsset && (
-        <div className="fixed inset-0 z-60 flex items-center justify-center p-4 bg-charcoal-950/80 backdrop-blur-sm animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 space-y-5 border border-canvas-border shadow-2xl text-left">
-            <div className="flex items-start justify-between border-b border-canvas-border pb-3">
-              <div>
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-[#07381E]">
-                  ASSET PARTICULARS
-                </span>
-                <h4 className="font-serif text-xl font-medium text-charcoal-950 truncate max-w-sm">
-                  {previewAsset.filename}
-                </h4>
-              </div>
-              <button
-                type="button"
-                onClick={() => setPreviewAsset(null)}
-                className="p-1 rounded-lg text-charcoal-400 hover:text-charcoal-900"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+      <AdminModal
+        isOpen={Boolean(previewAsset)}
+        onClose={() => setPreviewAsset(null)}
+        zIndex={60}
+        maxWidth="lg"
+        eyebrow="ASSET PARTICULARS"
+        title={previewAsset?.filename || 'Asset Particulars'}
+        footer={
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2.5">
+            <button
+              type="button"
+              onClick={() => {
+                const target = previewAsset;
+                setPreviewAsset(null);
+                setDeleteTarget(target);
+              }}
+              className="w-full sm:w-auto px-4 py-2.5 sm:py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center justify-center space-x-1.5 transition-colors border border-rose-200 sm:border-transparent min-h-[44px] sm:min-h-0"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Delete Asset</span>
+            </button>
 
+            <button
+              type="button"
+              onClick={() => {
+                if (previewAsset) {
+                  toggleSelect(previewAsset);
+                  setPreviewAsset(null);
+                }
+              }}
+              className="w-full sm:w-auto px-5 py-2.5 sm:py-2 rounded-xl bg-[#07381E] text-white text-xs font-semibold hover:bg-[#052B17] transition-colors shadow-2xs min-h-[44px] sm:min-h-0"
+            >
+              Select This Asset
+            </button>
+          </div>
+        }
+      >
+        {previewAsset && (
+          <div className="space-y-4">
             {/* Large Image Frame */}
             <div className="relative aspect-16/10 w-full rounded-2xl overflow-hidden bg-charcoal-100 border border-canvas-border">
               {previewAsset.file_url ? (
@@ -445,55 +454,34 @@ export default function MediaLibraryModal({
             </div>
 
             {/* Data Grid */}
-            <div className="grid grid-cols-2 gap-3 text-xs font-sans">
-              <div className="p-2.5 rounded-xl bg-canvas-warm space-y-0.5">
-                <span className="text-charcoal-400 font-medium text-[10.5px] uppercase">File Size</span>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-sans">
+              <div className="p-3 rounded-xl bg-canvas-warm space-y-0.5">
+                <span className="text-charcoal-400 font-medium text-[10px] uppercase tracking-wider block">File Size</span>
                 <span className="font-semibold text-charcoal-900 block">{formatSize(previewAsset.file_size)}</span>
               </div>
-              <div className="p-2.5 rounded-xl bg-canvas-warm space-y-0.5">
-                <span className="text-charcoal-400 font-medium text-[10.5px] uppercase">Format</span>
+              <div className="p-3 rounded-xl bg-canvas-warm space-y-0.5">
+                <span className="text-charcoal-400 font-medium text-[10px] uppercase tracking-wider block">Format</span>
                 <span className="font-semibold text-charcoal-900 block uppercase">{previewAsset.file_type}</span>
               </div>
-              <div className="p-2.5 rounded-xl bg-canvas-warm space-y-0.5 col-span-2">
-                <span className="text-charcoal-400 font-medium text-[10.5px] uppercase">Direct URL</span>
-                <div className="flex items-center justify-between gap-2 pt-0.5">
-                  <span className="font-mono text-[11px] text-charcoal-700 truncate">{previewAsset.file_url}</span>
+              <div className="p-3 rounded-xl bg-canvas-warm space-y-1 col-span-1 sm:col-span-2">
+                <span className="text-charcoal-400 font-medium text-[10px] uppercase tracking-wider block">Direct URL</span>
+                <div className="flex items-center justify-between gap-2 min-w-0">
+                  <span className="font-mono text-[11px] sm:text-xs text-charcoal-700 truncate min-w-0 flex-1">{previewAsset.file_url}</span>
                   <button
                     type="button"
                     onClick={() => copyUrl(previewAsset.file_url, previewAsset.id)}
-                    className="shrink-0 p-1 rounded hover:bg-white text-charcoal-600 transition-colors"
+                    className="shrink-0 p-1.5 rounded-lg hover:bg-white text-charcoal-600 transition-colors"
                     title="Copy URL"
+                    aria-label="Copy direct URL"
                   >
                     {copiedId === previewAsset.id ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
                 </div>
               </div>
             </div>
-
-            <div className="flex items-center justify-between pt-2 border-t border-canvas-border">
-              <button
-                type="button"
-                onClick={() => setDeleteTarget(previewAsset)}
-                className="px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center space-x-1.5 transition-colors"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Delete Asset</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => {
-                  toggleSelect(previewAsset);
-                  setPreviewAsset(null);
-                }}
-                className="px-4 py-2 rounded-xl bg-[#07381E] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#052B17] transition-colors"
-              >
-                Select This Asset
-              </button>
-            </div>
           </div>
-        </div>
-      )}
+        )}
+      </AdminModal>
 
       {/* Confirm Delete Dialog */}
       <ConfirmDialog
@@ -505,6 +493,6 @@ export default function MediaLibraryModal({
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteTarget(null)}
       />
-    </div>
+    </>
   );
 }

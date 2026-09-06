@@ -276,7 +276,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
               <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
                 PAGE HERO
               </span>
-              <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+              <h2 className="font-sans text-base font-semibold text-charcoal-950">
                 Hero Section
               </h2>
             </div>
@@ -329,7 +329,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
               rows={2}
               value={heroHeading}
               onChange={(e) => setHeroHeading(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-xl focus:outline-none focus:bg-white focus:border-[#07381E] resize-none"
+              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:bg-white focus:border-[#07381E] resize-none"
             />
           </div>
 
@@ -365,7 +365,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               NARRATIVE
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Our Story / Introduction
             </h2>
           </div>
@@ -392,7 +392,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
               rows={2}
               value={introHeading}
               onChange={(e) => setIntroHeading(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-lg focus:outline-none focus:border-[#07381E] resize-none"
+              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E] resize-none"
             />
           </div>
 
@@ -420,7 +420,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               CORE IDENTITY
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Brand Philosophy
             </h2>
           </div>
@@ -447,7 +447,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
               rows={2}
               value={philosophyHeading}
               onChange={(e) => setPhilosophyHeading(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-lg focus:outline-none focus:border-[#07381E] resize-none"
+              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E] resize-none"
             />
           </div>
 
@@ -495,7 +495,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               THREE PILLARS
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               What Makes Zalia Different (Principles)
             </h2>
           </div>
@@ -541,7 +541,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               VISUAL SECTION
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Architectural Metamorphosis Banner
             </h2>
           </div>
@@ -568,7 +568,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
               rows={2}
               value={visualStoryHeading}
               onChange={(e) => setVisualStoryHeading(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-lg focus:outline-none focus:border-[#07381E] resize-none"
+              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E] resize-none"
             />
           </div>
 
@@ -629,7 +629,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               CONVERSION &amp; SEO
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Final CTA &amp; Search Meta
             </h2>
           </div>
@@ -644,7 +644,7 @@ export default function AboutPageEditor({ initialData }: AboutPageEditorProps) {
               rows={2}
               value={statementQuote}
               onChange={(e) => setStatementQuote(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-base focus:outline-none focus:border-[#07381E]"
+              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E]"
             />
           </div>
 

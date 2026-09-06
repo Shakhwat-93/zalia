@@ -21,6 +21,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import AdminModal from '@/components/admin/AdminModal';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 
 export interface MediaRecord {
@@ -194,11 +195,11 @@ export default function MediaClientGrid({
         </div>
 
         <div className="space-y-1">
-          <h4 className="font-serif text-lg font-medium text-charcoal-950">
-            {isUploading ? 'Uploading to Supabase Storage...' : 'Drop Architectural Imagery Here'}
+          <h4 className="font-sans text-base font-semibold text-charcoal-950">
+            {isUploading ? 'Uploading to Storage...' : 'Upload Images'}
           </h4>
           <p className="text-xs font-sans text-charcoal-500 max-w-sm mx-auto">
-            or <span className="text-[#07381E] font-semibold underline">browse from your computer</span>. Supports WebP, JPEG, PNG, AVIF up to 20MB.
+            Drag and drop images here, or <span className="text-[#07381E] font-medium underline">browse files</span>. WebP, JPEG, PNG, AVIF up to 20MB.
           </p>
         </div>
       </div>
@@ -276,7 +277,7 @@ export default function MediaClientGrid({
               <div className="space-y-0.5">
                 <span
                   onClick={() => setActiveAsset(item)}
-                  className="text-xs font-serif font-semibold text-charcoal-950 block truncate cursor-pointer hover:text-[#07381E]"
+                  className="text-xs font-sans font-medium text-charcoal-950 block truncate cursor-pointer hover:text-[#07381E]"
                   title={item.filename || 'Asset'}
                 >
                   {item.filename || 'Untitled Asset'}
@@ -295,7 +296,7 @@ export default function MediaClientGrid({
                   {copiedId === item.id ? (
                     <>
                       <Check className="w-3 h-3 text-emerald-600" />
-                      <span className="text-emerald-700 font-semibold">Copied!</span>
+                      <span className="text-emerald-700 font-medium">Copied!</span>
                     </>
                   ) : (
                     <>
@@ -332,91 +333,88 @@ export default function MediaClientGrid({
       </div>
 
       {/* Asset Inspection Modal */}
-      {activeAsset && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal-950/70 backdrop-blur-xs animate-in fade-in">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 space-y-6 border border-canvas-border shadow-2xl text-left">
-            <div className="flex items-start justify-between border-b border-canvas-border pb-3">
-              <div>
-                <span className="text-[10px] font-sans font-semibold uppercase tracking-[0.2em] text-[#07381E]">
-                  MEDIA PARTICULARS
-                </span>
-                <h3 className="font-serif text-2xl font-medium text-charcoal-950 truncate max-w-sm">
-                  {activeAsset.filename}
-                </h3>
-              </div>
-              <button
-                type="button"
-                onClick={() => setActiveAsset(null)}
-                className="p-2 rounded-xl text-charcoal-400 hover:text-charcoal-900 hover:bg-canvas-warm transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+      <AdminModal
+        isOpen={Boolean(activeAsset)}
+        onClose={() => setActiveAsset(null)}
+        eyebrow="ASSET DETAILS"
+        title={activeAsset?.filename || 'Asset Particulars'}
+        description={
+          activeAsset?.created_at
+            ? `Uploaded ${new Date(activeAsset.created_at).toLocaleDateString('en-GB', { dateStyle: 'medium' })}`
+            : undefined
+        }
+        maxWidth="lg"
+        footer={
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-between gap-2.5">
+            <button
+              type="button"
+              onClick={() => {
+                const target = activeAsset;
+                setActiveAsset(null);
+                setDeleteTarget(target);
+              }}
+              className="w-full sm:w-auto px-4 py-2.5 sm:py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center justify-center space-x-1.5 transition-colors border border-rose-200 sm:border-transparent min-h-[44px] sm:min-h-0"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>Delete Asset</span>
+            </button>
 
+            <button
+              type="button"
+              onClick={() => setActiveAsset(null)}
+              className="w-full sm:w-auto px-5 py-2.5 sm:py-2 rounded-xl bg-[#07381E] text-white text-xs font-semibold hover:bg-[#052B17] transition-colors shadow-2xs min-h-[44px] sm:min-h-0"
+            >
+              Done
+            </button>
+          </div>
+        }
+      >
+        {activeAsset && (
+          <div className="space-y-4">
             {/* Large Preview */}
             <div className="relative aspect-16/10 w-full rounded-2xl overflow-hidden bg-charcoal-100 border border-canvas-border">
               {activeAsset.file_url ? (
                 <Image
                   src={encodeURI(activeAsset.file_url)}
-                  alt={activeAsset.filename || 'Particulars'}
+                  alt={activeAsset.filename || 'Media image'}
                   fill
                   className="object-contain"
-                  sizes="600px"
+                  sizes="(max-width: 640px) 100vw, 600px"
                 />
               ) : null}
             </div>
 
             {/* Information Grid */}
-            <div className="grid grid-cols-2 gap-3 text-xs font-sans">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-sans">
               <div className="p-3 rounded-xl bg-canvas-warm space-y-0.5">
-                <span className="text-charcoal-400 font-medium text-[10.5px] uppercase">File Size</span>
+                <span className="text-charcoal-400 font-medium text-[10px] uppercase tracking-wider block">File Size</span>
                 <span className="font-semibold text-charcoal-900 block">{formatSize(activeAsset.file_size)}</span>
               </div>
 
               <div className="p-3 rounded-xl bg-canvas-warm space-y-0.5">
-                <span className="text-charcoal-400 font-medium text-[10.5px] uppercase">File Type</span>
+                <span className="text-charcoal-400 font-medium text-[10px] uppercase tracking-wider block">File Format</span>
                 <span className="font-semibold text-charcoal-900 block uppercase">{activeAsset.file_type}</span>
               </div>
 
-              <div className="p-3 rounded-xl bg-canvas-warm space-y-0.5 col-span-2">
-                <span className="text-charcoal-400 font-medium text-[10.5px] uppercase">Public Direct Path</span>
-                <div className="flex items-center justify-between gap-2 pt-0.5">
-                  <span className="font-mono text-xs text-charcoal-800 truncate">{activeAsset.file_url}</span>
+              <div className="p-3 rounded-xl bg-canvas-warm space-y-1 col-span-1 sm:col-span-2">
+                <span className="text-charcoal-400 font-medium text-[10px] uppercase tracking-wider block">Direct URL</span>
+                <div className="flex items-center justify-between gap-2 min-w-0">
+                  <span className="font-mono text-[11px] sm:text-xs text-charcoal-800 truncate min-w-0 flex-1">{activeAsset.file_url}</span>
                   <button
                     type="button"
                     onClick={() => copyUrl(activeAsset.file_url, activeAsset.id)}
-                    className="p-1 rounded text-charcoal-500 hover:text-[#07381E] shrink-0"
+                    className="p-1.5 rounded-lg text-charcoal-500 hover:text-[#07381E] hover:bg-white shrink-0 transition-colors"
                     title="Copy URL"
+                    aria-label="Copy direct URL"
                   >
                     {copiedId === activeAsset.id ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                   </button>
                 </div>
               </div>
             </div>
-
-            <div className="flex items-center justify-between pt-2 border-t border-canvas-border">
-              <button
-                type="button"
-                onClick={() => {
-                  setDeleteTarget(activeAsset);
-                }}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-rose-600 hover:bg-rose-50 flex items-center space-x-1.5 transition-colors"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Delete Asset</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setActiveAsset(null)}
-                className="px-5 py-2.5 rounded-xl bg-[#07381E] text-white text-xs font-semibold uppercase tracking-wider hover:bg-[#052B17] transition-colors shadow-soft-sm"
-              >
-                Close Particulars
-              </button>
-            </div>
           </div>
-        </div>
-      )}
+        )}
+      </AdminModal>
 
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog

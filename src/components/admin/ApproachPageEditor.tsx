@@ -270,7 +270,7 @@ export default function ApproachPageEditor({ initialData }: ApproachPageEditorPr
               <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
                 PAGE HERO
               </span>
-              <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+              <h2 className="font-sans text-base font-semibold text-charcoal-950">
                 Hero Section
               </h2>
             </div>
@@ -320,7 +320,7 @@ export default function ApproachPageEditor({ initialData }: ApproachPageEditorPr
               rows={2}
               value={heroHeading}
               onChange={(e) => setHeroHeading(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-xl focus:outline-none focus:border-[#07381E] resize-none"
+              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E] resize-none"
             />
           </div>
 
@@ -356,7 +356,7 @@ export default function ApproachPageEditor({ initialData }: ApproachPageEditorPr
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               METHODOLOGY
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               The 5 Development Stages
             </h2>
           </div>
@@ -422,7 +422,7 @@ export default function ApproachPageEditor({ initialData }: ApproachPageEditorPr
                   type="text"
                   value={stg.title}
                   onChange={(e) => updateStageField(idx, 'title', e.target.value)}
-                  className="w-full px-3 py-2 rounded-xl bg-white border border-canvas-border text-charcoal-900 font-serif text-base focus:outline-none focus:border-[#07381E]"
+                  className="w-full px-3 py-2 rounded-xl bg-white border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E]"
                 />
               </div>
 
@@ -475,7 +475,7 @@ export default function ApproachPageEditor({ initialData }: ApproachPageEditorPr
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               DISCOVERABILITY
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Page SEO Meta Tags
             </h2>
           </div>

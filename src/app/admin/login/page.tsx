@@ -92,7 +92,7 @@ function LoginForm() {
               />
             </div>
             
-            <h1 className="font-serif text-3xl sm:text-4xl font-medium tracking-tight text-white">
+            <h1 className="font-sans text-2xl sm:text-3xl font-semibold tracking-tight text-white">
               Executive Portal
             </h1>
             <p className="text-xs sm:text-[13px] text-white/60 font-sans leading-relaxed">

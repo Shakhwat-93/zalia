@@ -28,7 +28,7 @@ export default function EmptyState({
       </div>
 
       <div className="space-y-1.5">
-        <h3 className="font-serif text-2xl font-medium text-charcoal-950">
+        <h3 className="font-sans text-lg font-semibold text-charcoal-950">
           {title}
         </h3>
         <p className="text-xs sm:text-sm text-charcoal-500 font-sans leading-relaxed max-w-sm mx-auto">
@@ -41,17 +41,17 @@ export default function EmptyState({
           {actionHref ? (
             <Link
               href={actionHref}
-              className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-soft-sm"
+              className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium transition-all shadow-2xs"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-3.5 h-3.5" />
               <span>{actionLabel}</span>
             </Link>
           ) : (
             <button
               onClick={onAction}
-              className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-soft-sm"
+              className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium transition-all shadow-2xs"
             >
-              <Plus className="w-4 h-4" />
+              <Plus className="w-3.5 h-3.5" />
               <span>{actionLabel}</span>
             </button>
           )}

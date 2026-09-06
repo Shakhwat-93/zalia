@@ -19,7 +19,6 @@ export default function MobileAdminMenu({
   adminName,
   adminEmail,
 }: MobileAdminMenuProps) {
-  // Prevent body scrolling when mobile drawer is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -38,17 +37,17 @@ export default function MobileAdminMenu({
       {/* Backdrop */}
       <div
         onClick={onClose}
-        className="fixed inset-0 bg-[#07381E]/40 backdrop-blur-xs transition-opacity duration-300"
+        className="fixed inset-0 bg-black/30 backdrop-blur-xs transition-opacity duration-200"
         aria-hidden="true"
       />
 
       {/* Drawer Container */}
-      <div className="relative w-[280px] max-w-[85vw] h-full bg-white shadow-2xl flex flex-col z-10 animate-in slide-in-from-left duration-300">
-        {/* Close Button Header */}
-        <div className="absolute top-4 right-4 z-20">
+      <div className="relative w-[280px] max-w-[85vw] h-full bg-white shadow-xl flex flex-col z-10 animate-in slide-in-from-left duration-200">
+        {/* Close Button Header (min 44px touch target) */}
+        <div className="absolute top-2 right-2 z-20">
           <button
             onClick={onClose}
-            className="p-1.5 rounded-full text-charcoal-500 hover:text-charcoal-950 hover:bg-canvas-warm transition-colors"
+            className="w-11 h-11 rounded-lg text-charcoal-500 hover:text-charcoal-950 hover:bg-neutral-100 flex items-center justify-center transition-colors"
             aria-label="Close menu"
           >
             <X className="w-5 h-5" />

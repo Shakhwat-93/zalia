@@ -36,7 +36,7 @@ export default function PagesClientTable({
       priority: 'high',
       render: (p) => (
         <div className="py-1">
-          <span className="font-serif font-semibold text-charcoal-950 block text-sm sm:text-[15px]">
+          <span className="font-sans font-medium text-charcoal-950 block text-sm">
             {p.title}
           </span>
           <span className="font-mono text-xs text-[#07381E] block mt-0.5">
@@ -47,7 +47,7 @@ export default function PagesClientTable({
     },
     {
       key: 'description',
-      header: 'SEO Meta Description',
+      header: 'Meta Description',
       priority: 'medium',
       render: (p) => (
         <span className="text-xs font-sans text-charcoal-500 line-clamp-2 max-w-md">
@@ -92,15 +92,88 @@ export default function PagesClientTable({
   ];
 
   return (
-    <ResponsiveTable
-      columns={columns}
-      data={filtered}
-      keyExtractor={(item) => item.id}
-      searchPlaceholder="Search pages by title or slug..."
-      onSearchChange={setSearch}
-      actions={actions}
-      pageSize={10}
-      emptyMessage="No pages match your search."
-    />
+    <div className="space-y-4">
+      {/* Desktop Table */}
+      <div className="hidden sm:block">
+        <ResponsiveTable
+          columns={columns}
+          data={filtered}
+          keyExtractor={(item) => item.id}
+          searchPlaceholder="Search pages by title or slug..."
+          onSearchChange={setSearch}
+          actions={actions}
+          pageSize={10}
+          emptyMessage="No pages match your search."
+        />
+      </div>
+
+      {/* Mobile Stacked Cards Layout */}
+      <div className="block sm:hidden space-y-3">
+        <div className="mb-2">
+          <input
+            type="text"
+            placeholder="Search pages..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-canvas-border text-xs font-sans text-charcoal-900 focus:outline-none focus:border-[#07381E]"
+          />
+        </div>
+
+        {filtered.map((p) => {
+          const editHref =
+            p.slug === 'home'
+              ? '/admin/homepage'
+              : p.slug === 'team'
+              ? '/admin/team'
+              : p.slug === 'projects'
+              ? '/admin/projects'
+              : p.slug === 'contact'
+              ? '/admin/contact'
+              : `/admin/pages/${p.slug}`;
+
+          return (
+            <div
+              key={p.id}
+              className="p-4 rounded-xl bg-white border border-canvas-border shadow-2xs space-y-2.5"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <span className="font-sans font-medium text-charcoal-950 text-sm block">
+                    {p.title}
+                  </span>
+                  <span className="font-mono text-xs text-[#07381E] block">
+                    /{p.slug === 'home' ? '' : p.slug}
+                  </span>
+                </div>
+                <StatusBadge status={p.status} />
+              </div>
+
+              {p.description && (
+                <p className="text-xs text-charcoal-500 font-sans line-clamp-2">
+                  {p.description}
+                </p>
+              )}
+
+              <div className="flex items-center justify-end space-x-2 pt-2 border-t border-canvas-border/50 text-xs">
+                <a
+                  href={p.slug === 'home' ? '/' : `/${p.slug}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="px-2.5 py-1 text-charcoal-600 hover:text-charcoal-950 rounded-lg text-xs font-medium"
+                >
+                  View
+                </a>
+                <a
+                  href={editHref}
+                  className="px-3.5 py-1.5 bg-[#07381E] text-white rounded-lg text-xs font-medium hover:bg-[#052B17] transition-colors"
+                >
+                  Edit Page
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

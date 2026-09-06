@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import AdminModal from '@/components/admin/AdminModal';
 
 interface NavigationItem {
   id: string;
@@ -238,9 +239,9 @@ export default function NavigationClientManager({
         <button
           type="button"
           onClick={() => openEditModal()}
-          className="inline-flex items-center space-x-2 px-4.5 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider transition-all shadow-soft-sm self-start sm:self-auto"
+          className="inline-flex items-center space-x-1.5 px-4 py-2 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium transition-all shadow-2xs self-start sm:self-auto"
         >
-          <Plus className="w-4 h-4" />
+          <Plus className="w-3.5 h-3.5" />
           <span>Add Menu Item</span>
         </button>
       </div>
@@ -307,7 +308,7 @@ export default function NavigationClientManager({
                   {/* Menu Label */}
                   <td className="px-4 py-3.5">
                     <div className="flex items-center space-x-2">
-                      <span className="font-serif font-semibold text-charcoal-950 text-sm sm:text-[15px]">
+                      <span className="font-sans font-medium text-charcoal-950 text-sm">
                         {item.label}
                       </span>
                       {item.is_external && (
@@ -394,7 +395,7 @@ export default function NavigationClientManager({
             .map((item) => (
               <span
                 key={item.id}
-                className="px-3 py-1 rounded-full bg-white border border-canvas-border text-xs font-serif font-medium text-charcoal-800 shadow-2xs shrink-0"
+                className="px-3 py-1 rounded-full bg-white border border-canvas-border text-xs font-sans font-medium text-charcoal-800 shadow-2xs shrink-0"
               >
                 {item.label}
               </span>
@@ -403,97 +404,86 @@ export default function NavigationClientManager({
       </div>
 
       {/* Modal for Add / Edit Item */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div
-            className="fixed inset-0 bg-[#07381E]/40 backdrop-blur-xs"
-            onClick={() => setIsModalOpen(false)}
-          />
+      <AdminModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        asForm
+        onSubmit={handleSaveModal}
+        maxWidth="md"
+        eyebrow="NAVIGATION MANAGEMENT"
+        title={editingItem ? 'Edit Navigation Item' : 'New Navigation Item'}
+        description="Configure target route and display settings for the main navigation bar."
+        footer={
+          <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5">
+            <button
+              type="button"
+              onClick={() => setIsModalOpen(false)}
+              className="w-full sm:w-auto px-4 py-2.5 sm:py-2 rounded-xl border border-canvas-border text-charcoal-700 hover:bg-canvas-warm text-xs font-medium transition-colors min-h-[44px] sm:min-h-0"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={isSaving}
+              className="w-full sm:w-auto px-5 py-2.5 sm:py-2 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-medium shadow-2xs transition-colors disabled:opacity-50 min-h-[44px] sm:min-h-0"
+            >
+              {isSaving ? 'Saving...' : 'Save Item'}
+            </button>
+          </div>
+        }
+      >
+        <div className="space-y-4 text-xs font-sans">
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
+              Menu Display Label
+            </label>
+            <input
+              type="text"
+              required
+              value={formLabel}
+              onChange={(e) => setFormLabel(e.target.value)}
+              placeholder="e.g. Portfolio"
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
+            />
+          </div>
 
-          <div className="relative w-full max-w-md bg-white border border-canvas-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 space-y-6 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between border-b border-canvas-border pb-4">
-              <h3 className="font-serif text-2xl font-medium text-charcoal-950">
-                {editingItem ? 'Edit Navigation Item' : 'New Navigation Item'}
-              </h3>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="p-1 rounded-full text-charcoal-400 hover:text-charcoal-900"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
+          <div className="space-y-2">
+            <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
+              Target Route (URL)
+            </label>
+            <input
+              type="text"
+              required
+              value={formHref}
+              onChange={(e) => setFormHref(e.target.value)}
+              placeholder="e.g. /projects or https://..."
+              className="w-full px-3.5 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-xs focus:outline-none focus:bg-white focus:border-[#07381E]"
+            />
+          </div>
 
-            <form onSubmit={handleSaveModal} className="space-y-4 text-xs font-sans">
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-                  Menu Display Label
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formLabel}
-                  onChange={(e) => setFormLabel(e.target.value)}
-                  placeholder="e.g. Projects"
-                  className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 text-sm focus:outline-none focus:bg-white focus:border-[#07381E]"
-                />
-              </div>
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-5 pt-2">
+            <label className="flex items-center space-x-2 cursor-pointer touch-manipulation min-h-[36px]">
+              <input
+                type="checkbox"
+                checked={formIsActive}
+                onChange={(e) => setFormIsActive(e.target.checked)}
+                className="w-4 h-4 rounded text-[#07381E] focus:ring-[#07381E]"
+              />
+              <span className="text-xs text-charcoal-700 font-medium">Visible in Menu</span>
+            </label>
 
-              <div className="space-y-2">
-                <label className="text-xs font-semibold uppercase tracking-wider text-charcoal-700 block">
-                  Target Route URL
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={formHref}
-                  onChange={(e) => setFormHref(e.target.value)}
-                  placeholder="e.g. /projects or /about"
-                  className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-mono text-sm focus:outline-none focus:bg-white focus:border-[#07381E]"
-                />
-              </div>
-
-              <div className="pt-2 flex items-center space-x-6">
-                <label className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formIsActive}
-                    onChange={(e) => setFormIsActive(e.target.checked)}
-                    className="rounded text-[#07381E] focus:ring-[#07381E]"
-                  />
-                  <span className="text-xs text-charcoal-700 font-medium">Visible in Menu</span>
-                </label>
-
-                <label className="flex items-center space-x-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={formIsExternal}
-                    onChange={(e) => setFormIsExternal(e.target.checked)}
-                    className="rounded text-[#07381E] focus:ring-[#07381E]"
-                  />
-                  <span className="text-xs text-charcoal-700 font-medium">External Link</span>
-                </label>
-              </div>
-
-              <div className="pt-4 flex items-center justify-end space-x-3 border-t border-canvas-border">
-                <button
-                  type="button"
-                  onClick={() => setIsModalOpen(false)}
-                  className="px-4 py-2.5 rounded-xl border border-canvas-border text-charcoal-700 hover:bg-canvas-warm font-semibold"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSaving}
-                  className="px-5 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white font-semibold uppercase tracking-wider shadow-soft-sm disabled:opacity-50"
-                >
-                  {isSaving ? 'Saving...' : 'Save Item'}
-                </button>
-              </div>
-            </form>
+            <label className="flex items-center space-x-2 cursor-pointer touch-manipulation min-h-[36px]">
+              <input
+                type="checkbox"
+                checked={formIsExternal}
+                onChange={(e) => setFormIsExternal(e.target.checked)}
+                className="w-4 h-4 rounded text-[#07381E] focus:ring-[#07381E]"
+              />
+              <span className="text-xs text-charcoal-700 font-medium">External Link</span>
+            </label>
           </div>
         </div>
-      )}
+      </AdminModal>
 
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog

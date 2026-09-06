@@ -22,6 +22,7 @@ import {
 import ResponsiveTable, { Column, TableAction } from '@/components/admin/ResponsiveTable';
 import StatusBadge from '@/components/admin/StatusBadge';
 import ConfirmDialog from '@/components/admin/ConfirmDialog';
+import AdminModal from '@/components/admin/AdminModal';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 
 export interface SubmissionRecord {
@@ -172,7 +173,7 @@ export default function ContactClientTable({
               <span className="w-2 h-2 rounded-full bg-[#07381E] mt-1.5 shrink-0" title="New unread enquiry" />
             )}
             <div>
-              <span className={`font-serif text-charcoal-950 block text-sm sm:text-[15px] ${isUnread ? 'font-bold text-[#07381E]' : 'font-semibold'}`}>
+              <span className={`font-sans text-charcoal-950 block text-sm ${isUnread ? 'font-semibold text-[#07381E]' : 'font-medium'}`}>
                 {getDisplayName(sub)}
               </span>
               <span className="text-xs font-sans text-charcoal-500 block">
@@ -269,41 +270,50 @@ export default function ContactClientTable({
       )}
 
       {/* Filter Tabs with Live Badges */}
-      <div className="flex flex-wrap items-center gap-2 border-b border-canvas-border pb-3">
-        {[
-          { label: 'All Submissions', value: 'ALL', count: submissions.length },
-          { label: 'New', value: 'new', count: newCount, highlight: newCount > 0 },
-          { label: 'Read', value: 'read', count: readCount },
-          { label: 'Replied', value: 'replied', count: repliedCount },
-          { label: 'Archived', value: 'archived', count: archivedCount },
-        ].map((tab) => {
-          const isActive = filter === tab.value;
-          return (
-            <button
-              key={tab.value}
-              type="button"
-              onClick={() => setFilter(tab.value)}
-              className={`px-3.5 py-2 rounded-xl text-xs font-sans font-semibold transition-all flex items-center space-x-2 ${
-                isActive
-                  ? 'bg-[#07381E] text-white shadow-soft-sm'
-                  : 'bg-white border border-canvas-border text-charcoal-600 hover:text-charcoal-950 hover:bg-canvas-warm'
-              }`}
-            >
-              <span>{tab.label}</span>
-              <span
-                className={`px-1.5 py-0.5 rounded-full text-[10px] font-mono ${
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-canvas-border pb-3">
+        <div className="flex flex-wrap items-center gap-1.5">
+          {[
+            { label: 'All', value: 'ALL', count: submissions.length },
+            { label: 'Unread', value: 'new', count: newCount, highlight: newCount > 0 },
+            { label: 'Read', value: 'read', count: readCount },
+            { label: 'Replied', value: 'replied', count: repliedCount },
+            { label: 'Archived', value: 'archived', count: archivedCount },
+          ].map((tab) => {
+            const isActive = filter === tab.value;
+            return (
+              <button
+                key={tab.value}
+                type="button"
+                onClick={() => setFilter(tab.value)}
+                className={`px-3 py-1.5 rounded-full text-xs font-sans transition-all flex items-center space-x-1.5 ${
                   isActive
-                    ? 'bg-white/20 text-white'
-                    : tab.highlight
-                    ? 'bg-emerald-100 text-[#07381E] font-bold'
-                    : 'bg-canvas-warm text-charcoal-500'
+                    ? 'bg-[#07381E] text-white shadow-2xs font-semibold'
+                    : 'bg-white border border-canvas-border text-charcoal-600 hover:text-charcoal-950 hover:bg-canvas-warm font-medium'
                 }`}
               >
-                {tab.count}
-              </span>
-            </button>
-          );
-        })}
+                <span>{tab.label}</span>
+                <span
+                  className={`px-1.5 py-0.5 rounded-full text-[11px] font-mono leading-none ${
+                    isActive
+                      ? 'bg-white/20 text-white'
+                      : tab.highlight
+                      ? 'bg-emerald-100 text-[#07381E] font-semibold'
+                      : 'bg-canvas-warm text-charcoal-500'
+                  }`}
+                >
+                  {tab.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {newCount > 0 && (
+          <span className="text-xs font-sans text-emerald-800 bg-emerald-50 border border-emerald-200/60 px-2.5 py-1 rounded-full flex items-center space-x-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+            <span>{newCount} awaiting review</span>
+          </span>
+        )}
       </div>
 
       {/* Desktop & Tablet Table */}
@@ -312,7 +322,7 @@ export default function ContactClientTable({
           columns={columns}
           data={filtered}
           keyExtractor={(item) => item.id}
-          searchPlaceholder="Search enquiries by name, email, subject, location, or message..."
+          searchPlaceholder="Search enquiries by name, email, subject..."
           onSearchChange={setSearch}
           actions={actions}
           onRowClick={(sub) => {
@@ -328,13 +338,13 @@ export default function ContactClientTable({
 
       {/* Dedicated Mobile Card Layout (Touch friendly, no horizontal scrolling) */}
       <div className="block sm:hidden space-y-3">
-        <div className="mb-3">
+        <div className="mb-2">
           <input
             type="text"
             placeholder="Search enquiries..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full px-4 py-2.5 rounded-xl bg-white border border-canvas-border text-xs font-sans text-charcoal-900 focus:outline-none focus:border-[#07381E]"
+            className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-canvas-border text-xs font-sans text-charcoal-900 focus:outline-none focus:border-[#07381E]"
           />
         </div>
 
@@ -354,15 +364,15 @@ export default function ContactClientTable({
                     updateStatus(sub.id, 'read');
                   }
                 }}
-                className={`p-4 rounded-2xl bg-white border transition-all active:scale-[0.99] space-y-2.5 shadow-2xs ${
+                className={`p-4 rounded-xl bg-white border transition-all active:scale-[0.99] space-y-2.5 shadow-2xs ${
                   isUnread
-                    ? 'border-[#07381E] ring-1 ring-[#07381E]/20 bg-[#F7F8F6]'
+                    ? 'border-emerald-300 ring-1 ring-emerald-100 bg-[#F7F8F6]'
                     : 'border-canvas-border'
                 }`}
               >
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <span className="font-serif text-sm font-semibold text-charcoal-950 block">
+                    <span className="font-sans text-sm font-semibold text-charcoal-950 block">
                       {getDisplayName(sub)}
                     </span>
                     <span className="text-xs font-sans text-charcoal-500 block truncate">
@@ -372,7 +382,7 @@ export default function ContactClientTable({
                   <StatusBadge status={sub.status} />
                 </div>
 
-                <div className="text-xs text-charcoal-600 font-sans line-clamp-2 bg-canvas-warm/70 p-2 rounded-lg">
+                <div className="text-xs text-charcoal-600 font-sans line-clamp-2 bg-canvas-warm/70 p-2.5 rounded-lg">
                   {sub.message}
                 </div>
 
@@ -395,42 +405,60 @@ export default function ContactClientTable({
 
       {/* Enquiry Detail Drawer / Modal */}
       {activeEnquiry && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-charcoal-950/60 backdrop-blur-xs animate-in fade-in">
-          <div className="relative w-full max-w-2xl bg-white border border-canvas-border rounded-3xl p-6 sm:p-8 shadow-2xl z-10 space-y-6 text-left max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex items-start justify-between border-b border-canvas-border pb-4">
-              <div>
-                <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E] block">
-                  CLIENT ENQUIRY PARTICULARS
-                </span>
-                <div className="flex items-center space-x-3 mt-1">
-                  <h3 className="font-serif text-2xl sm:text-3xl font-medium text-charcoal-950">
-                    {getDisplayName(activeEnquiry)}
-                  </h3>
-                  <StatusBadge status={activeEnquiry.status} />
-                </div>
-                <span className="text-xs text-charcoal-400 font-sans block mt-1">
-                  Received {new Date(activeEnquiry.created_at).toLocaleString('en-GB', {
-                    dateStyle: 'full',
-                    timeStyle: 'short',
-                  })}
-                </span>
-              </div>
-
+        <AdminModal
+          isOpen={Boolean(activeEnquiry)}
+          onClose={() => setActiveEnquiry(null)}
+          maxWidth="xl"
+          title={
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-sans text-base sm:text-lg font-semibold text-charcoal-950 truncate">
+                {getDisplayName(activeEnquiry)}
+              </span>
+              <StatusBadge status={activeEnquiry.status} />
+            </div>
+          }
+          description={`Received ${new Date(activeEnquiry.created_at).toLocaleString('en-GB', {
+            dateStyle: 'medium',
+            timeStyle: 'short',
+          })}`}
+          footer={
+            <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-2.5 w-full">
               <button
                 type="button"
-                onClick={() => setActiveEnquiry(null)}
-                className="p-2 rounded-xl text-charcoal-400 hover:text-charcoal-950 hover:bg-canvas-warm transition-colors"
+                onClick={() => setDeleteTarget(activeEnquiry)}
+                className="w-full sm:w-auto px-3.5 py-2.5 rounded-lg text-xs font-sans font-medium text-rose-600 hover:bg-rose-50 flex items-center justify-center space-x-1.5 transition-colors min-h-[44px] sm:min-h-0"
               >
-                <X className="w-5 h-5" />
+                <Trash2 className="w-3.5 h-3.5" />
+                <span>Delete Submission</span>
               </button>
-            </div>
 
+              <div className="flex flex-col sm:flex-row items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => setActiveEnquiry(null)}
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-lg border border-canvas-border text-xs font-sans font-medium text-charcoal-700 hover:bg-canvas-warm transition-colors min-h-[44px] sm:min-h-0 flex items-center justify-center"
+                >
+                  Close
+                </button>
+
+                <a
+                  href={`mailto:${activeEnquiry.email}?subject=Zalia Properties — Response to your enquiry`}
+                  onClick={() => updateStatus(activeEnquiry.id, 'replied')}
+                  className="w-full sm:w-auto px-4 py-2.5 rounded-lg bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-medium flex items-center justify-center space-x-1.5 transition-colors shadow-2xs min-h-[44px] sm:min-h-0"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Reply via Email</span>
+                </a>
+              </div>
+            </div>
+          }
+        >
+          <div className="space-y-5 text-left">
             {/* Particulars Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 text-xs font-sans">
-              <div className="p-3.5 rounded-xl bg-canvas-warm space-y-1">
-                <span className="text-[10.5px] uppercase tracking-wider text-charcoal-400 font-semibold block flex items-center space-x-1.5">
-                  <Mail className="w-3 h-3 text-[#07381E]" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-sans">
+              <div className="p-3 rounded-xl bg-canvas-warm space-y-1">
+                <span className="text-[11px] text-charcoal-500 font-medium flex items-center space-x-1.5">
+                  <Mail className="w-3.5 h-3.5 text-[#07381E]" />
                   <span>Email Address</span>
                 </span>
                 <a
@@ -441,9 +469,9 @@ export default function ContactClientTable({
                 </a>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-canvas-warm space-y-1">
-                <span className="text-[10.5px] uppercase tracking-wider text-charcoal-400 font-semibold block flex items-center space-x-1.5">
-                  <Phone className="w-3 h-3 text-[#07381E]" />
+              <div className="p-3 rounded-xl bg-canvas-warm space-y-1">
+                <span className="text-[11px] text-charcoal-500 font-medium flex items-center space-x-1.5">
+                  <Phone className="w-3.5 h-3.5 text-[#07381E]" />
                   <span>Telephone</span>
                 </span>
                 {activeEnquiry.phone ? (
@@ -458,22 +486,22 @@ export default function ContactClientTable({
                 )}
               </div>
 
-              <div className="p-3.5 rounded-xl bg-canvas-warm space-y-1">
-                <span className="text-[10.5px] uppercase tracking-wider text-charcoal-400 font-semibold block flex items-center space-x-1.5">
-                  <MessageSquare className="w-3 h-3 text-[#07381E]" />
-                  <span>Subject / Nature</span>
+              <div className="p-3 rounded-xl bg-canvas-warm space-y-1">
+                <span className="text-[11px] text-charcoal-500 font-medium flex items-center space-x-1.5">
+                  <MessageSquare className="w-3.5 h-3.5 text-[#07381E]" />
+                  <span>Subject</span>
                 </span>
-                <span className="text-charcoal-950 font-medium block">
+                <span className="text-charcoal-950 font-medium block break-words">
                   {getDisplaySubject(activeEnquiry)}
                 </span>
               </div>
 
-              <div className="p-3.5 rounded-xl bg-canvas-warm space-y-1">
-                <span className="text-[10.5px] uppercase tracking-wider text-charcoal-400 font-semibold block flex items-center space-x-1.5">
-                  <MapPin className="w-3 h-3 text-[#07381E]" />
+              <div className="p-3 rounded-xl bg-canvas-warm space-y-1">
+                <span className="text-[11px] text-charcoal-500 font-medium flex items-center space-x-1.5">
+                  <MapPin className="w-3.5 h-3.5 text-[#07381E]" />
                   <span>Property Location</span>
                 </span>
-                <span className="text-charcoal-950 font-medium block">
+                <span className="text-charcoal-950 font-medium block truncate">
                   {activeEnquiry.property_location || 'Not Specified'}
                 </span>
               </div>
@@ -490,28 +518,28 @@ export default function ContactClientTable({
             </div>
 
             {/* Submission Message */}
-            <div className="space-y-2">
-              <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-charcoal-500 block">
-                Submission Message:
+            <div className="space-y-1.5">
+              <span className="text-xs font-sans font-medium text-charcoal-600 block">
+                Message:
               </span>
-              <div className="p-5 rounded-2xl bg-[#F7F8F6] border border-canvas-border text-charcoal-900 text-sm font-sans leading-relaxed whitespace-pre-wrap selection:bg-emerald-brand selection:text-white">
+              <div className="p-4 rounded-xl bg-[#F7F8F6] border border-canvas-border text-charcoal-900 text-xs sm:text-sm font-sans leading-relaxed whitespace-pre-wrap break-words">
                 {activeEnquiry.message}
               </div>
             </div>
 
             {/* Status Management Quick Controls */}
-            <div className="p-4 rounded-2xl bg-canvas-warm border border-canvas-border space-y-2">
-              <span className="text-[11px] font-sans font-semibold uppercase tracking-wider text-charcoal-600 block">
+            <div className="p-3.5 rounded-xl bg-canvas-warm border border-canvas-border space-y-2">
+              <span className="text-[11px] font-sans font-medium text-charcoal-600 block">
                 Update Status:
               </span>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-1.5">
                 <button
                   type="button"
                   disabled={isProcessing || activeEnquiry.status === 'new'}
                   onClick={() => updateStatus(activeEnquiry.id, 'new')}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 transition-colors ${
                     activeEnquiry.status === 'new'
-                      ? 'bg-amber-100 text-amber-800 border border-amber-300'
+                      ? 'bg-amber-100 text-amber-900 border border-amber-300'
                       : 'bg-white border border-canvas-border text-charcoal-700 hover:bg-stone-50'
                   }`}
                 >
@@ -523,9 +551,9 @@ export default function ContactClientTable({
                   type="button"
                   disabled={isProcessing || activeEnquiry.status === 'read'}
                   onClick={() => updateStatus(activeEnquiry.id, 'read')}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 transition-colors ${
                     activeEnquiry.status === 'read'
-                      ? 'bg-blue-100 text-blue-800 border border-blue-300'
+                      ? 'bg-blue-100 text-blue-900 border border-blue-300'
                       : 'bg-white border border-canvas-border text-charcoal-700 hover:bg-stone-50'
                   }`}
                 >
@@ -537,9 +565,9 @@ export default function ContactClientTable({
                   type="button"
                   disabled={isProcessing || activeEnquiry.status === 'replied'}
                   onClick={() => updateStatus(activeEnquiry.id, 'replied')}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 transition-colors ${
                     activeEnquiry.status === 'replied'
-                      ? 'bg-emerald-100 text-emerald-800 border border-emerald-300'
+                      ? 'bg-emerald-100 text-emerald-900 border border-emerald-300'
                       : 'bg-white border border-canvas-border text-charcoal-700 hover:bg-stone-50'
                   }`}
                 >
@@ -551,9 +579,9 @@ export default function ContactClientTable({
                   type="button"
                   disabled={isProcessing || activeEnquiry.status === 'archived'}
                   onClick={() => updateStatus(activeEnquiry.id, 'archived')}
-                  className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center space-x-1.5 transition-colors ${
+                  className={`px-2.5 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 transition-colors ${
                     activeEnquiry.status === 'archived'
-                      ? 'bg-stone-200 text-stone-700 border border-stone-300'
+                      ? 'bg-stone-200 text-stone-800 border border-stone-300'
                       : 'bg-white border border-canvas-border text-charcoal-700 hover:bg-stone-50'
                   }`}
                 >
@@ -562,39 +590,8 @@ export default function ContactClientTable({
                 </button>
               </div>
             </div>
-
-            {/* Bottom Actions Bar */}
-            <div className="flex flex-col-reverse sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-canvas-border">
-              <button
-                type="button"
-                onClick={() => setDeleteTarget(activeEnquiry)}
-                className="px-4 py-2.5 rounded-xl text-xs font-sans font-semibold text-rose-600 hover:bg-rose-50 flex items-center justify-center space-x-1.5 transition-colors self-start sm:self-auto"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-                <span>Delete Submission</span>
-              </button>
-
-              <div className="flex items-center space-x-2.5">
-                <button
-                  type="button"
-                  onClick={() => setActiveEnquiry(null)}
-                  className="px-4 py-2.5 rounded-xl border border-canvas-border text-xs font-sans font-semibold text-charcoal-700 hover:bg-canvas-warm transition-colors"
-                >
-                  Close
-                </button>
-
-                <a
-                  href={`mailto:${activeEnquiry.email}?subject=Zalia Properties — Response to your enquiry`}
-                  onClick={() => updateStatus(activeEnquiry.id, 'replied')}
-                  className="px-5 py-2.5 rounded-xl bg-[#07381E] hover:bg-[#052B17] text-white text-xs font-sans font-semibold uppercase tracking-wider flex items-center space-x-1.5 transition-colors shadow-soft-sm"
-                >
-                  <Send className="w-3.5 h-3.5" />
-                  <span>Reply via Email</span>
-                </a>
-              </div>
-            </div>
           </div>
-        </div>
+        </AdminModal>
       )}
 
       {/* Delete Confirmation Dialog */}

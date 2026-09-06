@@ -298,7 +298,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
               <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
                 PAGE HERO
               </span>
-              <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+              <h2 className="font-sans text-base font-semibold text-charcoal-950">
                 Hero Section
               </h2>
             </div>
@@ -348,7 +348,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
               rows={2}
               value={heroHeading}
               onChange={(e) => setHeroHeading(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-xl focus:outline-none focus:border-[#07381E] resize-none"
+              className="w-full px-4 py-3 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E] resize-none"
             />
           </div>
 
@@ -384,7 +384,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               PILLAR 01
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Acquire Section
             </h2>
           </div>
@@ -411,7 +411,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
                 type="text"
                 value={acquireTitle}
                 onChange={(e) => setAcquireTitle(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-base focus:outline-none focus:border-[#07381E]"
+                className="w-full px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E]"
               />
             </div>
           </div>
@@ -463,7 +463,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               PILLAR 02
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Transform Section
             </h2>
           </div>
@@ -490,7 +490,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
                 type="text"
                 value={transformTitle}
                 onChange={(e) => setTransformTitle(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-base focus:outline-none focus:border-[#07381E]"
+                className="w-full px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E]"
               />
             </div>
           </div>
@@ -542,7 +542,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               PILLAR 03
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Create Section
             </h2>
           </div>
@@ -569,7 +569,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
                 type="text"
                 value={createTitle}
                 onChange={(e) => setCreateTitle(e.target.value)}
-                className="w-full px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-serif text-base focus:outline-none focus:border-[#07381E]"
+                className="w-full px-3 py-2.5 rounded-xl bg-canvas-warm border border-canvas-border text-charcoal-900 font-sans text-sm focus:outline-none focus:border-[#07381E]"
               />
             </div>
           </div>
@@ -621,7 +621,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               3D JOURNEY NARRATIVE
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               3D Metamorphosis Step Descriptions
             </h2>
           </div>
@@ -667,7 +667,7 @@ export default function WhatWeDoPageEditor({ initialData }: WhatWeDoPageEditorPr
             <span className="text-[10.5px] font-sans font-semibold uppercase tracking-[0.18em] text-[#07381E]">
               DISCOVERABILITY
             </span>
-            <h2 className="font-serif text-2xl font-medium text-charcoal-950">
+            <h2 className="font-sans text-base font-semibold text-charcoal-950">
               Page SEO Meta Tags
             </h2>
           </div>
